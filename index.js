@@ -67,7 +67,7 @@ app.get('/', function(request, response) {
 
 app.post('/login',
     passport.authenticate('local', {
-        failureRedirect: '/index'
+        failureRedirect: '/'
     }),
     function(req, res) {
         res.redirect('/');
