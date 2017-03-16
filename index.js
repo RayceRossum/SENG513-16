@@ -1,39 +1,55 @@
 var express = require('express');
-var app = express();
 var passport = require('passport');
-var Strategy = require('passport-http-bearer').Strategy;
+var Strategy = require('passport-local').Strategy;
 var db = require('./db');
 
-passport.use(new LocalStrategy(
-    function(username, password, done) {
-        User.findOne({
-            username: username
-        }, function(err, user) {
+passport.use(new Strategy(
+    function(username, password, cb) {
+        db.users.findByUsername(username, function(err, user) {
             if (err) {
-                return done(err);
+                return cb(err);
             }
             if (!user) {
-                return done(null, false);
+                return cb(null, false);
             }
-            if (!user.verifyPassword(password)) {
-                return done(null, false);
+            if (user.password != password) {
+                return cb(null, false);
             }
-            return done(null, user);
+            return cb(null, user);
         });
-    }
-));
+    }));
+
+passport.serializeUser(function(user, cb) {
+    cb(null, user.id);
+});
+
+passport.deserializeUser(function(id, cb) {
+    db.users.findById(id, function(err, user) {
+        if (err) {
+            return cb(err);
+        }
+        cb(null, user);
+    });
+});
+
+var app = express();
 
 // Configure Express application.
 app.use(require('morgan')('combined'));
+app.use(require('cookie-parser')());
+app.use(require('body-parser').urlencoded({
+    extended: true
+}));
+app.use(require('express-session')({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false
+}));
 
-
-app.post('/login',
-    passport.authenticate('local', {
-        failureRedirect: '/login'
-    }),
-    function(req, res) {
-        res.redirect('/');
-    });
+// Initialize Passport and restore authentication state, if any, from the
+// session.
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -44,8 +60,18 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 app.get('/', function(request, response) {
-    response.render('pages/index');
+    response.render('pages/index', {
+        user: request.user
+    });
 });
+
+app.post('/login',
+    passport.authenticate('local', {
+        failureRedirect: '/index'
+    }),
+    function(req, res) {
+        res.redirect('/');
+    });
 
 app.get('/db', function(request, response) {
     response.render('pages/db');
