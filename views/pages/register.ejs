@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include ../partials/header.ejs %>
+</head>
+
+<body>
+
+    <% include ../partials/nav.ejs %>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-offset-6 col-sm-offset-6 col-md-6 col-sm-6 col-xs-12 handel-form">
+                    <form method="post" action="register">
+                        <div class="form-group ">
+                            <label class="control-label " for="name">Username</label>
+                            <input class="form-control" id="name" name="name" type="text" />
+                        </div>
+                        <div class="form-group ">
+                            <label class="control-label requiredField" for="email">Email<span class="asteriskField">*</span></label>
+                            <input class="form-control" id="email" name="email" type="text" />
+                        </div>
+                        <div class="form-group ">
+                            <label class="control-label requiredField" for="password">Password<span class="asteriskField">*</span></label>
+                            <input class="form-control" id="password" name="password" type="password" />
+                        </div>
+                        <div class="form-group ">
+                            <label class="control-label requiredField" for="confirm">Confirm Password<span class="asteriskField">*</span></label>
+                            <input class="form-control" id="confirm" name="confirm" type="password" />
+                        </div>
+                        <div class="form-group">
+                            <div>
+                                <button class="btn btn-primary" style="float:right;" name="submit" type="submit">Register</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
+</body>
+
+</html>

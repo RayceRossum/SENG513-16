@@ -73,15 +73,11 @@ app.post('/login',
         res.redirect('/');
     });
 
-app.post('/register',
-    passport.authenticate('local', {
-        failureRedirect: '/?Error'
-    }),
-    function(req, res) {
-        res.redirect('/');
+app.get('/register', function(request, response) {
+    response.render('pages/register', {
+        user: request.user
     });
-
-
+});
 
 
 app.get('/db', function(request, response) {
