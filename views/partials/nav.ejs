@@ -9,54 +9,53 @@
             </li>
         </ul>
         <div class="navbar-collapse collapse" id="navbar-main">
-                        <ul class="nav navbar-nav">
-                            <li class="active"><a href="#">Link</a>
-                            </li>
-                            <li><a href="#">Link</a>
-                            </li>
-                            <li><a href="#">Link</a>
-                            </li>
-                            <li><a href="#">Link</a>
-                            </li>
-                            <li><a href="#">Link</a>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Action</a>
-                                    </li>
-                                    <li><a href="#">Another action</a>
-                                    </li>
-                                    <li><a href="#">Something else here</a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">Separated link</a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li><a href="#">One more separated link</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-
-
-        <center>
-            <% if (!user) { %>
-                <li>
-                    <form class="navbar-form navbar-right" role="login" action="/login" method="post">
-                        <div class="form-group">
-                            <input class="form-control" placeholder="Username" type="text" name="username" /><br/>
-                        </div>
-                        <div class="form-group">
-                            <input class="form-control" placeholder="Password" type="password" name="password" />
-                        </div>
-                        <input class="btn btn-default" type="submit" value="Login" />
-                    </form>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Link</a>
                 </li>
+                <li><a href="#">Link</a>
+                </li>
+                <li><a href="#">Link</a>
+                </li>
+                <li><a href="#">Link</a>
+                </li>
+                <li><a href="#">Link</a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a>
+                        </li>
+                        <li><a href="#">Another action</a>
+                        </li>
+                        <li><a href="#">Something else here</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="#">Separated link</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="#">One more separated link</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <% if (!user) { %>
+                <form class="navbar-form navbar-right" role="login" action="/login" method="post">
+                    <div class="form-group">
+                        <input class="form-control" placeholder="Username" type="text" name="username" /><br/>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" placeholder="Password" type="password" name="password" />
+                    </div>
+                    <input class="btn btn-default" type="submit" value="Login" />
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="register">Create an account?</a>
+                    </li>
+                </ul>
                 <% } else { %>
 
                     <% } %>
-        </center>
-
-    </div>
+        </div>
 </nav>
