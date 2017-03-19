@@ -32,14 +32,14 @@ passport.deserializeUser(function(id, cb) {
     });
 });
 
-var app = express();
-
 // Configure Express application.
+var app = express();
 app.use(require('morgan')('combined'));
 app.use(require('cookie-parser')());
 app.use(require('body-parser').urlencoded({
     extended: true
 }));
+
 app.use(require('express-session')({
     secret: 'keyboard cat',
     resave: false,
@@ -67,7 +67,7 @@ app.get('/', function(request, response) {
 
 app.post('/login',
     passport.authenticate('local', {
-        failureRedirect: '/'
+        failureRedirect: '/?Error'
     }),
     function(req, res) {
         res.redirect('/');
