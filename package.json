@@ -15,10 +15,13 @@
     "ejs": "2.4.1",
     "express": "4.13.3",
     "express-session": "^1.15.1",
+    "greenlock-express": "^2.0.9",
     "morgan": "^1.8.1",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
-    "passport-local-register": "^1.0.4"
+    "passport-local-register": "^1.0.4",
+    "pg": "^6.1.5",
+    "underscore": "^1.8.3"
   },
   "repository": {
     "type": "git",

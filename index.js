@@ -1,7 +1,31 @@
 var express = require('express');
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
+var _ = require('underscore');
 var db = require('./db');
+
+var pg = require('pg');
+var connectionString = (process.env.DATABASE_URL || 'postgres://postgres:password@localhost:5432/handel');
+
+
+pg.connect(connectionString, onConnect);
+
+function onConnect(err, client, done) {
+  //Err - This means something went wrong connecting to the database.
+  if (err) {
+    console.error(err);
+    process.exit(1);
+  }
+  console.log("Connection to pg database successful.")
+  //For now let's end client
+  client.end();
+}
+
+// var query = client.query("SELECT * FROM public.'Users';");
+// query.on('row', function(row) {
+//     console.log("ROW: " + row);
+// });
+
 
 passport.use(new Strategy(
     function(username, password, cb) {
@@ -51,13 +75,24 @@ app.use(require('express-session')({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.set('port', (process.env.PORT || 5000));
-
 app.use(express.static(__dirname + '/public'));
 
 // views is directory for all template files
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
+
+app.set('port', (process.env.PORT || 5000));
+
+// 'use strict';
+//
+// require('greenlock-express').create({
+//     server: 'staging',
+//     email: 'john.doe@example.com',
+//     agreeTos: true,
+//     approveDomains: ['localhost', 'fathomless-scrubland-31742.com']
+// }).listen(80, 443, function() {
+//     console.log('Node app is running on port', 80, 443);
+// });
 
 app.get('/', function(request, response) {
     response.render('pages/index', {
@@ -79,11 +114,10 @@ app.get('/register', function(request, response) {
     });
 });
 
-
 app.get('/db', function(request, response) {
     response.render('pages/db');
 });
 
 app.listen(app.get('port'), function() {
-    console.log('Node app is running on port', app.get('port'));
+    console.log("Node app running on port: " + app.get('port'));
 });
