@@ -1,39 +1,11 @@
+var connectionString = (process.env.DATABASE_URL || 'postgres://postgres:password@localhost:5432/handel');
+
 var express = require('express');
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
 var _ = require('underscore');
 var db = require('./db');
-
-var pg = require('pg');
-var connectionString = (process.env.DATABASE_URL || 'postgres://postgres:password@localhost:5432/handel');
-
-
-pg.connect(connectionString, onConnect);
-
-function onConnect(err, client, done) {
-    //Err - This means something went wrong connecting to the database.
-    if (err) {
-        console.error(err);
-        process.exit(1);
-    }
-    console.log("Connection to pg database successful. " + connectionString);
-
-    // TODO: Function() Bootstrap database
-    client.query("DROP TABLE IF EXISTS public.\"Users\"", function(err, result) {
-        if (err) throw err;
-        console.log(result.command);
-    });
-
-    client.query("CREATE TABLE public.\"Users\"(username text NOT NULL, email text NOT NULL, password_hash text NOT NULL, salt text NOT NULL) WITH (OIDS = FALSE);", function(err, result) {
-        if (err) throw err;
-        console.log(result.command);
-    });
-
-    client.query("INSERT INTO public.\"Users\" VALUES ('username', 'username@handel.com', 'password', 'salt')", function(err, result) {
-        if (err) throw err;
-        console.log(result.command);
-    });
-}
+db.bootstrap(connectionString);
 
 passport.use(new Strategy(
     function(username, password, cb) {
@@ -44,6 +16,7 @@ passport.use(new Strategy(
             if (!user) {
                 return cb(null, false);
             }
+            // Check password is equal to entry for password
             if (user.password != password) {
                 return cb(null, false);
             }

@@ -30,3 +30,24 @@ exports.findByUsername = function(username, cb) {
         return cb(null, null);
     });
 }
+
+exports.bootstrap = function(err, client) {
+    //Err - This means something went wrong connecting to the database.
+    if (err) {
+        console.error(err);
+        process.exit(1);
+    }
+
+    client.query("DROP TABLE IF EXISTS public.\"Users\"", function(err, result) {
+        if (err) console.error(err);
+    });
+
+    client.query("CREATE TABLE public.\"Users\"(username text NOT NULL, email text NOT NULL, password_hash text NOT NULL, salt text NOT NULL) WITH (OIDS = FALSE);", function(err, result) {
+        if (err) console.error(err);
+    });
+
+    client.query("INSERT INTO public.\"Users\" VALUES ('username', 'username@handel.com', 'password', 'salt')", function(err, result) {
+        if (err) console.error(err);
+    });
+    console.log("Success: Users");
+};
