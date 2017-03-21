@@ -80,8 +80,8 @@ app.set('port', (process.env.PORT || 5000));
 // }).listen(80, 443, function() {
 //     console.log('Node app is running on port', 80, 443);
 // });
-var stdRoutes = require('./routes/routes')(express, query, passport);
-app.use('/', stdRoutes);
+var authRoutes = require('./routes/authentication')(express, query, passport);
+app.use('/', authRoutes);
 
 app.get('/buyer', function(request, response) {
     if (request.user) {
