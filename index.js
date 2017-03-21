@@ -11,21 +11,29 @@ var connectionString = (process.env.DATABASE_URL || 'postgres://postgres:passwor
 pg.connect(connectionString, onConnect);
 
 function onConnect(err, client, done) {
-  //Err - This means something went wrong connecting to the database.
-  if (err) {
-    console.error(err);
-    process.exit(1);
-  }
-  console.log("Connection to pg database successful. " + connectionString);
-  //For now let's end client
-  client.end();
+    //Err - This means something went wrong connecting to the database.
+    if (err) {
+        console.error(err);
+        process.exit(1);
+    }
+    console.log("Connection to pg database successful. " + connectionString);
+
+    // TODO: Function() Bootstrap database
+    client.query("DROP TABLE IF EXISTS public.\"Users\"", function(err, result) {
+        if (err) throw err;
+        console.log(result.command);
+    });
+
+    client.query("CREATE TABLE public.\"Users\"(username text NOT NULL, email text NOT NULL, password_hash text NOT NULL, salt text NOT NULL) WITH (OIDS = FALSE);", function(err, result) {
+        if (err) throw err;
+        console.log(result.command);
+    });
+
+    client.query("INSERT INTO public.\"Users\" VALUES ('username', 'username@handel.com', 'password', 'salt')", function(err, result) {
+        if (err) throw err;
+        console.log(result.command);
+    });
 }
-
-// var query = client.query("SELECT * FROM public.'Users';");
-// query.on('row', function(row) {
-//     console.log("ROW: " + row);
-// });
-
 
 passport.use(new Strategy(
     function(username, password, cb) {
