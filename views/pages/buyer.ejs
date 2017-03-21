@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include ../partials/header.ejs %>
+    <link rel="stylesheet" href="/stylesheets/jquery-countryselector.min.css" />
+</head>
+
+<body>
+
+    <% include ../partials/nav.ejs %>
+
+    <div class="container">
+            <div class="row">
+                <div class="jumbotron">
+                    <h1 align="center"> Welcome to the Buyer's Page ಠ_ಠ </h1>
+                    <hr>
+                    <h5> Something Something Something...  </h5>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-8 col-sm-8 col-xs-8 handel-form">
+                    <form method="post" action="/submitAd">
+                        <div class="form-group ">
+                            <label class="control-label " for="item">Item <span class="asteriskField">*</span></label>
+                            <input class="form-control" id="item" name="item" type="text" />
+                        </div>
+                        <div class="form-group ">
+                            <label class="control-label" for="image">Image Preview</label>
+                            <input class="form-control" id="image" name="image" type="text" />
+                        </div>
+                        <div class="form-group ">
+                            <label class="control-label" for="cs1">Item Location</label>
+                            <input class="control-label" id="cs1" name="country" type="hidden" value="USA" />
+
+                        </div>
+                        <div class="form-group ">
+                            <label class="control-label" for="details">Further Details and Comments</label>
+                            <textarea class="form-control" id="details" name="details" rows="5" style="max-width:100%"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <div>
+                                <button class="btn btn-primary" style="float:right;" name="submitpost" type="submit">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                    <div class="jumbotron side-jumbotron">
+                        <h4> This is stuff </h4>
+                    </div>
+                    <div class="jumbotron side-jumbotron">
+                        <h4> This is another stuff </h4>
+                    </div>
+                    <div class="jumbotron side-jumbotron">
+                        <h4> This is another stuff </h4>
+                    </div>
+                </div>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12 footer-jumbotron">
+                <div class="jumbotron">
+                <h1> Mor things </h1>
+                </div>
+                </div>
+        </div>
+        </div>
+
+
+ <script src="/js/jquery.countryselector.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#cs1").countrySelector();
+        });
+    </script>
+</body>
+
+</html>
