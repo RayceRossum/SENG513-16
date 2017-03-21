@@ -1,5 +1,3 @@
-
-
 var express = require('express');
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
@@ -15,7 +13,7 @@ db.bootstrap(query);
 
 passport.use(new Strategy(
     function(username, password, cb) {
-      console.log(username);
+        console.log(username);
         db.findUserByUsername(query, username, function(err, user) {
             if (err) {
                 return cb(err);
@@ -98,27 +96,32 @@ app.post('/login',
     });
 
 app.get('/register', function(request, response) {
-    response.render('pages/register', {
-        user: request.user
-    });
+    if (request.user) {
+        response.redirect('/'), {
+            user: request.user
+        }
+    } else {
+        response.render('pages/register', {
+            user: request.user
+        });
+    }
 });
 
 app.get('/db', function(request, response) {
     response.render('pages/db');
 });
 
-app.get('/buyer', function(request, response){
-    if(request.user){
-    response.render('pages/buyer',{
-        user: request.user
-    });
-    }
-    else{
-    response.redirect('/');
+app.get('/buyer', function(request, response) {
+    if (request.user) {
+        response.render('pages/buyer', {
+            user: request.user
+        });
+    } else {
+        response.redirect('/');
     }
 });
 
-app.post('/submitAd',function(request, response){
+app.post('/submitAd', function(request, response) {
     response.redirect('/');
     console.log(request.body.item);
     console.log(request.body.image);
