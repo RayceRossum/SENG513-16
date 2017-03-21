@@ -13,7 +13,7 @@ db.bootstrap(query);
 passport.use(new Strategy(
     function(username, password, cb) {
         console.log(username);
-        db.findUserByUsername(query, username, function(err, user) {
+        db.users.findByUsername(query, username, function(err, user) {
             if (err) {
                 return cb(err);
             }
@@ -35,7 +35,7 @@ passport.serializeUser(function(user, cb) {
 });
 
 passport.deserializeUser(function(username, cb) {
-    db.findUserByUsername(query, username, function(err, user) {
+    db.users.findByUsername(query, username, function(err, user) {
         if (err) {
             return cb(err);
         }
