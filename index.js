@@ -1,7 +1,8 @@
 var express = require('express');
+var app = express();
+
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
-var _ = require('underscore');
 
 var pg = require('pg');
 var query = require('pg-query');
@@ -13,7 +14,7 @@ db.bootstrap(query);
 passport.use(new Strategy(
     function(username, password, cb) {
         console.log(username);
-        db.findUserByUsername(query, username, function(err, user) {
+        db.users.findByUsername(query, username, function(err, user) {
             if (err) {
                 return cb(err);
             }
@@ -35,7 +36,7 @@ passport.serializeUser(function(user, cb) {
 });
 
 passport.deserializeUser(function(username, cb) {
-    db.findUserByUsername(query, username, function(err, user) {
+    db.users.findByUsername(query, username, function(err, user) {
         if (err) {
             return cb(err);
         }
@@ -44,7 +45,6 @@ passport.deserializeUser(function(username, cb) {
 });
 
 // Configure Express application.
-var app = express();
 app.use(require('morgan')('combined'));
 app.use(require('cookie-parser')());
 app.use(require('body-parser').urlencoded({
@@ -80,40 +80,8 @@ app.set('port', (process.env.PORT || 5000));
 // }).listen(80, 443, function() {
 //     console.log('Node app is running on port', 80, 443);
 // });
-
-
-// TODO: Implement routes.js
-app.get('/', function(request, response) {
-    response.render('pages/index', {
-        user: request.user
-    });
-});
-
-app.post('/login',
-    passport.authenticate('local', {
-        failureRedirect: '/?Error'
-    }),
-    function(req, res) {
-        res.redirect('/buyer');
-    });
-
-app.get('/logout', function(req, res) {
-    req.logout();
-    res.redirect('/');
-});
-
-// TODO: Actually register users
-app.get('/register', function(request, response) {
-    if (request.user) {
-        response.redirect('/'), {
-            user: request.user
-        }
-    } else {
-        response.render('pages/register', {
-            user: request.user
-        });
-    }
-});
+var authRoutes = require('./routes/authentication')(express, query, passport);
+app.use('/', authRoutes);
 
 app.get('/buyer', function(request, response) {
     if (request.user) {
