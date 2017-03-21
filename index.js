@@ -5,10 +5,9 @@ var _ = require('underscore');
 
 var pg = require('pg');
 var query = require('pg-query');
-query.connectionParameters = process.env.DATABASE_URL || "postgres://postgres:password@localhost:5432/handel";
-console.log("Connection successful");
-
 var db = require('./db');
+
+query.connectionParameters = process.env.DATABASE_URL || "postgres://postgres:password@localhost:5432/handel";
 db.bootstrap(query);
 
 passport.use(new Strategy(
@@ -97,6 +96,11 @@ app.post('/login',
     function(req, res) {
         res.redirect('/buyer');
     });
+
+app.get('/logout', function(req, res) {
+    req.logout();
+    res.redirect('/');
+});
 
 // TODO: Actually register users
 app.get('/register', function(request, response) {
