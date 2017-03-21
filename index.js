@@ -1,15 +1,21 @@
-var connectionString = (process.env.DATABASE_URL || 'postgres://postgres:password@localhost:5432/handel');
+
 
 var express = require('express');
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
 var _ = require('underscore');
+
+var pg = require('pg');
+var query = require('pg-query');
+query.connectionParameters = process.env.DATABASE_URL || "postgres://postgres:password@localhost:5432/handel";
+console.log("Connection successful");
+
 var db = require('./db');
-db.bootstrap(connectionString);
+db.bootstrap(query);
 
 passport.use(new Strategy(
     function(username, password, cb) {
-        db.users.findByUsername(username, function(err, user) {
+        db.findUserByUsername(username, connectionString, function(err, user) {
             if (err) {
                 return cb(err);
             }

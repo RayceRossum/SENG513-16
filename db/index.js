@@ -1,10 +1,13 @@
-var pg = require('pg');
 
 
-exports.users = require('./users');
+exports.users = require("./users");
 
-exports.bootstrap = function(connectionString) {
-  pg.connect(connectionString, function(err, client, done) {
-    exports.users.bootstrap(err, client);
-  });
+exports.bootstrap = function(query) {
+    exports.users.bootstrap(query);
+    // Add new table bootstraps here
+};
+
+exports.findUserByUsername = function(username, connectionString, cb) {
+    if (err) return console.error(err);
+    exports.users.findByUsername(username, client, done, cb);
 }
