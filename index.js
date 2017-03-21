@@ -1,7 +1,8 @@
 var express = require('express');
+var app = express();
+
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
-var _ = require('underscore');
 
 var pg = require('pg');
 var query = require('pg-query');
@@ -44,7 +45,6 @@ passport.deserializeUser(function(username, cb) {
 });
 
 // Configure Express application.
-var app = express();
 app.use(require('morgan')('combined'));
 app.use(require('cookie-parser')());
 app.use(require('body-parser').urlencoded({
@@ -80,40 +80,8 @@ app.set('port', (process.env.PORT || 5000));
 // }).listen(80, 443, function() {
 //     console.log('Node app is running on port', 80, 443);
 // });
-
-
-// TODO: Implement routes.js
-app.get('/', function(request, response) {
-    response.render('pages/index', {
-        user: request.user
-    });
-});
-
-app.post('/login',
-    passport.authenticate('local', {
-        failureRedirect: '/?Error'
-    }),
-    function(req, res) {
-        res.redirect('/buyer');
-    });
-
-app.get('/logout', function(req, res) {
-    req.logout();
-    res.redirect('/');
-});
-
-// TODO: Actually register users
-app.get('/register', function(request, response) {
-    if (request.user) {
-        response.redirect('/'), {
-            user: request.user
-        }
-    } else {
-        response.render('pages/register', {
-            user: request.user
-        });
-    }
-});
+var stdRoutes = require('./routes/routes')(express, query, passport);
+app.use('/', stdRoutes);
 
 app.get('/buyer', function(request, response) {
     if (request.user) {
