@@ -105,6 +105,26 @@ app.get('/db', function(request, response) {
     response.render('pages/db');
 });
 
+app.get('/buyer', function(request, response){
+    if(request.user){
+    response.render('pages/buyer',{
+        user: request.user
+    });
+    }
+    else{
+    response.redirect('/');
+    }
+});
+
+app.post('/submitAd',function(request, response){
+    response.redirect('/');
+    console.log(request.body.item);
+    console.log(request.body.image);
+    console.log(request.body.country);
+    console.log(request.body.details);
+
+});
+
 app.listen(app.get('port'), function() {
     console.log("Node app running on port: " + app.get('port'));
 });
