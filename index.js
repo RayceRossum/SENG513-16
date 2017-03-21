@@ -32,7 +32,7 @@ passport.use(new Strategy(
     }));
 
 passport.serializeUser(function(user, cb) {
-  console.log(user.username);
+    console.log(user.username);
     cb(null, user.username);
 });
 

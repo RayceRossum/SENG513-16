@@ -1,5 +1,3 @@
-
-
 exports.users = require("./users");
 
 exports.bootstrap = function(query) {
