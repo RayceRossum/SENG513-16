@@ -15,7 +15,8 @@ db.bootstrap(query);
 
 passport.use(new Strategy(
     function(username, password, cb) {
-        db.findUserByUsername(username, connectionString, function(err, user) {
+      console.log(username);
+        db.findUserByUsername(query, username, function(err, user) {
             if (err) {
                 return cb(err);
             }
@@ -23,7 +24,7 @@ passport.use(new Strategy(
                 return cb(null, false);
             }
             // Check password is equal to entry for password
-            if (user.password != password) {
+            if (user.password_hash != password) {
                 return cb(null, false);
             }
             return cb(null, user);
@@ -31,11 +32,12 @@ passport.use(new Strategy(
     }));
 
 passport.serializeUser(function(user, cb) {
-    cb(null, user.id);
+  console.log(user.username);
+    cb(null, user.username);
 });
 
-passport.deserializeUser(function(id, cb) {
-    db.users.findById(id, function(err, user) {
+passport.deserializeUser(function(username, cb) {
+    db.findUserByUsername(query, username, function(err, user) {
         if (err) {
             return cb(err);
         }

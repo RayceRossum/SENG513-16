@@ -7,7 +7,6 @@ exports.bootstrap = function(query) {
     // Add new table bootstraps here
 };
 
-exports.findUserByUsername = function(username, connectionString, cb) {
-    if (err) return console.error(err);
-    exports.users.findByUsername(username, client, done, cb);
+exports.findUserByUsername = function(query, username, cb) {
+    exports.users.findByUsername(query, username, cb);
 }

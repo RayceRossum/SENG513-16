@@ -1,48 +1,15 @@
-var records = [{
-    id: 1,
-    username: 'username',
-    password: 'password',
-    displayName: 'admin',
-    emails: [{
-        value: 'admin@handel.com'
-    }]
-}];
-
-exports.findById = function(id, cb) {
+exports.findByUsername = function(query, username, cb) {
     process.nextTick(function() {
-        var idx = id - 1;
-        if (records[idx]) {
-            cb(null, records[idx]);
-        } else {
-            cb(new Error('User ' + id + ' does not exist'));
-        }
-    });
-}
-
-exports.findByUsername = function(username, client, cb) {
-    process.nextTick(function() {
-        client.query("SELECT FROM public.\"Users\" where username = $1::varchar", "[" + username + "]", function(err, result) {
-            done();
-
-            console.log(result);
+        query("SELECT * FROM public.\"Users\" where username = $1::varchar;", [username], function(err, result) {
+            console.log("RESULT:" + JSON.stringify(result));
             if (err) {
                 return console.error(err);
             }
-
-            if (result === username) {
-                return cb(null, record);
+            if (result[0].username === username) {
+                return cb(null, result[0]);
             }
             return cb(null, null);
         });
-
-        //     for (var i = 0, len = records.length; i < len; i++) {
-        //         var record = records[i];
-        //         if (record.username === username) {
-        //             return cb(null, record);
-        //         }
-        //     }
-        //     return cb(null, null);
-        // });
     })
 };
 
@@ -57,8 +24,4 @@ exports.bootstrap = function(query) {
             console.log("Success: Users");
         });
     });
-
-
-
-
 };
