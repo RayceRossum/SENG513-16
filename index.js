@@ -16,7 +16,7 @@ function onConnect(err, client, done) {
     console.error(err);
     process.exit(1);
   }
-  console.log("Connection to pg database successful.")
+  console.log("Connection to pg database successful. " + connectionString);
   //For now let's end client
   client.end();
 }
@@ -65,7 +65,7 @@ app.use(require('body-parser').urlencoded({
 }));
 
 app.use(require('express-session')({
-    secret: 'keyboard cat',
+    secret: 'this is a secret key, it is pretty secure.',
     resave: false,
     saveUninitialized: false
 }));
