@@ -22,6 +22,7 @@ passport.use(new Strategy(
                 return cb(null, false);
             }
             // Check password is equal to entry for password
+            // TODO: Actually implement hashing
             if (user.password_hash != password) {
                 return cb(null, false);
             }
@@ -81,6 +82,8 @@ app.set('port', (process.env.PORT || 5000));
 //     console.log('Node app is running on port', 80, 443);
 // });
 
+
+// TODO: Implement routes.js
 app.get('/', function(request, response) {
     response.render('pages/index', {
         user: request.user
@@ -95,6 +98,7 @@ app.post('/login',
         res.redirect('/buyer');
     });
 
+// TODO: Actually register users
 app.get('/register', function(request, response) {
     if (request.user) {
         response.redirect('/'), {
@@ -105,10 +109,6 @@ app.get('/register', function(request, response) {
             user: request.user
         });
     }
-});
-
-app.get('/db', function(request, response) {
-    response.render('pages/db');
 });
 
 app.get('/buyer', function(request, response) {

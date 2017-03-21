@@ -16,6 +16,7 @@ exports.findByUsername = function(query, username, cb) {
 exports.bootstrap = function(query) {
     query("DROP TABLE IF EXISTS public.\"Users\"", function(err, result) {
         if (err) console.error(err);
+        //TODO: Set username to primary key for indexing
         query("CREATE TABLE public.\"Users\"(username text NOT NULL, email text NOT NULL, password_hash text NOT NULL, salt text NOT NULL) WITH (OIDS = FALSE);", function(err, result) {
             if (err) console.error(err);
             query("INSERT INTO public.\"Users\" VALUES ('username', 'username@handel.com', 'password', 'salt')", function(err, result) {

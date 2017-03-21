@@ -5,6 +5,7 @@ exports.bootstrap = function(query) {
     // Add new table bootstraps here
 };
 
+// TODO: Remove outer function, users already exported.
 exports.findUserByUsername = function(query, username, cb) {
     exports.users.findByUsername(query, username, cb);
 }
