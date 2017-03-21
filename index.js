@@ -94,7 +94,7 @@ app.post('/login',
         failureRedirect: '/?Error'
     }),
     function(req, res) {
-        res.redirect('/');
+        res.redirect('/buyer');
     });
 
 app.get('/register', function(request, response) {
