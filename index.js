@@ -24,8 +24,6 @@ passport.use(new Strategy(
                 return cb(null, false);
             }
             // Check password is equal to entry for password
-            // TODO: Actually implement hashing
-            console.log(bcrypt.compareSync(password, user.password_hash));
             if (bcrypt.compareSync(password, user.password_hash)) {
                 return cb(null, user);
 

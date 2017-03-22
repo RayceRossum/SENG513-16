@@ -3,7 +3,6 @@ var bcrypt = require('bcrypt');
 exports.findByUsername = function(query, username, cb) {
     process.nextTick(function() {
         query("SELECT * FROM public.\"Users\" where username = $1::varchar OR email = $1::varchar;", [username], function(err, result) {
-            console.log("RESULT:" + JSON.stringify(result));
             if (err) {
                 return console.error(err);
             }
