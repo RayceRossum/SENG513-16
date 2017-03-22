@@ -1,4 +1,6 @@
 var express = require('express');
+var app = express();
+
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
 
@@ -43,7 +45,6 @@ passport.deserializeUser(function(username, cb) {
 });
 
 // Configure Express application.
-var app = express();
 app.use(require('morgan')('combined'));
 app.use(require('cookie-parser')());
 app.use(require('body-parser').urlencoded({
