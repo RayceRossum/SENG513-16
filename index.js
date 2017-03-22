@@ -1,7 +1,6 @@
 var express = require('express');
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
-var _ = require('underscore');
 
 var pg = require('pg');
 var query = require('pg-query');
