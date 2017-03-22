@@ -1,4 +1,4 @@
-module.exports = function(express, query, passport) {
+module.exports = function(express, query, passport, db) {
     var router = express.Router();
 
     router.get('/', function(request, response) {
@@ -31,6 +31,18 @@ module.exports = function(express, query, passport) {
                 user: request.user
             });
         }
+    });
+
+    router.post('/register', function(request, response) {
+      var body = request.body;
+      db.users.addUser(query, body.name, body.email, body.password, function(err, result) {
+        if (err) {
+          console.error(err);
+          response.redirect('/?Error');
+        } else {
+          response.redirect('/');
+        }
+      });
     });
 
     return router;
