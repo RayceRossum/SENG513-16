@@ -81,39 +81,8 @@ app.set('port', (process.env.PORT || 5000));
 //     console.log('Node app is running on port', 80, 443);
 // });
 
-
-// TODO: Implement routes.js
-app.get('/', function(request, response) {
-    response.render('pages/index', {
-        user: request.user
-    });
-});
-
-app.post('/login',
-    passport.authenticate('local', {
-        failureRedirect: '/?Error'
-    }),
-    function(req, res) {
-        res.redirect('/buyer');
-    });
-
-app.get('/logout', function(req, res) {
-    req.logout();
-    res.redirect('/');
-});
-
-// TODO: Actually register users
-app.get('/register', function(request, response) {
-    if (request.user) {
-        response.redirect('/'), {
-            user: request.user
-        }
-    } else {
-        response.render('pages/register', {
-            user: request.user
-        });
-    }
-});
+var authRoutes =  require('./routes/routes')(express, query, passport, db);
+app.use('/', authRoutes);
 
 app.get('/buyer', function(request, response) {
     if (request.user) {
