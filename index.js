@@ -4,6 +4,8 @@ var app = express();
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
 
+var bcrypt = require('bcrypt');
+
 var pg = require('pg');
 var query = require('pg-query');
 var db = require('./db');
@@ -23,10 +25,12 @@ passport.use(new Strategy(
             }
             // Check password is equal to entry for password
             // TODO: Actually implement hashing
-            if (user.password_hash != password) {
-                return cb(null, false);
+            console.log(bcrypt.compareSync(password, user.password_hash));
+            if (bcrypt.compareSync(password, user.password_hash)) {
+                return cb(null, user);
+
             }
-            return cb(null, user);
+            return cb(null, false);
         });
     }));
 
@@ -81,7 +85,7 @@ app.set('port', (process.env.PORT || 5000));
 //     console.log('Node app is running on port', 80, 443);
 // });
 
-var authRoutes =  require('./routes/authentication')(express, query, passport, db);
+var authRoutes = require('./routes/authentication')(express, query, passport, db);
 app.use('/', authRoutes);
 
 app.get('/buyer', function(request, response) {
