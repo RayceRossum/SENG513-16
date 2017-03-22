@@ -20,7 +20,6 @@ module.exports = function(express, query, passport, db) {
         res.redirect('/');
     });
 
-    // TODO: Actually register users
     router.get('/register', function(request, response) {
         if (request.user) {
             response.redirect('/'), {
@@ -35,11 +34,15 @@ module.exports = function(express, query, passport, db) {
 
     router.post('/register', function(request, response) {
       var body = request.body;
+      if (body.name === "") {
+        body.name = body.email;
+      }
       db.users.addUser(query, body.name, body.email, body.password, function(err, result) {
         if (err) {
           console.error(err);
           response.redirect('/?Error');
         } else {
+          console.log(body.name + " created.")
           response.redirect('/');
         }
       });
