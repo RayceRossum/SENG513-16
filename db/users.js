@@ -1,11 +1,11 @@
 exports.findByUsername = function(query, username, cb) {
     process.nextTick(function() {
-        query("SELECT * FROM public.\"Users\" where username = $1::varchar;", [username], function(err, result) {
+        query("SELECT * FROM public.\"Users\" where username = $1::varchar OR email = $1::varchar;", [username], function(err, result) {
             console.log("RESULT:" + JSON.stringify(result));
             if (err) {
                 return console.error(err);
             }
-            if (result[0].username === username) {
+            if (result[0].username === username || result[0].email === username) {
                 return cb(null, result[0]);
             }
             return cb(null, null);
