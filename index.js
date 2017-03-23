@@ -80,28 +80,11 @@ app.set('port', (process.env.PORT || 5000));
 // }).listen(80, 443, function() {
 //     console.log('Node app is running on port', 80, 443);
 // });
+var authRoutes = require('./routes/authentication')(express, query, passport);
+var buyersRoutes = require('./routes/buyers')(express, query, db);
 
-var authRoutes =  require('./routes/authentication')(express, query, passport, db);
 app.use('/', authRoutes);
-
-app.get('/buyer', function(request, response) {
-    if (request.user) {
-        response.render('pages/buyer', {
-            user: request.user
-        });
-    } else {
-        response.redirect('/');
-    }
-});
-
-app.post('/submitAd', function(request, response) {
-    response.redirect('/');
-    console.log(request.body.item);
-    console.log(request.body.image);
-    console.log(request.body.country);
-    console.log(request.body.details);
-
-});
+app.use('/', buyersRoutes);
 
 app.listen(app.get('port'), function() {
     console.log("Node app running on port: " + app.get('port'));
