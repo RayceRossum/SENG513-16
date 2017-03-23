@@ -5,7 +5,7 @@ $(document).ready(function() {
     });
 
     $('#image').change(function() {
-        if ($('#mage').val)
+        if ($('#image').val)
             readURL(this);
     });
 
