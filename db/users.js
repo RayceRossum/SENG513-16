@@ -13,6 +13,18 @@ exports.findByUsername = function(query, username, cb) {
     })
 };
 
+exports.addUser = function(query, username, email, password, cb) {
+    process.nextTick(function() {
+        query("INSERT INTO public.\"Users\" VALUES ('" + username + "', '" + email + "', '" + password + "', 'salt')", function(err, result) {
+            if (err) {
+                cb(err, null);
+            } else {
+                cb(null, result);
+            }
+        });
+    });
+};
+
 exports.bootstrap = function(query) {
     query("DROP TABLE IF EXISTS public.\"Users\"", function(err, result) {
         if (err) console.error(err);
