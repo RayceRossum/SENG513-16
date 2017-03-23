@@ -1,6 +1,5 @@
 "use strict";
 
-
 module.exports = function(express, query, db) {
     var router = express.Router();
 
@@ -19,49 +18,47 @@ module.exports = function(express, query, db) {
             });
         } else {
             response.redirect('/');
-            }
+        }
     });
 
-    router.post('/submitAd',function(request, response) {
+    router.post('/submitAd', function(request, response) {
         var fileName;
 
         var count;
 
-        if(!request.body.item){
+        if (!request.body.item) {
             response.end("false");
+        } else {
+            db.ads.getCount(query, function(rows) {
+                if (request.files.image) {
+                    fileName = "img_" + rows + "." + request.files.image.name.split('.').pop();
+                    let file = request.files.image;
+
+                    file.mv('./images/ads/' + fileName, function(err) {
+                        if (err)
+                            console.log(err);
+                        else
+                            console.log("Successful upload");
+                    });
+                } else {
+                    fileName = "undefined";
+                }
+
+                var adData = {
+                    username: request.user.username,
+                    item: request.body.item,
+                    imageName: fileName,
+                    country: request.body.country,
+                    details: request.body.details,
+                };
+
+                db.ads.insertAd(query, adData);
+
+                response.end("true");
+
+            });
         }
-         else{
-        db.ads.getCount(query,function(rows){
-            if(request.files.image){
-            fileName = "img_" + rows + "." + request.files.image.name.split('.').pop();
-            let file = request.files.image;
-
-            file.mv('./images/ads/' + fileName, function(err){
-                if(err)
-                    console.log(err);
-                else
-                    console.log("Successful upload");
-            });
-            }
-            else{
-                fileName = "undefined";
-            }
-
-            var adData = {
-                username: request.user.username,
-                item: request.body.item,
-                imageName: fileName,
-                country: request.body.country,
-                details: request.body.details,
-            };
-
-            db.ads.insertAd(query, adData);
-
-            response.end("true");
-
-            });
-         }
-        });
+    });
 
     return router;
 }

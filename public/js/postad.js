@@ -1,54 +1,53 @@
-$(document).ready(function(){
+$(document).ready(function() {
 
-$("#imagePreview").error(function(){
+    $("#imagePreview").error(function() {
         $(this).hide();
-});
-
-$('#image').change(function() {
-    if($('#mage').val)
-    readURL(this);
-});
-
-function readURL(input) {
-
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            $('#imagePreview').attr('src', e.target.result);
-            $('#imagePreview').show();
-        }
-
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-
-$('#uploadAd').submit(function(event) {
-    event.preventDefault();
-
-    var form = $('#uploadAd')[0];
-    var formData = new FormData(form);
-    
-    $.ajax({
-        type : "POST",
-        enctype: 'multipart/form-data',
-        url : "/submitAd",//path of url where u want to submit form
-        data :  formData,
-        processData: false,
-        contentType: false,
-        cache: false,
-        success : function(data) {
-            if(data === "true"){
-                $('#uploadAd').before('<div class="alert alert-success alert-dismissable">' + '<a href="#"' + 'class="close" data-dismiss="alert" aria-label="close">&times;</a>' +'<strong>Success!</strong> Your new post has successfully been added. Please wait for a registered Handeler to accept' + '</div>');
-                $('#item').val('');
-                $('#image').val('');
-                $('#details').val('');
-                $('#imagePreview').hide();
-            }
-            else{
-                $('#uploadAd').before('<div class="alert alert-danger alert-dismissable">' + '<a href="#"' + 'class="close" data-dismiss="alert" aria-label="close">&times;</a>' +'<strong>Error!</strong> Please ensure the fields are populated correctly' + '</div>');
-            }
-        }
     });
-});
+
+    $('#image').change(function() {
+        if ($('#mage').val)
+            readURL(this);
+    });
+
+    function readURL(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                $('#imagePreview').attr('src', e.target.result);
+                $('#imagePreview').show();
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $('#uploadAd').submit(function(event) {
+        event.preventDefault();
+
+        var form = $('#uploadAd')[0];
+        var formData = new FormData(form);
+
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: "/submitAd", //path of url where u want to submit form
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function(data) {
+                if (data === "true") {
+                    $('#uploadAd').before('<div class="alert alert-success alert-dismissable">' + '<a href="#"' + 'class="close" data-dismiss="alert" aria-label="close">&times;</a>' + '<strong>Success!</strong> Your new post has successfully been added. Please wait for a registered Handeler to accept' + '</div>');
+                    $('#item').val('');
+                    $('#image').val('');
+                    $('#details').val('');
+                    $('#imagePreview').hide();
+                } else {
+                    $('#uploadAd').before('<div class="alert alert-danger alert-dismissable">' + '<a href="#"' + 'class="close" data-dismiss="alert" aria-label="close">&times;</a>' + '<strong>Error!</strong> Please ensure the fields are populated correctly' + '</div>');
+                }
+            }
+        });
+    });
 });

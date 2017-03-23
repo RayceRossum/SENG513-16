@@ -9,14 +9,14 @@ exports.bootstrap = function(query) {
     });
 };
 
-exports.insertAd = function(query, adData){
-    query("INSERT INTO public.\"BuyerAds\" VALUES('" + adData.username + "', '" + adData.item + "', '" + adData.imageName + "', '" + adData.country + "', '" + adData.details + "')", function(err,result) {
+exports.insertAd = function(query, adData) {
+    query("INSERT INTO public.\"BuyerAds\" VALUES('" + adData.username + "', '" + adData.item + "', '" + adData.imageName + "', '" + adData.country + "', '" + adData.details + "')", function(err, result) {
         if (err) console.log(err);
     });
 };
 
-exports.getCount = function(query, cb){
-    query("SELECT COUNT(*) FROM public.\"BuyerAds\"", function(err,result){
+exports.getCount = function(query, cb) {
+    query("SELECT COUNT(*) FROM public.\"BuyerAds\"", function(err, result) {
         cb(result[0].count);
     });
 }
