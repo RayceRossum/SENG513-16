@@ -4,6 +4,8 @@ var app = express();
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
 
+var bcrypt = require('bcrypt');
+
 var pg = require('pg');
 var query = require('pg-query');
 var db = require('./db');
@@ -22,11 +24,11 @@ passport.use(new Strategy(
                 return cb(null, false);
             }
             // Check password is equal to entry for password
-            // TODO: Actually implement hashing
-            if (user.password_hash != password) {
-                return cb(null, false);
+            if (bcrypt.compareSync(password, user.password_hash)) {
+                return cb(null, user);
+
             }
-            return cb(null, user);
+            return cb(null, false);
         });
     }));
 
