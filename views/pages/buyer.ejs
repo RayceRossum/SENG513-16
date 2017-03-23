@@ -4,6 +4,7 @@
 <head>
     <% include ../partials/header.ejs %>
     <link rel="stylesheet" href="/stylesheets/jquery-countryselector.min.css" />
+    <link rel="stylesheet" href="/stylesheets/postad.css"/>
 </head>
 
 <body>
@@ -13,29 +14,31 @@
     <div class="container">
             <div class="row">
                 <div class="jumbotron">
-                    <h1 align="center"> Welcome to the Buyer's Page ಠ_ಠ </h1>
+                    <h2> Welcome to the Buyer's Page! </h2>
                     <hr>
-                    <h5> Something Something Something...  </h5>
+                    <h3> Begin by posting your wanted item down below. If a Handeler wishes to accept your posting, you will recieve a message in your inbox.  </h3>
+                    <h3> For now, transaction details will need to be sorted out solely between the buyer and the Handeler  </h3>
+                    <h4> Future updates will take place in order to establish an automated transaction system. Thank you for your patience </h4>
                 </div>
                 <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="col-md-8 col-sm-8 col-xs-8 handel-form">
-                    <form method="post" action="/submitAd">
+                    <form method="post" id="uploadAd">
                         <div class="form-group ">
                             <label class="control-label " for="item">Item <span class="asteriskField">*</span></label>
                             <input class="form-control" id="item" name="item" type="text" />
                         </div>
-                        <div class="form-group ">
+                        <div class="form-group">
                             <label class="control-label" for="image">Image Preview</label>
-                            <input class="form-control" id="image" name="image" type="text" />
+                            <input class="form-group" id="image" name="image" type="file"/>
+                            <img id="imagePreview" src="#" style="max-width:50%";/>
                         </div>
                         <div class="form-group ">
                             <label class="control-label" for="cs1">Item Location</label>
-                            <input class="control-label" id="cs1" name="country" type="hidden" value="USA" />
-
+                            <input class="control-label" id="cs1" name="country" type="text" value="BEL" />
                         </div>
                         <div class="form-group ">
                             <label class="control-label" for="details">Further Details and Comments</label>
-                            <textarea class="form-control" id="details" name="details" rows="5" style="max-width:100%"></textarea>
+                            <textarea class="form-control" id="details" name="details" rows="5" style="max-width:100%" type="text"></textarea>
                         </div>
                         <div class="form-group">
                             <div>
@@ -44,26 +47,46 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-md-4 col-sm-4 col-xs-4">
-                    <div class="jumbotron side-jumbotron">
-                        <h4> This is stuff </h4>
-                    </div>
-                    <div class="jumbotron side-jumbotron">
-                        <h4> This is another stuff </h4>
-                    </div>
-                    <div class="jumbotron side-jumbotron">
-                        <h4> This is another stuff </h4>
-                    </div>
-                </div>
-                </div>
-                <div class="col-md-12 col-sm-12 col-xs-12 footer-jumbotron">
-                <div class="jumbotron">
-                <h1> Mor things </h1>
-                </div>
-                </div>
+<div class="col-md-3 col-md-offset-1">
+    <h3> Some Site Statistics </h3>
+    <ul class="list-group stat-panel">
+        <li class="list-group-item row">
+          <div class="col-md-7">Registered Users:</div>
+          <div class="col-md-5">1</div>
+        </li>
+        <li class="list-group-item row">
+          <div class="col-md-7">Registered Handelers</div>
+          <div class="col-md-5">0</div>
+        </li>
+        <li class="list-group-item row">
+          <div class="col-md-7">Posted Ads</div>
+          <div class="col-md-5">0</div>
+        </li>
+    </ul>
+    
+    <h3> Recently Wanted Items </h3>
+    <ul class="list-group stat-panel">
+        <li class="list-group-item row">
+          <div class="col-md-12">Item 1</div>
+        </li>
+        <li class="list-group-item row">
+          <div class="col-md-12">Item 2</div>
+        </li>
+        <li class="list-group-item row">
+          <div class="col-md-12">Item 3</div>
+        </li>
+        <li class="list-group-item row">
+          <div class="col-md-12">Item 4</div>
+        </li>
+        </li>
+        <li class="list-group-item row">
+          <div class="col-md-12">Item 5</div>
+        </li>
+    </ul>
+    
+</div>
         </div>
-        </div>
-
+    </div>
 
  <script src="/js/jquery.countryselector.min.js"></script>
     <script>
@@ -71,6 +94,7 @@
             $("#cs1").countrySelector();
         });
     </script>
+    <script src="/js/postad.js"></script>
 </body>
 
 </html>

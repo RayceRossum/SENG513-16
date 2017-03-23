@@ -1,6 +1,7 @@
 exports.users = require("./users");
+exports.ads = require("./ads");
 
 exports.bootstrap = function(query) {
     exports.users.bootstrap(query);
-    // Add new table bootstraps here
+    exports.ads.bootstrap(query);
 };
