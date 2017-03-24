@@ -34,9 +34,28 @@ module.exports = function(express, query, db) {
                     listings.push({ id: result[i].id, item: result[i].item, buyerLoc: result[i].buyerloc});
                 }
                 
-                
                 response.end(JSON.stringify(listings));
                 
+            });
+        }
+        
+    });
+    
+    router.post('/getAdDetails', function(request, response){
+        console.log(request);
+        
+        if(!request.body.listingId) console.log(err);
+        
+        else{
+            console.log("entered");
+            db.ads.getListing(query, request.body.listingId, function(result){
+                
+                if(!result)
+                    response.end("invalid");
+                else{
+                    var listing = { user: result[0].username, item: result[0].item, buyerLoc: result[0].buyerloc, itemLoc: result[0].itemloc, details: result[0].details };
+                    response.end(JSON.stringify(listing));
+                }
             });
         }
         
