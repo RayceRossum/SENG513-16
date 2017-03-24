@@ -1,5 +1,7 @@
 $(document).ready(function() {
     
+
+    
      $('#filterListings').submit(function(event) {
          event.preventDefault();
          
@@ -33,7 +35,6 @@ $(document).ready(function() {
     $(document).on("click", ".openListing", function () {
         
         var listId = $(this).data('id');
-        alert(listId);
         
         $.ajax({
             type: "POST",
@@ -42,8 +43,6 @@ $(document).ready(function() {
             success: function(data){
                 
                 var jsonObj = JSON.parse(data);
-                
-                alert(jsonObj);
                 
                 $('#listUser').empty();
                 $('#listItem').empty();
@@ -55,9 +54,13 @@ $(document).ready(function() {
                 $('#listUser').append(jsonObj.user);
                 $('#listItem').append(jsonObj.item);
                 $('#listBuyerLoc').append(jsonObj.buyerLoc);
-                $('#listItemLoc').append(jsonObj.itemLoc);
-                $('#listImage').append("void");
-                $('#listDetails').append(jsonObj.details);
+                
+                if(jsonObj.itemLoc)
+                    $('#listItemLoc').append(jsonObj.itemLoc);
+                if(jsonObj.imagedata)
+                    $('#listImage').append(jsonObj.imagedata);
+                if(jsonObj.details)
+                    $('#listDetails').append(jsonObj.details);
         }
         });
         
