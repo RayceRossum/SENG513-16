@@ -48,7 +48,8 @@ module.exports = function(express, query, db) {
                     username: request.user.username,
                     item: request.body.item,
                     imageName: fileName,
-                    country: request.body.country,
+                    itemLoc: request.body.country,
+                    buyerLoc: "CAN",
                     details: request.body.details,
                 };
 

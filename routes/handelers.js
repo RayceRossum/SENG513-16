@@ -1,5 +1,7 @@
 module.exports = function(express, query, db) {
     var router = express.Router();
+    
+    var countries = require("country-data").countries;
 
     var bodyParser = require('body-parser');
     router.use(bodyParser.urlencoded({
@@ -17,7 +19,26 @@ module.exports = function(express, query, db) {
     });
     
     router.post('/filterListings', function(request, response) {
-        reponse.end("Yes");
+        //fetch rows from ads table that match itemLoc and buyerLoc
+        if (!request.body.itemLoc && !request.body.buyerLoc){
+            console.log("No locations specified");
+        }
+        else{
+            db.ads.getAdsByCountry(query,request.body.itemLoc, request.body.buyerLoc, function(result){
+                
+                var listings = [];
+                
+                console.log(result[0].itemloc);
+                
+                for (var i = 0; i < result.length; i++){
+                    listings.push({ id: result[i].id, item: result[i].item, buyerLoc: result[i].buyerloc});
+                }
+                
+                
+                response.end(JSON.stringify(listings));
+                
+            });
+        }
         
     });
         
