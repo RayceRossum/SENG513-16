@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include ../partials/header.ejs %>
+    <link rel="stylesheet" href="/stylesheets/jquery-countryselector.min.css" />
+    <link rel="stylesheet" href="/stylesheets/postad.css"/>
+</head>
+
+<body>
+
+    <% include ../partials/nav.ejs %>
+
+    <div class="container">
+        <div class="row">
+            <div class="jumbotron">
+                <h2> Welcome Handelers, </h2>
+                <hr>
+                <h3> Feel free to browse for listings below. You can filter out listings by specifying the buyer's and/or item's location  </h3>
+                <h3> If you accept a listing, an automated message will be sent to the buyer. If the buyer wishes to use your services, he or she will reply.  </h3>
+                <h4> Future updates will take place in order to establish an automated transaction system. Thank you for your patience </h4>
+            </div>
+            <div class="form-group col-md-12 col-sm-12 col-xs-12 handel-form">
+                <div class="col-md-2 col-sm-2 col-xs-2">
+                    <h4>Filter Settings:</h4>
+                </div>
+                <form method="post" id="filterListings">
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+                        <label class="control-label " for="cs1">Buyer Location:  </label>
+                        <input class="control-label" id="buyerLoc" name="buyerLoc" type="text"/>
+                    </div>
+                    <div class="form-group col-md-3 col-sm-3 col-xs-3">
+                        <label class="control-label " for="item">Item Location: </label>
+                        <input class="control-label" id="itemLoc" name="itemLoc" type="text"/>
+                    </div>
+                    <div class="form-group col-md-3 col-sm-3 col-xs-3">
+                        <button class="btn btn-primary" style="float:left; margin-top: 10px;" name="submitpost" type="submit">Submit</button>
+                    </div>
+                    <div class="form-group col-md-4 col-sm-4 col-xs-4"></div>
+                </form>
+            </div>
+            <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                <ul class="list-group stat-panel" style="margin: 0; padding: 0;">
+                    <li class="list-group-item row">
+                        <div class="col-md-4">Listed Item:</div>
+                        <div class="col-md-4">Buyer Location:</div>
+                        <div class="col-md-4">Further Details: </div>
+                    </li>
+                </ul>
+                <ul class="list-group stat-panel" id="listings" style="margin: 0; padding: 0;">
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+<!-- Modal -->
+<div id="bannerformmodal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Listing Details</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group col-md-12 col-sm-12 col-xs-12">
+            <ul class="list-group stat-panel">
+                <li class="list-group-item row">
+                    <div class="col-md-6">User:</div>
+                    <div class="col-md-6" id="listUser"></div>
+                </li>
+                <li class="list-group-item row">
+                    <div class="col-md-6">Listed Item:</div>
+                    <div class="col-md-6" id="listItem"></div>
+                </li>
+                <li class="list-group-item row">
+                    <div class="col-md-6">Buyer Location: </div>
+                    <div class="col-md-6" id="listBuyerLoc">Country Here</div>
+                </li>
+                <li class="list-group-item row">
+                    <div class="col-md-6">Item Location: </div>
+                    <div class="col-md-6" id="listItemLoc"></div>
+                </li>
+                <li class="list-group-item row">
+                    <div class="col-md-12">Preview Image</div>
+                    <div class="col-md-12" style="margin-top 10px;" id="listImage"></div>
+                </li>
+                <li class="list-group-item row">
+                    <div class="col-md-6">Details:</div>
+                    <div class="col-md-6" id="listDetails"></div>
+                </li>
+                
+            </ul>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Accept</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<script src="/js/jquery.countryselector.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#buyerLoc").countrySelector();
+            $("#itemLoc").countrySelector();
+        });
+    </script>
+<script src="/js/handelers.js"></script>
+</body>
+
+</html>
