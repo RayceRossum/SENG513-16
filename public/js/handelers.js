@@ -1,10 +1,8 @@
 $(document).ready(function() {
-    
 
-    
      $('#filterListings').submit(function(event) {
          event.preventDefault();
-         
+
          var form = $('#filterListings')[0];
          var formData = new FormData(form);
 
@@ -17,11 +15,11 @@ $(document).ready(function() {
             contentType: false,
             cache: false,
             success: function(data) {
-                
+
                 var jsonObj = JSON.parse(data);
-                
+
                 $('#listings').empty();
-                
+
                 for (var i = 0; i < jsonObj.length; i++){
                     $('#listings').append('<li class="list-group-item row">' +
                                         '<div class="col-md-4">' + jsonObj[i].item + '</div>' +
@@ -31,30 +29,30 @@ $(document).ready(function() {
             }
         });
      });
-    
+
     $(document).on("click", ".openListing", function () {
-        
+
         var listId = $(this).data('id');
-        
+
         $.ajax({
             type: "POST",
             url: "/getAdDetails",
             data: {'listingId': listId},
             success: function(data){
-                
+
                 var jsonObj = JSON.parse(data);
-                
+
                 $('#listUser').empty();
                 $('#listItem').empty();
                 $('#listBuyerLoc').empty();
                 $('#listItemLoc').empty();
                 $('#listImage').empty();
                 $('#listDetails').empty();
-                
+
                 $('#listUser').append(jsonObj.user);
                 $('#listItem').append(jsonObj.item);
                 $('#listBuyerLoc').append(jsonObj.buyerLoc);
-                
+
                 if(jsonObj.itemLoc)
                     $('#listItemLoc').append(jsonObj.itemLoc);
                 if(jsonObj.imagedata)
@@ -63,6 +61,6 @@ $(document).ready(function() {
                     $('#listDetails').append(jsonObj.details);
         }
         });
-        
+
     });
 });

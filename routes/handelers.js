@@ -26,10 +26,11 @@ module.exports = function(express, query, db) {
         if (!request.body.itemLoc && !request.body.buyerLoc) {
             console.log("No locations specified");
         } else {
-            db.ads.getAdsByCountry(query, request.body.itemLoc, request.body.buyerLoc, function(result) {
-
-                var listings = [];
-                if (result) {
+            db.ads.getAdsByCountry(query, request.body.itemLoc, request.body.buyerLoc, function(err, result) {
+                if (err) {
+                    response.end();
+                } else {
+                    var listings = [];
                     console.log(result[0].itemloc);
 
                     for (var i = 0; i < result.length; i++) {
@@ -39,9 +40,8 @@ module.exports = function(express, query, db) {
                             buyerLoc: result[i].buyerloc
                         });
                     }
+                    response.end(JSON.stringify(listings));
                 }
-
-                response.end(JSON.stringify(listings));
             });
         }
 
