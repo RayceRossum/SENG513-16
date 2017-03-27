@@ -28,13 +28,11 @@ exports.getCount = function(query, cb) {
 
 exports.getAdsByCountry = function(query, itemLoc, buyerLoc, cb){
     if (itemLoc && buyerLoc){
-        var theQuery = "SELECT * FROM public.\"BuyerAds\" where buyerloc='" + buyerLoc +"' AND itemloc='" + itemLoc + "';";
-        console.log(theQuery);
         query("SELECT * FROM public.\"BuyerAds\" where buyerloc='" + buyerLoc +"' AND itemloc='" + itemLoc + "';",function(err,result){
 
             if (err) console.log(err);
             else{
-                cb(result);
+                cb(err, result);
             }
         });
     }
@@ -43,7 +41,7 @@ exports.getAdsByCountry = function(query, itemLoc, buyerLoc, cb){
 
             if (err) console.log(err);
             else{
-                cb(result);
+                cb(err, result);
             }
         });
     }
@@ -51,10 +49,10 @@ exports.getAdsByCountry = function(query, itemLoc, buyerLoc, cb){
         query("SELECT * FROM public.\"BuyerAds\" where buyerLoc='" + buyerLoc +"'", function(err, result){
 
             if (err) console.log(err);
-            else cb(result);
+            else cb(err, result);
         });
     }
-    else    cb(false);
+    else    cb(false, false);
 
 };
 
@@ -63,7 +61,7 @@ exports.getListing = function(query, listingId, cb){
 
         if (err) console.log(err);
         else{
-            cb(result);
+            cb(err, result);
         }
 
     });

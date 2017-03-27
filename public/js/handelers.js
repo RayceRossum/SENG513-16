@@ -17,6 +17,8 @@ $(document).ready(function() {
             success: function(data) {
 
                 var jsonObj = JSON.parse(data);
+                
+                alert(data);
 
                 $('#listings').empty();
 

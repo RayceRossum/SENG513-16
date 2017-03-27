@@ -28,10 +28,9 @@ module.exports = function(express, query, db) {
         } else {
             db.ads.getAdsByCountry(query, request.body.itemLoc, request.body.buyerLoc, function(err, result) {
                 if (err) {
-                    response.end();
+                    response.end("Bad Query");
                 } else {
                     var listings = [];
-                    console.log(result[0].itemloc);
 
                     for (var i = 0; i < result.length; i++) {
                         listings.push({
@@ -56,16 +55,12 @@ module.exports = function(express, query, db) {
         if (!request.body.listingId) console.log(err);
 
         else {
-            db.ads.getListing(query, request.body.listingId, function(result) {
+            db.ads.getListing(query, request.body.listingId, function(err, result) {
 
-                if (!result)
+                if (!result || err)
                     response.end("invalid");
 
                 else {
-
-                    console.log(lookup.countries({
-                        alpha3: result[0].buyerloc
-                    })[0].name);
 
                     if (!result[0].imagename) {
                         var listing = {
