@@ -57,7 +57,7 @@ module.exports = function(express, query, db) {
         else {
             db.ads.getListing(query, request.body.listingId, function(err, result) {
 
-                if (!result || err)
+                if (!result)
                     response.end("invalid");
 
                 else {
