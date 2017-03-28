@@ -24,8 +24,8 @@
                 <div class="col-md-8 col-sm-8 col-xs-8 handel-form">
                     <form method="post" id="uploadAd">
                         <div class="form-group ">
-                            <label class="control-label " for="item">Item <span class="asteriskField">*</span></label>
-                            <input class="form-control" id="item" name="item" type="text" />
+                            <label class="control-label " for="item">Item<span class="asteriskField">*</span></label>
+                            <input class="form-control" id="item" name="item" type="text" minlength="2" required/>
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="image">Image Preview</label>
@@ -88,6 +88,7 @@
         </div>
     </div>
 
+    <script src="/js/jquery.validate.js"></script>
     <script src="/js/postad.js"></script>
     <script src="/js/jquery.countryselector.min.js"></script>
     <script>
