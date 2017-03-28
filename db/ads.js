@@ -138,3 +138,12 @@ exports.getListing = function(query, listingId, cb){
 
     });
 };
+
+exports.getUserCount = function(query, cb){
+    query("SELECT COUNT(*) FROM public.\"Users\"", function(err, result){
+        if (err) console.log(err);
+        else{
+            cb(err,result[0].count);
+        }
+    });
+}

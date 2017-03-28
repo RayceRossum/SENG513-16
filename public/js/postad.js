@@ -5,7 +5,18 @@ $(document).ready(function() {
         url: "/getStats",
         success: function(data){
             var jsonObj = JSON.parse(data);
-            
+            if (jsonObj[0][0]){
+                $('#nUsers').empty();
+                $('#nUsers').append(jsonObj[0][0]);
+            }
+            if (jsonObj[0][1]){
+                $('#nHandelers').empty();
+                $('#nHandelers').append(jsonObj[0][1]);                
+            }
+            if (jsonObj[0][2]){
+                $('#nAds').empty();
+                $('#nAds').append(jsonObj[0][2]);                
+            }
             if (jsonObj[1][0]){
                 $('#item1').empty();
                 $('#item1').append(jsonObj[1][0]);
