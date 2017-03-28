@@ -3,13 +3,23 @@ exports.bootstrap = function(query) {
 
         if (err) console.error(err);
 
-        query("CREATE TABLE public.\"BuyerAds\"(id SERIAL PRIMARY KEY, username text NOT NULL, item text NOT NULL, imageName text NULL, buyerloc text NULL, itemloc text NULL, details text NULL);", function(err, result) {
+        query("CREATE TABLE public.\"BuyerAds\"(id SERIAL PRIMARY KEY, time timestamp DEFAULT current_timestamp, username text NOT NULL, item text NOT NULL, imageName text NULL, buyerloc text NULL, itemloc text NULL, details text NULL);", function(err, result) {
 
             if (err) console.error(err);
 
             console.log("Success: BuyerAds");
         });
     });
+};
+
+exports.getAllAds = function(query, newLow, newHigh, cb){
+
+        query("SELECT * FROM public.\"BuyerAds\" where id >=" + newLow + " AND id <=" + newHigh + " ;", function(err, result){
+            if (err) console.log("hi");
+            else{
+                cb(err,result);
+            }
+        });
 };
 
 exports.insertAd = function(query, adData) {
@@ -22,48 +32,105 @@ exports.insertAd = function(query, adData) {
 exports.getCount = function(query, cb) {
     query("SELECT COUNT(*) FROM public.\"BuyerAds\"", function(err, result) {
 
-        cb(result[0].count);
+        cb(err, result[0].count);
 });
 };
 
-exports.getAdsByCountry = function(query, itemLoc, buyerLoc, cb){
+exports.getFilteredCount = function(query, itemLoc, buyerLoc, cb){
     if (itemLoc && buyerLoc){
-        var theQuery = "SELECT * FROM public.\"BuyerAds\" where buyerloc='" + buyerLoc +"' AND itemloc='" + itemLoc + "';";
-        console.log(theQuery);
-        query("SELECT * FROM public.\"BuyerAds\" where buyerloc='" + buyerLoc +"' AND itemloc='" + itemLoc + "';",function(err,result){
+        query("SELECT COUNT(*) FROM public.\"BuyerAds\" where buyerloc='" + buyerLoc +"' AND itemloc='" + itemLoc + "';",function(err,result){
 
             if (err) console.log(err);
             else{
-                cb(result);
+                cb(err, result[0].count);
             }
         });
     }
     else if (itemLoc && !buyerLoc){
-        query("SELECT * FROM public.\"BuyerAds\" where itemLoc='" + itemLoc +"'", function(err, result){
+        query("SELECT COUNT(*) FROM public.\"BuyerAds\" where itemLoc='" + itemLoc +"'", function(err, result){
 
             if (err) console.log(err);
             else{
-                cb(result);
+                cb(err, result[0].count);
             }
         });
     }
     else if (!itemLoc && buyerLoc){
-        query("SELECT * FROM public.\"BuyerAds\" where buyerLoc='" + buyerLoc +"'", function(err, result){
+        query("SELECT COUNT(*) FROM public.\"BuyerAds\" where buyerLoc='" + buyerLoc +"'", function(err, result){
 
             if (err) console.log(err);
-            else cb(result);
+            else cb(err, result[0].count);
         });
     }
-    else    cb(false);
+    else    cb(false, false);
+
+}
+
+exports.getAdsByCountry = function(query, limit ,itemLoc, buyerLoc, cb){
+    if (itemLoc && buyerLoc){
+        query("SELECT * FROM public.\"BuyerAds\" where buyerloc='" + buyerLoc + "' AND itemloc='" + itemLoc + "' ORDER BY id DESC" + " LIMIT " + limit + " OFFSET 0" + ";",function(err,result){
+
+            if (err) console.log(err);
+            else{
+                cb(err, result);
+            }
+        });
+    }
+    else if (itemLoc && !buyerLoc){
+        query("SELECT * FROM public.\"BuyerAds\" where itemLoc='" + itemLoc + "' ORDER BY id DESC" + " LIMIT " + limit + " OFFSET 0" + ";", function(err, result){
+
+            if (err) console.log(err);
+            else{
+                cb(err, result);
+            }
+        });
+    }
+    else if (!itemLoc && buyerLoc){
+        query("SELECT * FROM public.\"BuyerAds\" where buyerLoc='" + buyerLoc + "' ORDER BY id DESC" + " LIMIT " + limit + " OFFSET 0" + ";", function(err, result){
+
+            if (err) console.log(err);
+            else cb(err, result);
+        });
+    }
+    else    cb(false, false);
 
 };
+
+exports.getFilteredAdsByPage = function(query, limit, offset, buyerLoc, itemLoc, cb){
+    if(buyerLoc && itemLoc){
+        query("SELECT * FROM public.\"BuyerAds\" where buyerloc='" + buyerLoc + "' AND itemLoc='" + itemLoc + "' ORDER BY id DESC" + " LIMIT " + limit + " OFFSET " + offset + ";", function(err, results){
+            if (err) console.log(err);
+            else{
+                cb(err, results)
+            }
+        });
+        
+    } 
+    else if(itemLoc && !buyerLoc){
+        query("SELECT * FROM public.\"BuyerAds\" where 'itemloc='" + itemLoc + "' ORDER BY id DESC" +  "' LIMIT " + limit + " OFFSET " + offset + ";", function(err, results){
+            if (err) console.log(err);
+            else{
+                cb(err, results)
+            }
+        });
+    }
+    else if(!itemLoc && buyerLoc){
+                query("SELECT * FROM public.\"BuyerAds\" where 'buyerloc='" + ibuyerLoc + "' ORDER BY id DESC" + " LIMIT " + limit + " OFFSET " + offset + ";", function(err, results){
+            if (err) console.log(err);
+            else{
+                cb(err, results)
+            }
+        });
+    }
+    else    cb(false,false);
+}
 
 exports.getListing = function(query, listingId, cb){
     query("SELECT * FROM public.\"BuyerAds\" where id='" + listingId + "'", function(err, result){
 
         if (err) console.log(err);
         else{
-            cb(result);
+            cb(err, result);
         }
 
     });

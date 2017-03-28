@@ -49,6 +49,8 @@
                 </ul>
                 <ul class="list-group stat-panel" id="listings" style="margin: 0; padding: 0;">
                 </ul>
+                <button type="button" id="nextbtn" class="btn btn-default" style="float:right; margin-top:5px; margin-left:5px;">Next</button>
+                <button type="button" id="prevbtn" class="btn btn-default" style="float:right; margin-top:5px; margin-right:5px;">Previous</button>
             </div>
         </div>
     </div>
@@ -103,15 +105,14 @@
   </div>
 </div>
 
-
-<script src="/js/jquery.countryselector.min.js"></script>
+    <script src="/js/handelers.js"></script>
+    <script src="/js/jquery.countryselector.min.js"></script>   
     <script>
         $(document).ready(function () {
             $("#buyerLoc").countrySelector();
             $("#itemLoc").countrySelector();
         });
     </script>
-<script src="/js/handelers.js"></script>
 </body>
 
 </html>
