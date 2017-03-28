@@ -17,7 +17,7 @@ $(document).ready(function() {
             
             $('#prevbtn').prop('disabled',true);
             
-            if(jsonObj[1].length == 0 || jsonObj[1].length < 2){
+            if(jsonObj[0] === "true"){
                 $('#nextbtn').prop('disabled',true);
             }
             
