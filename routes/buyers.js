@@ -29,7 +29,7 @@ module.exports = function(express, query, db) {
         if (!request.body.item) {
             response.end("false");
         } else {
-            db.ads.getCount(query, function(rows) {
+            db.ads.getCount(query, function(err, rows) {
                 console.log(request);
                 if (request.files.image) {
                     fileName = "img_" + rows + "." + request.files.image.name.split('.').pop();
