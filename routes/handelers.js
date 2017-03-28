@@ -188,17 +188,22 @@ module.exports = function(express, query, db) {
                     response.end("invalid");
 
                 else {
+                    var country;
+                    if(result[0].itemloc === "undefined")
+                        country = "undefined";
+                    else{
+                        country = lookup.countries({alpha3: result[0].itemloc})[0].name;
+                    }
 
                     if (result[0].imagename === "undefined") {
+                        
                         var listing = {
                             user: result[0].username,
                             item: result[0].item,
                             buyerLoc: lookup.countries({
                                 alpha3: result[0].buyerloc
                             })[0].name,
-                            itemLoc: lookup.countries({
-                                alpha3: result[0].itemloc
-                            })[0].name,
+                            itemLoc: country,
                             details: result[0].details
                         };
                         response.end(JSON.stringify(listing));
@@ -215,10 +220,8 @@ module.exports = function(express, query, db) {
                                     buyerLoc: lookup.countries({
                                         alpha3: result[0].buyerloc
                                     })[0].name,
-                                    itemLoc: lookup.countries({
-                                        alpha3: result[0].itemloc
-                                    })[0].name,
-                                    imagedata: '<img style="max-width:50%" src="data:image/gif;base64,' + imagedata + '">',
+                                    itemLoc: country,
+                                    imagedata: '<img style="max-width:100%" src="data:image/gif;base64,' + imagedata + '">',
                                     details: result[0].details
                                 };
                                 response.end(JSON.stringify(listing));
