@@ -11,7 +11,6 @@ $(document).ready(function() {
         type: "GET",
         url: "/getRecentAds",
         success: function(data){
-            alert(data);
             var jsonObj = JSON.parse(data);
             
             $('#listings').empty();
@@ -119,8 +118,6 @@ $(document).ready(function() {
             contentType: false,
             cache: false,
             success: function(data) {
-                
-                alert(data);
                 
                 var jsonObj = JSON.parse(data);
                 
