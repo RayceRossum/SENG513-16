@@ -27,16 +27,16 @@ module.exports = function(express, query, db) {
         let upper = 0*2;
         let lower = 0*2+1;
         
+                
         db.ads.getCount(query, function(err, count){
             if (err) response.end("error");
             else{
-                let newLow = parseInt(count) - lower;
-                let newHigh = parseInt(count) - upper;
+                let limit = 2;
+                let offset = 0;
                 
-                db.ads.getAllAds(query,newLow,newHigh, function(err, result){
+                db.ads.getAllAds(query, limit, offset, function(err, result){
                     var resObj = []
-                    var firstOrLast;
-                    if(newHigh >= count || newLow <= 1){
+                    if(limit >= count){
                         resObj.push("true");
                     }
                     else{
@@ -45,7 +45,7 @@ module.exports = function(express, query, db) {
             
                 var listings = [];
                    
-                for (var i =(result.length-1); i > (-1); i--){
+                for (var i = 0; i < result.length; i++){
                     listings.push({
                         id: result[i].id,
                         item: result[i].item,
@@ -65,20 +65,18 @@ module.exports = function(express, query, db) {
     });
     
     router.post('/getPage', function(request,response){
-        let upper = parseInt(request.body.pagenum)*2;
-        let lower = parseInt(request.body.pagenum)*2+1;
         
         if(request.body.isfiltered === "false"){
         
         db.ads.getCount(query, function(err, count){
             if (err) response.end("error");
             else{
-                let newLow = parseInt(count) - lower;
-                let newHigh = parseInt(count) - upper;
+                let limit = 2;
+                let offset = 2*parseInt(request.body.pagenum);
                 
-                db.ads.getAllAds(query,newLow,newHigh, function(err, result){
+                db.ads.getAllAds(query, limit, offset, function(err, result){
                     var resObj = []
-                    if(newHigh >= count || newLow <= 1){
+                    if(count <= (offset + limit) || offset == 0){
                         resObj.push("true");
                     }
                     else{
@@ -87,7 +85,7 @@ module.exports = function(express, query, db) {
             
                 var listings = [];
                    
-                for (var i =(result.length-1); i > (-1); i--){
+                for (var i = 0; i < result.length; i++){
                     listings.push({
                         id: result[i].id,
                         item: result[i].item,
@@ -126,7 +124,7 @@ module.exports = function(express, query, db) {
                     });
                 }
                 
-                if(((offset + limit) > count) || (offset == 0)) resObj.push("true");
+                if(((offset + limit) >= count) || (offset == 0)) resObj.push("true");
                 else resObj.push("false");
                 resObj.push(listings);
                 
@@ -139,6 +137,7 @@ module.exports = function(express, query, db) {
 
     router.post('/filterListings', function(request, response) {
         let limit = 2;
+        let offset = 0;
         let buyerLoc = request.body.buyerLoc;
         let itemLoc = request.body.itemLoc;
         //fetch rows from ads table that match itemLoc and buyerLoc
@@ -189,17 +188,22 @@ module.exports = function(express, query, db) {
                     response.end("invalid");
 
                 else {
+                    var country;
+                    if(result[0].itemloc === "undefined")
+                        country = "undefined";
+                    else{
+                        country = lookup.countries({alpha3: result[0].itemloc})[0].name;
+                    }
 
                     if (result[0].imagename === "undefined") {
+                        
                         var listing = {
                             user: result[0].username,
                             item: result[0].item,
                             buyerLoc: lookup.countries({
                                 alpha3: result[0].buyerloc
                             })[0].name,
-                            itemLoc: lookup.countries({
-                                alpha3: result[0].itemloc
-                            })[0].name,
+                            itemLoc: country,
                             details: result[0].details
                         };
                         response.end(JSON.stringify(listing));
@@ -216,10 +220,8 @@ module.exports = function(express, query, db) {
                                     buyerLoc: lookup.countries({
                                         alpha3: result[0].buyerloc
                                     })[0].name,
-                                    itemLoc: lookup.countries({
-                                        alpha3: result[0].itemloc
-                                    })[0].name,
-                                    imagedata: '<img style="max-width:50%" src="data:image/gif;base64,' + imagedata + '">',
+                                    itemLoc: country,
+                                    imagedata: '<img style="max-width:100%" src="data:image/gif;base64,' + imagedata + '">',
                                     details: result[0].details
                                 };
                                 response.end(JSON.stringify(listing));

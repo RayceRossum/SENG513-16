@@ -20,16 +20,38 @@ module.exports = function(express, query, db) {
             response.redirect('/');
         }
     });
+    
+    router.get('/getStats', function(request, response) {
+        db.ads.getAllAds(query, 5, 0, function(err, results){
+            if (err) console.log(err);
+            else{
+                var resObj = [];
+                var stats = [0,0,0];
+                var items = [];
+                for (var i = 0; i < 5; i++){
+                    if (results[i]) items.push(results[i].item);
+                    else break;
+                }
+                resObj.push(stats);
+                resObj.push(items);
+                
+                response.end(JSON.stringify(resObj));
+            }
+            
+        });    
+    });
 
     router.post('/submitAd', function(request, response) {
         var fileName;
+        var itemCountry;
 
         var count;
 
         if (!request.body.item) {
             response.end("false");
         } else {
-            db.ads.getCount(query, function(rows) {
+            db.ads.getCount(query, function(err, rows) {
+                console.log(request);
                 if (request.files.image) {
                     fileName = "img_" + rows + "." + request.files.image.name.split('.').pop();
                     let file = request.files.image;
@@ -43,12 +65,16 @@ module.exports = function(express, query, db) {
                 } else {
                     fileName = "undefined";
                 }
+                
+                if (!request.body.country){
+                    itemCountry = "undefined";
+                }
 
                 var adData = {
                     username: request.user.username,
                     item: request.body.item,
                     imageName: fileName,
-                    itemLoc: request.body.country,
+                    itemLoc: itemCountry,
                     buyerLoc: "CAN",
                     details: request.body.details,
                 };
