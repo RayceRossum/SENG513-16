@@ -3,13 +3,23 @@ exports.bootstrap = function(query) {
 
         if (err) console.error(err);
 
-        query("CREATE TABLE public.\"BuyerAds\"(id SERIAL PRIMARY KEY, username text NOT NULL, item text NOT NULL, imageName text NULL, buyerloc text NULL, itemloc text NULL, details text NULL);", function(err, result) {
+        query("CREATE TABLE public.\"BuyerAds\"(id SERIAL PRIMARY KEY, time timestamp DEFAULT current_timestamp, username text NOT NULL, item text NOT NULL, imageName text NULL, buyerloc text NULL, itemloc text NULL, details text NULL);", function(err, result) {
 
             if (err) console.error(err);
 
             console.log("Success: BuyerAds");
         });
     });
+};
+
+exports.getAllAds = function(query, newLow, newHigh, cb){
+
+        query("SELECT * FROM public.\"BuyerAds\" where id >=" + newLow + " AND id <=" + newHigh + " ;", function(err, result){
+            if (err) console.log("hi");
+            else{
+                cb(err,result);
+            }
+        });
 };
 
 exports.insertAd = function(query, adData) {
@@ -22,7 +32,7 @@ exports.insertAd = function(query, adData) {
 exports.getCount = function(query, cb) {
     query("SELECT COUNT(*) FROM public.\"BuyerAds\"", function(err, result) {
 
-        cb(result[0].count);
+        cb(err, result[0].count);
 });
 };
 

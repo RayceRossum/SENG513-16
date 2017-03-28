@@ -20,6 +20,93 @@ module.exports = function(express, query, db) {
             response.redirect('/');
         }
     });
+    
+    router.get('/getRecentAds', function(request, response){
+        let upper = 0*20;
+        let lower = 0*20+1;
+        
+        db.ads.getCount(query, function(err, count){
+            if (err) response.end("error");
+            else{
+                let newLow = parseInt(count) - lower;
+                let newHigh = parseInt(count) - upper;
+                console.log("new low" + newLow + " new high" + newHigh);
+                
+                db.ads.getAllAds(query,newLow,newHigh, function(err, result){
+                    var resObj = []
+                    var firstOrLast;
+                    if(newHigh >= count || newLow <= 1){
+                        resObj.push("true");
+                    }
+                    else{
+                        resObj.push("false");
+                    }
+            
+                var listings = [];
+                   
+                for (var i =(result.length-1); i > (-1); i--){
+                    listings.push({
+                        id: result[i].id,
+                        item: result[i].item,
+                        buyerLoc: result[i].buyerloc
+                    });
+                }
+                
+                resObj.push(listings);
+                
+                response.end(JSON.stringify(resObj));
+                });
+        
+            }
+            
+            
+        });
+    });
+    
+    router.post('/getPage', function(request,response){
+        let upper = parseInt(request.body.pagenum)*20;
+        let lower = parseInt(request.body.pagenum)*20+1;
+        
+        console.log(request.body.pagenum);
+        
+        db.ads.getCount(query, function(err, count){
+            if (err) response.end("error");
+            else{
+                let newLow = parseInt(count) - lower;
+                let newHigh = parseInt(count) - upper;
+                console.log("new low" + newLow + " new high" + newHigh);
+                
+                db.ads.getAllAds(query,newLow,newHigh, function(err, result){
+                    var resObj = []
+                    var firstOrLast;
+                    if(newHigh >= count || newLow <= 1){
+                        resObj.push("true");
+                    }
+                    else{
+                        resObj.push("false");
+                    }
+            
+                var listings = [];
+                   
+                for (var i =(result.length-1); i > (-1); i--){
+                    listings.push({
+                        id: result[i].id,
+                        item: result[i].item,
+                        buyerLoc: result[i].buyerloc
+                    });
+                }
+                
+                resObj.push(listings);
+                
+                response.end(JSON.stringify(resObj));
+                });
+        
+            }
+            
+            
+        });
+        
+    });
 
     router.post('/filterListings', function(request, response) {
         //fetch rows from ads table that match itemLoc and buyerLoc
@@ -62,7 +149,7 @@ module.exports = function(express, query, db) {
 
                 else {
 
-                    if (!result[0].imagename) {
+                    if (result[0].imagename === "undefined") {
                         var listing = {
                             user: result[0].username,
                             item: result[0].item,

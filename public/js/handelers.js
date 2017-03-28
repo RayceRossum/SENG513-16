@@ -1,5 +1,90 @@
-$(document).ready(function() {
+var pgnumber = 0;
 
+$(document).on("pageload")
+
+$(document).ready(function() {
+    
+    $.ajax({
+        type: "GET",
+        url: "/getRecentAds",
+        success: function(data){
+            alert(data);
+            var jsonObj = JSON.parse(data);
+            
+            $('#listings').empty();
+            
+            $('#prevbtn').prop('disabled',true);
+            
+            if(jsonObj[1].length == 0 || jsonObj[1].length < 2){
+                $('#nextbtn').prop('disabled',true);
+            }
+            
+            for (var i = 0; i < jsonObj[1].length; i++){
+                $('#listings').append('<li class="list-group-item row">' +
+                                      '<div class="col-md-4">' + jsonObj[1][i].item + '</div>' +
+                                      '<div class="col-md-4">' + jsonObj[1][i].buyerLoc + '</div>' +
+                                      '<div class="col-md-4"><a class="openListing" href="#" data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#bannerformmodal">More</a></div>');
+            }
+        }
+        
+    });
+    
+    $('#nextbtn').on('click', function(e){
+        pgnumber++;
+       $.ajax({
+           type: "POST",
+           url: "/getPage",
+           data: {pagenum: pgnumber},
+           success: function(data){
+               var jsonObj = JSON.parse(data);
+               
+               $('#listings').empty();
+               
+               if(jsonObj[0] == "true"){
+                   $('#nextbtn').prop('disabled',true);
+               }
+               
+               for (var i = 0; i < jsonObj[1].length; i++){
+                   $('#listings').append('<li class="list-group-item row">' +
+                                         '<div class="col-md-4">' + jsonObj[1][i].item + '</div>' +
+                                         '<div class="col-md-4">' + jsonObj[1][i].buyerLoc + '</div>' +
+                                         '<div class="col-md-4"><a class="openListing" href="#" data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#bannerformmodal">More</a></div>');
+               }
+               $('#prevbtn').prop('disabled',false);
+           }
+       });
+        
+    });
+    
+        $('#prevbtn').on('click', function(e){
+        pgnumber--;
+            
+       $.ajax({
+           type: "POST",
+           url: "/getPage",
+           data: {pagenum: pgnumber},
+           success: function(data){
+               var jsonObj = JSON.parse(data);
+               
+               $('#listings').empty();
+               
+               if(jsonObj[0] == "true"){
+                   $('#prevbtn').prop('disabled',true);
+               }
+               
+               for (var i = 0; i < jsonObj[1].length; i++){
+                   $('#listings').append('<li class="list-group-item row">' +
+                                         '<div class="col-md-4">' + jsonObj[1][i].item + '</div>' +
+                                         '<div class="col-md-4">' + jsonObj[1][i].buyerLoc + '</div>' +
+                                         '<div class="col-md-4"><a class="openListing" href="#" data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#bannerformmodal">More</a></div>');
+               }
+               $('#nextbtn').prop('disabled',false);
+               
+           }
+       });
+        
+    });
+    
      $('#filterListings').submit(function(event) {
          event.preventDefault();
 
@@ -18,8 +103,6 @@ $(document).ready(function() {
 
                 var jsonObj = JSON.parse(data);
                 
-                alert(data);
-
                 $('#listings').empty();
 
                 for (var i = 0; i < jsonObj.length; i++){
