@@ -22,15 +22,14 @@ module.exports = function(express, query, db) {
     });
     
     router.get('/getRecentAds', function(request, response){
-        let upper = 0*20;
-        let lower = 0*20+1;
+        let upper = 0*2;
+        let lower = 0*2+1;
         
         db.ads.getCount(query, function(err, count){
             if (err) response.end("error");
             else{
                 let newLow = parseInt(count) - lower;
                 let newHigh = parseInt(count) - upper;
-                console.log("new low" + newLow + " new high" + newHigh);
                 
                 db.ads.getAllAds(query,newLow,newHigh, function(err, result){
                     var resObj = []
@@ -64,21 +63,19 @@ module.exports = function(express, query, db) {
     });
     
     router.post('/getPage', function(request,response){
-        let upper = parseInt(request.body.pagenum)*20;
-        let lower = parseInt(request.body.pagenum)*20+1;
+        let upper = parseInt(request.body.pagenum)*2;
+        let lower = parseInt(request.body.pagenum)*2+1;
         
-        console.log(request.body.pagenum);
+        if(request.body.isfiltered === "false"){
         
         db.ads.getCount(query, function(err, count){
             if (err) response.end("error");
             else{
                 let newLow = parseInt(count) - lower;
                 let newHigh = parseInt(count) - upper;
-                console.log("new low" + newLow + " new high" + newHigh);
                 
                 db.ads.getAllAds(query,newLow,newHigh, function(err, result){
                     var resObj = []
-                    var firstOrLast;
                     if(newHigh >= count || newLow <= 1){
                         resObj.push("true");
                     }
@@ -105,29 +102,71 @@ module.exports = function(express, query, db) {
             
             
         });
+        }
+        
+        else{
+            limit = 2;
+            offset = parseInt(request.body.pagenum)*2;
+            buyerLoc = request.body.buyerLocation;
+            itemLoc = request.body.itemLocation;
+            
+            db.ads.getFilteredCount(query, itemLoc, buyerLoc, function(err, count){
+                
+                db.ads.getFilteredAdsByPage(query, limit, offset, buyerLoc, itemLoc, function(err, result){
+                    var resObj = []
+                    var listings = [];
+                          
+                    for (var i = 0; i < result.length; i++){
+                        listings.push({
+                        id: result[i].id,
+                        item: result[i].item,
+                        buyerLoc: result[i].buyerloc
+                    });
+                }
+                
+                if(((offset + limit) > count) || (offset == 0)) resObj.push("true");
+                else resObj.push("false");
+                resObj.push(listings);
+                
+                response.end(JSON.stringify(resObj));
+                });
+            });
+        }
         
     });
 
     router.post('/filterListings', function(request, response) {
+        limit = 2;
+        buyerLoc = request.body.buyerLoc;
+        itemLoc = request.body.itemLoc;
         //fetch rows from ads table that match itemLoc and buyerLoc
         if (!request.body.itemLoc && !request.body.buyerLoc) {
             console.log("No locations specified");
         } else {
-            db.ads.getAdsByCountry(query, request.body.itemLoc, request.body.buyerLoc, function(err, result) {
-                if (err) {
-                    response.end("Bad Query");
-                } else {
-                    var listings = [];
-
-                    for (var i = 0; i < result.length; i++) {
-                        listings.push({
-                            id: result[i].id,
-                            item: result[i].item,
-                            buyerLoc: result[i].buyerloc
-                        });
+            db.ads.getFilteredCount(query, itemLoc, buyerLoc, function(err, count){
+                db.ads.getAdsByCountry(query, limit, itemLoc, buyerLoc, function(err, result) {
+                    if (err) {
+                        response.end("Bad Query");
+                    } else {
+                        var resObj = [];
+                        var listings = [];
+                       
+                      
+                        for (var i = 0; i < result.length; i++) {
+                            listings.push({
+                                id: result[i].id,
+                                item: result[i].item,
+                                buyerLoc: result[i].buyerloc
+                            });
+                        }
+                        if(count <= limit) resObj.push("true");
+                        else resObj.push("false");
+                        resObj.push(listings);
+                        response.end(JSON.stringify(resObj));
                     }
-                    response.end(JSON.stringify(listings));
-                }
+                });
+                   
+                   
             });
         }
 
@@ -138,7 +177,7 @@ module.exports = function(express, query, db) {
     });
 
     router.post('/getAdDetails', function(request, response) {
-
+        
         if (!request.body.listingId) console.log(err);
 
         else {
