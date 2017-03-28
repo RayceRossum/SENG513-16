@@ -85,10 +85,12 @@ app.set('port', (process.env.PORT || 5000));
 var authRoutes = require('./routes/authentication')(express, query, passport);
 var buyersRoutes = require('./routes/buyers')(express, query, db);
 var handelerRoutes = require('./routes/handelers')(express, query, db);
+var chatRoutes = require('./routes/handelers')(express, query, db);
 
 app.use('/', authRoutes);
 app.use('/', buyersRoutes);
 app.use('/', handelerRoutes);
+app.use('/', chatRoutes);
 
 app.listen(app.get('port'), function() {
     console.log("Node app running on port: " + app.get('port'));
