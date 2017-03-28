@@ -26,16 +26,38 @@ module.exports = function(express, query, db) {
             if (err) console.log(err);
             else{
                 var resObj = [];
-                var stats = [0,0,0];
+                var stats = [];
                 var items = [];
                 for (var i = 0; i < 5; i++){
                     if (results[i]) items.push(results[i].item);
                     else break;
                 }
-                resObj.push(stats);
-                resObj.push(items);
                 
-                response.end(JSON.stringify(resObj));
+                db.ads.getUserCount(query, function(err, results){
+                    if (err) console.log(err);
+                    else{
+                        stats.push(results);
+                        
+                        //temp until we can query for actual handelers
+                        db.ads.getUserCount(query, function(err, results){
+                            if (err) console.log(err);
+                            else{
+                                stats.push(results);
+                                db.ads.getCount(query, function(err, results){
+                                    if (err) console.log(err);
+                                    else{
+                                        stats.push(results);
+                                        resObj.push(stats);
+                                        resObj.push(items);
+                                        response.end(JSON.stringify(resObj));
+                                    }
+                                    
+                                });
+                            }
+                                            
+                        });
+                    }
+                });
             }
             
         });    
@@ -68,6 +90,9 @@ module.exports = function(express, query, db) {
                 
                 if (!request.body.country){
                     itemCountry = "undefined";
+                }
+                else{
+                    itemCountry = request.body.country;
                 }
 
                 var adData = {
