@@ -107,10 +107,10 @@ module.exports = function(express, query, db) {
         }
         
         else{
-            limit = 2;
-            offset = parseInt(request.body.pagenum)*2;
-            buyerLoc = request.body.buyerLocation;
-            itemLoc = request.body.itemLocation;
+            let limit = 2;
+            let offset = parseInt(request.body.pagenum)*2;
+            let buyerLoc = request.body.buyerLocation;
+            let itemLoc = request.body.itemLocation;
             
             db.ads.getFilteredCount(query, itemLoc, buyerLoc, function(err, count){
                 
@@ -138,9 +138,9 @@ module.exports = function(express, query, db) {
     });
 
     router.post('/filterListings', function(request, response) {
-        limit = 2;
-        buyerLoc = request.body.buyerLoc;
-        itemLoc = request.body.itemLoc;
+        let limit = 2;
+        let buyerLoc = request.body.buyerLoc;
+        let itemLoc = request.body.itemLoc;
         //fetch rows from ads table that match itemLoc and buyerLoc
         if (!request.body.itemLoc && !request.body.buyerLoc) {
             console.log("No locations specified");
