@@ -3,6 +3,8 @@
 
 <head>
     <% include ../partials/header.ejs %>
+    <link rel="stylesheet" href="/stylesheets/chat.css"/>
+    <link rel="stylesheet" href="/stylesheets/main.css"/>
 </head>
 
 <body>
@@ -11,6 +13,23 @@
 
         <div class="container">
             <div class="row">
+                <div class="col-md-3 affix">
+                    <h3>Chats</h3>
+                    <ul id="users">
+                      <li>
+                        Username
+                      </li>
+                      <li>
+                        Username
+                      </li>
+                      <li>
+                        Username
+                      </li>
+                    </ul>
+                </div>
+                <div class="col-md-offset-3 col-md-9">
+                    <h3>Messages</h3>
+                </div>
             </div>
         </div>
 </body>
