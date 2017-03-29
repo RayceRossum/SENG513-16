@@ -107,8 +107,8 @@ exports.getFilteredAdsByPage = function(query, limit, offset, buyerLoc, itemLoc,
                 cb(err, results)
             }
         });
-        
-    } 
+
+    }
     else if(itemLoc && !buyerLoc){
         query("SELECT * FROM public.\"BuyerAds\" where itemloc='" + itemLoc + "' ORDER BY id DESC" +  " LIMIT " + limit + " OFFSET " + offset + ";", function(err, results){
             if (err) console.log(err);
