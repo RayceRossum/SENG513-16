@@ -235,9 +235,7 @@ module.exports = function(express, query, db) {
                                     details: result[0].details
                                 };
                                 response.end(JSON.stringify(listing));
-
                             }
-
                         });
                     }
                 }

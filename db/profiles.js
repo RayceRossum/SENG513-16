@@ -19,3 +19,21 @@ exports.bootstrap = function(query) {
         }
     })
 }
+
+exports.isHandler = function(query, username) {
+    query("SELECT * FROM public.\"Profiles\" WHERE username = $1::varchar;", [username]),
+        function(err, result) {
+            if (err) {
+                console.error(err)
+            } else {
+                if (result[0]) {
+                    if (result[0].accountType === "handeler") {
+                        return true;
+                    }
+                } else {
+                    console.err(username + " not found.");
+                }
+                return false;
+            }
+        }
+}
