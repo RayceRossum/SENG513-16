@@ -15,6 +15,16 @@ module.exports = function(express, query, db) {
 
     router.get('/handeler', function(request, response) {
         if (request.user) {
+            response.render('pages/handeler', {
+                user: request.user
+            });
+        } else {
+            response.redirect('/');
+        }
+    });
+
+    router.get('/handeler0', function(request, response) {
+        if (request.user) {
             response.render('pages/handeler0', {
                 user: request.user
             });

@@ -42,7 +42,7 @@ $(document).ready(function() {
                     if (data === "true") {
                         $('#uploadAd').before('<div class="alert alert-success alert-dismissable">' + '<a href="#"' + 'class="close" data-dismiss="alert" aria-label="close">&times;</a>' + '<strong>Success!</strong> Your new post has successfully been added. Please wait for a registered Handeler to accept' + '</div>');
                         $('#uploadAd').addClass('hidden', true);
-                        $('.handelerSearch').load("/handeler");
+                        $('.handelerSearch').load("/handeler0");
                     } else {
                         $('#uploadAd').before('<div class="alert alert-danger alert-dismissable">' + '<a href="#"' + 'class="close" data-dismiss="alert" aria-label="close">&times;</a>' + '<strong>Error!</strong> Please ensure the fields are populated correctly' + '</div>');
                     }

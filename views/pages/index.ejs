@@ -19,10 +19,44 @@
                             Not logged in. <a href="register">Create an account?</a>
                         </p>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-offset-6 col-md-3">
+                        <h3> Some Site Statistics </h3>
+                        <ul class="list-group stat-panel">
+                            <li class="list-group-item row">
+                                <div class="col-md-7">Registered Users:</div>
+                                <div class="col-md-5" id="nUsers">-</div>
+                            </li>
+                            <li class="list-group-item row">
+                                <div class="col-md-7">Registered Handelers:</div>
+                                <div class="col-md-5" id="nHandelers">-</div>
+                            </li>
+                            <li class="list-group-item row">
+                                <div class="col-md-7">Posted Ads:</div>
+                                <div class="col-md-5" id="nAds">-</div>
+                            </li>
+                        </ul>
+
+                        <h3> Recently Wanted Items </h3>
+                        <ul class="list-group stat-panel">
+                            <li class="list-group-item row">
+                                <div class="col-md-12" id="item1">-</div>
+                            </li>
+                            <li class="list-group-item row">
+                                <div class="col-md-12" id="item2">-</div>
+                            </li>
+                            <li class="list-group-item row">
+                                <div class="col-md-12" id="item3">-</div>
+                            </li>
+                            <li class="list-group-item row">
+                                <div class="col-md-12" id="item4">-</div>
+                            </li>
+                            <li class="list-group-item row">
+                                <div class="col-md-12" id="item5">-</div>
+                            </li>
+                        </ul>
                     </div>
                     <% } else { %>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <h1>WELCOME HANDELER</h1>
                             <p>
                                 Successfully logged in as
@@ -30,55 +64,14 @@
                             </p>
                             <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#postAdModal">Create a Listing</button>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-8">
+                            <div class="handelerSearch">
+                                <% include ../pages/handeler0.ejs %>
+                            </div>
+                            <% include ../partials/listingModal.ejs %>
                         </div>
                         <% } %>
-
-                            <div class="col-md-3">
-                                <h3> Some Site Statistics </h3>
-                                <ul class="list-group stat-panel">
-                                    <li class="list-group-item row">
-                                        <div class="col-md-7">Registered Users:</div>
-                                        <div class="col-md-5" id="nUsers">-</div>
-                                    </li>
-                                    <li class="list-group-item row">
-                                        <div class="col-md-7">Registered Handelers:</div>
-                                        <div class="col-md-5" id="nHandelers">-</div>
-                                    </li>
-                                    <li class="list-group-item row">
-                                        <div class="col-md-7">Posted Ads:</div>
-                                        <div class="col-md-5" id="nAds">-</div>
-                                    </li>
-                                </ul>
-
-                                <h3> Recently Wanted Items </h3>
-                                <ul class="list-group stat-panel">
-                                    <li class="list-group-item row">
-                                        <div class="col-md-12" id="item1">-</div>
-                                    </li>
-                                    <li class="list-group-item row">
-                                        <div class="col-md-12" id="item2">-</div>
-                                    </li>
-                                    <li class="list-group-item row">
-                                        <div class="col-md-12" id="item3">-</div>
-                                    </li>
-                                    <li class="list-group-item row">
-                                        <div class="col-md-12" id="item4">-</div>
-                                    </li>
-                                    <li class="list-group-item row">
-                                        <div class="col-md-12" id="item5">-</div>
-                                    </li>
-                                </ul>
-                            </div>
             </div>
-
-            <% if (user) { %>
-                <div class="row">
-                    <div class="handelerSearch">
-                        <% include ../pages/handeler0.ejs %>
-                    </div>
-                </div>
-                <% } %>
         </div>
 
         <% if (user) { %>
