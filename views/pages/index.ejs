@@ -74,7 +74,9 @@
 
             <% if (user) { %>
                 <div class="row">
-                    <% include ../pages/handeler0.ejs %>
+                    <div class="handelerSearch">
+                        <% include ../pages/handeler0.ejs %>
+                    </div>
                 </div>
                 <% } %>
         </div>
@@ -82,6 +84,7 @@
         <% if (user) { %>
             <% include ../partials/postAdModal.ejs %>
                 <% } %>
+
 </body>
 
 </html>

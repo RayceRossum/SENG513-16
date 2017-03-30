@@ -15,25 +15,25 @@ module.exports = function(express, query, db) {
 
     router.get('/handeler', function(request, response) {
         if (request.user) {
-            response.render('pages/handeler', {
+            response.render('pages/handeler0', {
                 user: request.user
             });
         } else {
             response.redirect('/');
         }
     });
-    
+
     router.get('/getRecentAds', function(request, response){
         let upper = 0*2;
         let lower = 0*2+1;
-        
-                
+
+
         db.ads.getCount(query, function(err, count){
             if (err) response.end("error");
             else{
                 let limit = 2;
                 let offset = 0;
-                
+
                 db.ads.getAllAds(query, limit, offset, function(err, result){
                     var resObj = []
                     if(limit >= count){
@@ -42,9 +42,9 @@ module.exports = function(express, query, db) {
                     else{
                         resObj.push("false");
                     }
-            
+
                 var listings = [];
-                   
+
                 for (var i = 0; i < result.length; i++){
                     listings.push({
                         id: result[i].id,
@@ -52,28 +52,28 @@ module.exports = function(express, query, db) {
                         buyerLoc: result[i].buyerloc
                     });
                 }
-                
+
                 resObj.push(listings);
-                
+
                 response.end(JSON.stringify(resObj));
                 });
-        
+
             }
-            
-            
+
+
         });
     });
-    
+
     router.post('/getPage', function(request,response){
-        
+
         if(request.body.isfiltered === "false"){
-        
+
         db.ads.getCount(query, function(err, count){
             if (err) response.end("error");
             else{
                 let limit = 2;
                 let offset = 2*parseInt(request.body.pagenum);
-                
+
                 db.ads.getAllAds(query, limit, offset, function(err, result){
                     var resObj = []
                     if(count <= (offset + limit) || offset == 0){
@@ -82,9 +82,9 @@ module.exports = function(express, query, db) {
                     else{
                         resObj.push("false");
                     }
-            
+
                 var listings = [];
-                   
+
                 for (var i = 0; i < result.length; i++){
                     listings.push({
                         id: result[i].id,
@@ -92,30 +92,30 @@ module.exports = function(express, query, db) {
                         buyerLoc: result[i].buyerloc
                     });
                 }
-                
+
                 resObj.push(listings);
-                
+
                 response.end(JSON.stringify(resObj));
                 });
-        
+
             }
-            
-            
+
+
         });
         }
-        
+
         else{
             let limit = 2;
             let offset = parseInt(request.body.pagenum)*2;
             let buyerLoc = request.body.buyerLocation;
             let itemLoc = request.body.itemLocation;
-            
+
             db.ads.getFilteredCount(query, itemLoc, buyerLoc, function(err, count){
-                
+
                 db.ads.getFilteredAdsByPage(query, limit, offset, buyerLoc, itemLoc, function(err, result){
                     var resObj = []
                     var listings = [];
-                          
+
                     for (var i = 0; i < result.length; i++){
                         listings.push({
                         id: result[i].id,
@@ -123,16 +123,16 @@ module.exports = function(express, query, db) {
                         buyerLoc: result[i].buyerloc
                     });
                 }
-                
+
                 if(((offset + limit) >= count) || (offset == 0)) resObj.push("true");
                 else resObj.push("false");
                 resObj.push(listings);
-                
+
                 response.end(JSON.stringify(resObj));
                 });
             });
         }
-        
+
     });
 
     router.post('/filterListings', function(request, response) {
@@ -151,8 +151,8 @@ module.exports = function(express, query, db) {
                     } else {
                         var resObj = [];
                         var listings = [];
-                       
-                      
+
+
                         for (var i = 0; i < result.length; i++) {
                             listings.push({
                                 id: result[i].id,
@@ -166,8 +166,8 @@ module.exports = function(express, query, db) {
                         response.end(JSON.stringify(resObj));
                     }
                 });
-                   
-                   
+
+
             });
         }
 
@@ -178,7 +178,7 @@ module.exports = function(express, query, db) {
     });
 
     router.post('/getAdDetails', function(request, response) {
-        
+
         if (!request.body.listingId) console.log(err);
 
         else {
@@ -196,7 +196,7 @@ module.exports = function(express, query, db) {
                     }
 
                     if (result[0].imagename === "undefined") {
-                        
+
                         var listing = {
                             user: result[0].username,
                             item: result[0].item,

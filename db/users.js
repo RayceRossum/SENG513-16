@@ -6,8 +6,10 @@ exports.findByUsername = function(query, username, cb) {
             if (err) {
                 return console.error(err);
             }
-            if (result[0].username === username || result[0].email === username) {
-                return cb(null, result[0]);
+            if (result[0]) {
+                if (result[0].username === username || result[0].email === username) {
+                    return cb(null, result[0]);
+                }
             }
             return cb(null, null);
         });
@@ -39,5 +41,3 @@ exports.bootstrap = function(query) {
         });
     });
 };
-
-
