@@ -17,7 +17,7 @@ exports.bootstrap = function(query) {
 
 exports.getAllAds = function(query, limit, offset, cb) {
 
-    query("SELECT * FROM public.\"listings\"" + " ORDER BY id DESC" + " LIMIT " + limit + " OFFSET " + offset + ";", function(err, result) {
+    query("SELECT * FROM public.\"listings\" ORDER BY id DESC LIMIT $1::bigint OFFSET $2::bigint;", [limit, offset], function(err, result) {
         if (err) {
             console.log(err);
         } else {
@@ -27,8 +27,7 @@ exports.getAllAds = function(query, limit, offset, cb) {
 };
 
 exports.insertAd = function(query, adData) {
-    query("INSERT INTO public.\"listings\" (username, item, imagename, buyerloc, itemloc, details) VALUES('" + adData.username + "', '" + adData.item + "', '" + adData.imageName + "', '" + adData.buyerLoc + "', '" + adData.itemLoc + "', '" + adData.details + "')", function(err, result) {
-
+    query("INSERT INTO public.\"listings\" (username, item, imagename, buyerloc, itemloc, details) VALUES($1::varchar, $2::varchar, $3::varchar, $4::varchar, $5::varchar, $6::varchar);", [adData.username, adData.item, adData.imageName, adData.buyerLoc, adData.itemLoc, adData.details], function(err, result) {
         if (err) console.log(err);
     });
 };
@@ -43,7 +42,7 @@ exports.getCount = function(query, cb) {
 exports.getFilteredCount = function(query, itemLoc, buyerLoc, cb) {
     console.log("getFilteredCount");
     if (itemLoc !== "" && buyerLoc !== "") {
-        query("SELECT COUNT(*) FROM public.\"listings\" where buyerloc='" + buyerLoc + "' AND itemloc='" + itemLoc + "';", function(err, result) {
+        query("SELECT COUNT(*) FROM public.\"listings\" where buyerloc=$1::varchar AND itemloc=$2::varchar;", [buyerLoc, itemLoc], function(err, result) {
 
             if (err) console.log(err);
             else {
@@ -51,7 +50,7 @@ exports.getFilteredCount = function(query, itemLoc, buyerLoc, cb) {
             }
         });
     } else if (itemLoc !== "" && buyerLoc === "") {
-        query("SELECT COUNT(*) FROM public.\"listings\" where itemLoc='" + itemLoc + "';", function(err, result) {
+        query("SELECT COUNT(*) FROM public.\"listings\" where itemLoc = $1::varchar;", [itemLoc], function(err, result) {
 
             if (err) console.log(err);
             else {
@@ -59,7 +58,7 @@ exports.getFilteredCount = function(query, itemLoc, buyerLoc, cb) {
             }
         });
     } else if (itemLoc === "" && buyerLoc !== "") {
-        query("SELECT COUNT(*) FROM public.\"listings\" where buyerLoc='" + buyerLoc + "';", function(err, result) {
+        query("SELECT COUNT(*) FROM public.\"listings\" where buyerLoc = $1::varchar;", [buyerLoc], function(err, result) {
 
             if (err) console.log(err);
             else cb(err, result[0].count);
@@ -71,7 +70,7 @@ exports.getFilteredCount = function(query, itemLoc, buyerLoc, cb) {
 exports.getAdsByCountry = function(query, limit, itemLoc, buyerLoc, cb) {
     console.log("getAdsByCountry");
     if (itemLoc && buyerLoc) {
-        query("SELECT * FROM public.\"listings\" where buyerloc='" + buyerLoc + "' AND itemloc='" + itemLoc + "' ORDER BY id DESC" + " LIMIT " + limit + " OFFSET 0" + ";", function(err, result) {
+        query("SELECT * FROM public.\"listings\" where buyerloc=$1::varchar AND itemloc=$2::varchar ORDER BY id DESC LIMIT $3::bigint OFFSET 0;", [buyerLoc, itemLoc, limit], function(err, result) {
 
             if (err) console.log(err);
             else {
@@ -79,7 +78,7 @@ exports.getAdsByCountry = function(query, limit, itemLoc, buyerLoc, cb) {
             }
         });
     } else if (itemLoc && !buyerLoc) {
-        query("SELECT * FROM public.\"listings\" where itemLoc='" + itemLoc + "' ORDER BY id DESC" + " LIMIT " + limit + " OFFSET 0" + ";", function(err, result) {
+        query("SELECT * FROM public.\"listings\" where itemLoc=$1::varchar ORDER BY id DESC LIMIT $2::bigint OFFSET 0" + ";", [itemLoc, limit], function(err, result) {
 
             if (err) console.log(err);
             else {
@@ -87,7 +86,7 @@ exports.getAdsByCountry = function(query, limit, itemLoc, buyerLoc, cb) {
             }
         });
     } else if (!itemLoc && buyerLoc) {
-        query("SELECT * FROM public.\"listings\" where buyerLoc='" + buyerLoc + "' ORDER BY id DESC" + " LIMIT " + limit + " OFFSET 0" + ";", function(err, result) {
+        query("SELECT * FROM public.\"listings\" where buyerLoc=$1::varchar ORDER BY id DESC LIMIT $2::bigint OFFSET 0" + ";", [buyerLoc, limit], function(err, result) {
 
             if (err) console.log(err);
             else cb(err, result);
@@ -99,7 +98,7 @@ exports.getAdsByCountry = function(query, limit, itemLoc, buyerLoc, cb) {
 exports.getFilteredAdsByPage = function(query, limit, offset, buyerLoc, itemLoc, cb) {
     console.log("getFilteredAdsByPage");
     if (buyerLoc && itemLoc) {
-        query("SELECT * FROM public.\"listings\" where buyerloc='" + buyerLoc + "' AND itemLoc='" + itemLoc + "' ORDER BY id DESC" + " LIMIT " + limit + " OFFSET " + offset + ";", function(err, results) {
+        query("SELECT * FROM public.\"listings\" where buyerloc = $1::varchar AND itemLoc = $2::varchar ORDER BY id DESC LIMIT $3::bigint OFFSET $4::bigint;", [buyerLoc, itemLoc, limit, offset], function(err, results) {
             if (err) console.log(err);
             else {
                 cb(err, results)
@@ -107,14 +106,14 @@ exports.getFilteredAdsByPage = function(query, limit, offset, buyerLoc, itemLoc,
         });
 
     } else if (itemLoc && !buyerLoc) {
-        query("SELECT * FROM public.\"listings\" where itemloc='" + itemLoc + "' ORDER BY id DESC" + " LIMIT " + limit + " OFFSET " + offset + ";", function(err, results) {
+        query("SELECT * FROM public.\"listings\" where itemloc = $1::varchar ORDER BY id DESC LIMIT $2::bigint OFFSET $3::bigint;", [itemLoc, limit, offset], function(err, results) {
             if (err) console.log(err);
             else {
                 cb(err, results)
             }
         });
     } else if (!itemLoc && buyerLoc) {
-        query("SELECT * FROM public.\"listings\" where buyerloc='" + buyerLoc + "' ORDER BY id DESC" + " LIMIT " + limit + " OFFSET " + offset + ";", function(err, results) {
+        query("SELECT * FROM public.\"listings\" where buyerloc = $1::varchar ORDER BY id DESC LIMIT $2::bigint OFFSET $3::bigint;", [buyerLoc, limit, offset], function(err, results) {
             if (err) console.log(err);
             else {
                 cb(err, results)
@@ -124,8 +123,7 @@ exports.getFilteredAdsByPage = function(query, limit, offset, buyerLoc, itemLoc,
 }
 
 exports.getListing = function(query, listingId, cb) {
-    query("SELECT * FROM public.\"listings\" where id='" + listingId + "'", function(err, result) {
-
+    query("SELECT * FROM public.\"listings\" where id = $1::bigint", [listingId], function(err, result) {
         if (err) console.log(err);
         else {
             cb(err, result);
