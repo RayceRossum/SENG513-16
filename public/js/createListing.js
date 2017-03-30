@@ -47,7 +47,7 @@ $(document).ready(function() {
                         $('#details').val('');
                         $('#imagePreview').hide();
                         $('#cs1').val('');
-                        $('.handelerSearch').load("/handeler0");
+                        $('.handelerSearch').load("/listings");
                     } else {
                         $('#uploadAd').before('<div class="alert alert-danger alert-dismissable">' + '<a href="#"' + 'class="close" data-dismiss="alert" aria-label="close">&times;</a>' + '<strong>Error!</strong> Please ensure the fields are populated correctly' + '</div>');
                     }
@@ -60,5 +60,4 @@ $(document).ready(function() {
 function reloadCreateListingModal() {
     $('#uploadListing').removeClass('hidden', true);
     $('#listingSuccessAlert').remove();
-
 }

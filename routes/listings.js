@@ -13,9 +13,9 @@ module.exports = function(express, query, db) {
         extended: true
     }));
 
-    router.get('/handeler', function(request, response) {
+    router.get('/listings', function(request, response) {
         if (request.user) {
-            response.render('pages/handeler', {
+            response.render('pages/listings', {
                 user: request.user
             });
         } else {
@@ -23,49 +23,38 @@ module.exports = function(express, query, db) {
         }
     });
 
-    router.get('/handeler0', function(request, response) {
-        if (request.user) {
-            response.render('pages/handeler0', {
-                user: request.user
-            });
-        } else {
-            response.redirect('/');
-        }
-    });
-
-    router.get('/getRecentAds', function(request, response){
-        let upper = 0*2;
-        let lower = 0*2+1;
+    router.get('/getRecentAds', function(request, response) {
+        let upper = 0 * 2;
+        let lower = 0 * 2 + 1;
 
 
-        db.listings.getCount(query, function(err, count){
+        db.listings.getCount(query, function(err, count) {
             if (err) response.end("error");
-            else{
+            else {
                 let limit = 2;
                 let offset = 0;
 
-                db.listings.getAllAds(query, limit, offset, function(err, result){
+                db.listings.getAllAds(query, limit, offset, function(err, result) {
                     var resObj = []
-                    if(limit >= count){
+                    if (limit >= count) {
                         resObj.push("true");
-                    }
-                    else{
+                    } else {
                         resObj.push("false");
                     }
 
-                var listings = [];
+                    var listings = [];
 
-                for (var i = 0; i < result.length; i++){
-                    listings.push({
-                        id: result[i].id,
-                        item: result[i].item,
-                        buyerLoc: result[i].buyerloc
-                    });
-                }
+                    for (var i = 0; i < result.length; i++) {
+                        listings.push({
+                            id: result[i].id,
+                            item: result[i].item,
+                            buyerLoc: result[i].buyerloc
+                        });
+                    }
 
-                resObj.push(listings);
+                    resObj.push(listings);
 
-                response.end(JSON.stringify(resObj));
+                    response.end(JSON.stringify(resObj));
                 });
 
             }
@@ -74,71 +63,68 @@ module.exports = function(express, query, db) {
         });
     });
 
-    router.post('/getPage', function(request,response){
+    router.post('/getPage', function(request, response) {
 
-        if(request.body.isfiltered === "false"){
+        if (request.body.isfiltered === "false") {
 
-        db.listings.getCount(query, function(err, count){
-            if (err) response.end("error");
-            else{
-                let limit = 2;
-                let offset = 2*parseInt(request.body.pagenum);
+            db.listings.getCount(query, function(err, count) {
+                if (err) response.end("error");
+                else {
+                    let limit = 2;
+                    let offset = 2 * parseInt(request.body.pagenum);
 
-                db.listings.getAllAds(query, limit, offset, function(err, result){
-                    var resObj = []
-                    if(count <= (offset + limit) || offset == 0){
-                        resObj.push("true");
-                    }
-                    else{
-                        resObj.push("false");
-                    }
+                    db.listings.getAllAds(query, limit, offset, function(err, result) {
+                        var resObj = []
+                        if (count <= (offset + limit) || offset == 0) {
+                            resObj.push("true");
+                        } else {
+                            resObj.push("false");
+                        }
 
-                var listings = [];
+                        var listings = [];
 
-                for (var i = 0; i < result.length; i++){
-                    listings.push({
-                        id: result[i].id,
-                        item: result[i].item,
-                        buyerLoc: result[i].buyerloc
+                        for (var i = 0; i < result.length; i++) {
+                            listings.push({
+                                id: result[i].id,
+                                item: result[i].item,
+                                buyerLoc: result[i].buyerloc
+                            });
+                        }
+
+                        resObj.push(listings);
+
+                        response.end(JSON.stringify(resObj));
                     });
+
                 }
 
-                resObj.push(listings);
 
-                response.end(JSON.stringify(resObj));
-                });
-
-            }
-
-
-        });
-        }
-
-        else{
+            });
+        } else {
             let limit = 2;
-            let offset = parseInt(request.body.pagenum)*2;
+            let offset = parseInt(request.body.pagenum) * 2;
             let buyerLoc = request.body.buyerLocation;
             let itemLoc = request.body.itemLocation;
 
-            db.listings.getFilteredCount(query, itemLoc, buyerLoc, function(err, count){
+            db.listings.getFilteredCount(query, itemLoc, buyerLoc, function(err, count) {
 
-                db.listings.getFilteredAdsByPage(query, limit, offset, buyerLoc, itemLoc, function(err, result){
+                db.listings.getFilteredAdsByPage(query, limit, offset, buyerLoc, itemLoc, function(err, result) {
                     var resObj = []
                     var listings = [];
 
-                    for (var i = 0; i < result.length; i++){
+                    for (var i = 0; i < result.length; i++) {
                         listings.push({
-                        id: result[i].id,
-                        item: result[i].item,
-                        buyerLoc: result[i].buyerloc
-                    });
-                }
+                            id: result[i].id,
+                            item: result[i].item,
+                            buyerLoc: result[i].buyerloc
+                        });
+                    }
 
-                if(((offset + limit) >= count) || (offset == 0)) resObj.push("true");
-                else resObj.push("false");
-                resObj.push(listings);
+                    if (((offset + limit) >= count) || (offset == 0)) resObj.push("true");
+                    else resObj.push("false");
+                    resObj.push(listings);
 
-                response.end(JSON.stringify(resObj));
+                    response.end(JSON.stringify(resObj));
                 });
             });
         }
@@ -154,7 +140,7 @@ module.exports = function(express, query, db) {
         if (!request.body.itemLoc && !request.body.buyerLoc) {
             console.log("No locations specified");
         } else {
-            db.listings.getFilteredCount(query, itemLoc, buyerLoc, function(err, count){
+            db.listings.getFilteredCount(query, itemLoc, buyerLoc, function(err, count) {
                 db.listings.getAdsByCountry(query, limit, itemLoc, buyerLoc, function(err, result) {
                     if (err) {
                         response.end("Bad Query");
@@ -170,7 +156,7 @@ module.exports = function(express, query, db) {
                                 buyerLoc: result[i].buyerloc
                             });
                         }
-                        if(count <= limit) resObj.push("true");
+                        if (count <= limit) resObj.push("true");
                         else resObj.push("false");
                         resObj.push(listings);
                         response.end(JSON.stringify(resObj));
@@ -199,10 +185,12 @@ module.exports = function(express, query, db) {
 
                 else {
                     var country;
-                    if(result[0].itemloc === "undefined")
+                    if (result[0].itemloc === "undefined")
                         country = "undefined";
-                    else{
-                        country = lookup.countries({alpha3: result[0].itemloc})[0].name;
+                    else {
+                        country = lookup.countries({
+                            alpha3: result[0].itemloc
+                        })[0].name;
                     }
 
                     if (result[0].imagename === "undefined") {

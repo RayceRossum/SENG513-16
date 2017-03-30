@@ -16,7 +16,6 @@ exports.bootstrap = function(query) {
 };
 
 exports.getAllAds = function(query, limit, offset, cb) {
-
     query("SELECT * FROM public.\"listings\" ORDER BY id DESC LIMIT $1::bigint OFFSET $2::bigint;", [limit, offset], function(err, result) {
         if (err) {
             console.log(err);
