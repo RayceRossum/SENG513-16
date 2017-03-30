@@ -1,7 +1,9 @@
 exports.users = require("./users");
-exports.ads = require("./ads");
+exports.profiles = require("./profiles");
+exports.listings = require("./listings");
 
 exports.bootstrap = function(query) {
     exports.users.bootstrap(query);
-    exports.ads.bootstrap(query);
+    exports.profiles.bootstrap(query);
+    exports.listings.bootstrap(query);
 };

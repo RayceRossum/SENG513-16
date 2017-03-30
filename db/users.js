@@ -30,14 +30,23 @@ exports.addUser = function(query, username, email, password, cb) {
 
 exports.bootstrap = function(query) {
     query("DROP TABLE IF EXISTS public.\"Users\"", function(err, result) {
-        if (err) console.error(err);
-        //TODO: Set username to primary key for indexing
-        query("CREATE TABLE public.\"Users\"(username text NOT NULL, email text NOT NULL, password_hash text NOT NULL) WITH (OIDS = FALSE);", function(err, result) {
-            if (err) console.error(err);
-            query("INSERT INTO public.\"Users\" VALUES ('username', 'username@handel.com', '" + bcrypt.hashSync("password", 10) + "')", function(err, result) {
-                if (err) console.error(err);
+        if (err) {
+            console.error(err);
+        } else {
+            query("CREATE TABLE public.\"Users\"(id SERIAL PRIMARY KEY, username text NOT NULL, email text NOT NULL, password_hash text NOT NULL);", function(err, result) {
+                if (err) {
+                    console.error(err);
+                } else {
+                    query("INSERT INTO public.\"Users\" (username, email, password_hash) VALUES('username', 'username@handel.com', '" + bcrypt.hashSync("password", 10) + "')", function(err, result) {
+                        if (err) {
+                            console.error(err);
+                        } else {
+                            console.log("Success: Users");
+                        }
+                    });
+
+                }
             });
-            console.log("Success: Users");
-        });
+        }
     });
 };

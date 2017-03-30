@@ -20,9 +20,9 @@ module.exports = function(express, query, db) {
             response.redirect('/');
         }
     });
-    
+
     router.get('/getStats', function(request, response) {
-        db.ads.getAllAds(query, 5, 0, function(err, results){
+        db.listings.getAllAds(query, 5, 0, function(err, results){
             if (err) console.log(err);
             else{
                 var resObj = [];
@@ -32,18 +32,18 @@ module.exports = function(express, query, db) {
                     if (results[i]) items.push(results[i].item);
                     else break;
                 }
-                
-                db.ads.getUserCount(query, function(err, results){
+
+                db.listings.getUserCount(query, function(err, results){
                     if (err) console.log(err);
                     else{
                         stats.push(results);
-                        
+
                         //temp until we can query for actual handelers
-                        db.ads.getUserCount(query, function(err, results){
+                        db.listings.getUserCount(query, function(err, results){
                             if (err) console.log(err);
                             else{
                                 stats.push(results);
-                                db.ads.getCount(query, function(err, results){
+                                db.listings.getCount(query, function(err, results){
                                     if (err) console.log(err);
                                     else{
                                         stats.push(results);
@@ -51,16 +51,16 @@ module.exports = function(express, query, db) {
                                         resObj.push(items);
                                         response.end(JSON.stringify(resObj));
                                     }
-                                    
+
                                 });
                             }
-                                            
+
                         });
                     }
                 });
             }
-            
-        });    
+
+        });
     });
 
     router.post('/submitAd', function(request, response) {
@@ -72,7 +72,7 @@ module.exports = function(express, query, db) {
         if (!request.body.item) {
             response.end("false");
         } else {
-            db.ads.getCount(query, function(err, rows) {
+            db.listings.getCount(query, function(err, rows) {
                 console.log(request);
                 if (request.files.image) {
                     fileName = "img_" + rows + "." + request.files.image.name.split('.').pop();
@@ -87,7 +87,7 @@ module.exports = function(express, query, db) {
                 } else {
                     fileName = "undefined";
                 }
-                
+
                 if (!request.body.country){
                     itemCountry = "undefined";
                 }
@@ -104,7 +104,7 @@ module.exports = function(express, query, db) {
                     details: request.body.details,
                 };
 
-                db.ads.insertAd(query, adData);
+                db.listings.insertAd(query, adData);
 
                 response.end("true");
 

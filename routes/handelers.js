@@ -38,13 +38,13 @@ module.exports = function(express, query, db) {
         let lower = 0*2+1;
 
 
-        db.ads.getCount(query, function(err, count){
+        db.listings.getCount(query, function(err, count){
             if (err) response.end("error");
             else{
                 let limit = 2;
                 let offset = 0;
 
-                db.ads.getAllAds(query, limit, offset, function(err, result){
+                db.listings.getAllAds(query, limit, offset, function(err, result){
                     var resObj = []
                     if(limit >= count){
                         resObj.push("true");
@@ -78,13 +78,13 @@ module.exports = function(express, query, db) {
 
         if(request.body.isfiltered === "false"){
 
-        db.ads.getCount(query, function(err, count){
+        db.listings.getCount(query, function(err, count){
             if (err) response.end("error");
             else{
                 let limit = 2;
                 let offset = 2*parseInt(request.body.pagenum);
 
-                db.ads.getAllAds(query, limit, offset, function(err, result){
+                db.listings.getAllAds(query, limit, offset, function(err, result){
                     var resObj = []
                     if(count <= (offset + limit) || offset == 0){
                         resObj.push("true");
@@ -120,9 +120,9 @@ module.exports = function(express, query, db) {
             let buyerLoc = request.body.buyerLocation;
             let itemLoc = request.body.itemLocation;
 
-            db.ads.getFilteredCount(query, itemLoc, buyerLoc, function(err, count){
+            db.listings.getFilteredCount(query, itemLoc, buyerLoc, function(err, count){
 
-                db.ads.getFilteredAdsByPage(query, limit, offset, buyerLoc, itemLoc, function(err, result){
+                db.listings.getFilteredAdsByPage(query, limit, offset, buyerLoc, itemLoc, function(err, result){
                     var resObj = []
                     var listings = [];
 
@@ -154,8 +154,8 @@ module.exports = function(express, query, db) {
         if (!request.body.itemLoc && !request.body.buyerLoc) {
             console.log("No locations specified");
         } else {
-            db.ads.getFilteredCount(query, itemLoc, buyerLoc, function(err, count){
-                db.ads.getAdsByCountry(query, limit, itemLoc, buyerLoc, function(err, result) {
+            db.listings.getFilteredCount(query, itemLoc, buyerLoc, function(err, count){
+                db.listings.getAdsByCountry(query, limit, itemLoc, buyerLoc, function(err, result) {
                     if (err) {
                         response.end("Bad Query");
                     } else {
@@ -192,7 +192,7 @@ module.exports = function(express, query, db) {
         if (!request.body.listingId) console.log(err);
 
         else {
-            db.ads.getListing(query, request.body.listingId, function(err, result) {
+            db.listings.getListing(query, request.body.listingId, function(err, result) {
 
                 if (!result)
                     response.end("invalid");
