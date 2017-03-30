@@ -1,0 +1,56 @@
+<!-- Modal -->
+<div id="postAdModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create a Listing</h4>
+            </div>
+            <div class="modal-body row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <form method="post" id="uploadAd">
+                            <div class="form-group ">
+                                <label class="control-label " for="item">Item<span class="asteriskField">*</span></label>
+                                <input class="form-control" id="item" name="item" type="text" minlength="2" required/>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="image">Image Preview</label>
+                                <input class="form-group" id="image" name="image" type="file" />
+                                <img id="imagePreview" src="#" style="max-width:50%" ;/>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="cs1">Item Location</label>
+                                <input class="control-label" id="cs1" name="country" type="text" />
+                            </div>
+                            <div class="form-group ">
+                                <label class="control-label" for="details">Further Details and Comments</label>
+                                <textarea class="form-control" id="details" name="details" rows="5" style="max-width:100%" type="text"></textarea>
+                            </div>
+                            <!--<div class="form-group">
+                                <div>
+                                    <button class="btn btn-primary" style="float:right;" name="submitpost" type="submit">Submit</button>
+                                </div>
+                            </div>-->
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="window.location = '/'">Submit</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/jquery.validate.js"></script>
+<script src="/js/postad.js"></script>
+<script src="/js/jquery.countryselector.min.js"></script>
+<script>
+    $('#postAdModal').on('shown.bs.modal', function() {
+        $("#cs1").countrySelector();
+    });
+</script>

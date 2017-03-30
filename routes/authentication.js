@@ -12,7 +12,7 @@ module.exports = function(express, query, passport, db) {
             failureRedirect: '/?Error'
         }),
         function(req, res) {
-            res.redirect('/buyer');
+            res.redirect('/');
         });
 
     router.get('/logout', function(req, res) {
