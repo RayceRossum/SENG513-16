@@ -1,12 +1,6 @@
 module.exports = function(express, query, passport, db) {
     var router = express.Router();
 
-    router.get('/', function(request, response) {
-        response.render('pages/index', {
-            user: request.user
-        });
-    });
-
     router.post('/login',
         passport.authenticate('local', {
             failureRedirect: '/?Error'

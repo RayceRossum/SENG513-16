@@ -20,7 +20,7 @@ exports.bootstrap = function(query) {
     })
 }
 
-exports.isHandler = function(query, username) {
+exports.isHandeler = function(query, username) {
     query("SELECT * FROM public.\"Profiles\" WHERE username = $1::varchar;", [username]),
         function(err, result) {
             if (err) {
