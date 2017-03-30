@@ -20,20 +20,17 @@ exports.bootstrap = function(query) {
     })
 }
 
-exports.isHandeler = function(query, username) {
-    query("SELECT * FROM public.\"Profiles\" WHERE username = $1::varchar;", [username]),
+exports.isHandeler = function(query, username, cb) {
+    query("SELECT * FROM public.\"Profiles\" WHERE username = $1::varchar;", [username],
         function(err, result) {
             if (err) {
                 console.error(err)
             } else {
                 if (result[0]) {
-                    if (result[0].accountType === "handeler") {
-                        return true;
-                    }
+                    cb(null, result[0].accounttype);
                 } else {
-                    console.err(username + " not found.");
+                    cb(username + " not found.", null);
                 }
-                return false;
             }
-        }
+        });
 }
