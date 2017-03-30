@@ -3,7 +3,7 @@ exports.profiles = require("./profiles");
 exports.listings = require("./listings");
 
 exports.bootstrap = function(query) {
-    exports.users.bootstrap(query);
     exports.profiles.bootstrap(query);
+    exports.users.bootstrap(query);
     exports.listings.bootstrap(query);
 };

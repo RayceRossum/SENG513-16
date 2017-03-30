@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div id="postAdModal" class="modal fade" role="dialog">
+<div id="createListingModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
 
         <!-- Modal content-->
@@ -11,7 +11,7 @@
             <div class="modal-body row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="col-md-12 col-sm-12 col-xs-12">
-                        <form method="post" id="uploadAd">
+                        <form method="post" id="uploadListing">
                             <div class="form-group ">
                                 <label class="control-label " for="item">Item<span class="asteriskField">*</span></label>
                                 <input class="form-control" id="item" name="item" type="text" minlength="2" required/>
@@ -43,10 +43,10 @@
 </div>
 
 <script src="/js/jquery.validate.js"></script>
-<script src="/js/postad.js"></script>
+<script src="/js/createListing.js"></script>
 <script>
     var loaded = false;
-    $('#postAdModal').on('shown.bs.modal', function() {
+    $('#createListingModal').on('shown.bs.modal', function() {
         if (!loaded) {
             $("#cs1").countrySelector();
             loaded = true;

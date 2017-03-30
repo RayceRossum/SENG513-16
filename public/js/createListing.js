@@ -23,11 +23,11 @@ $(document).ready(function() {
         }
     }
 
-    $("#uploadAd").validate({
+    $("#uploadListing").validate({
         submitHandler: function() {
             event.preventDefault();
 
-            var form = $('#uploadAd')[0];
+            var form = $('#uploadListing')[0];
             var formData = new FormData(form);
 
             $.ajax({
@@ -40,8 +40,8 @@ $(document).ready(function() {
                 cache: false,
                 success: function(data) {
                     if (data === "true") {
-                        $('#uploadAd').before('<div id="listingSuccessAlert" class="alert alert-success alert-dismissable">' + '<a href="#"' + 'class="close" data-dismiss="alert" aria-label="close">&times;</a>' + '<strong>Success!</strong> Your new post has successfully been added. Please wait for a registered Handeler to accept' + '</div>');
-                        $('#uploadAd').addClass('hidden', true);
+                        $('#uploadListing').before('<div id="listingSuccessAlert" class="alert alert-success alert-dismissable">' + '<a href="#"' + 'class="close" data-dismiss="alert" aria-label="close">&times;</a>' + '<strong>Success!</strong> Your new post has successfully been added. Please wait for a registered Handeler to accept' + '</div>');
+                        $('#uploadListing').addClass('hidden', true);
                         $('#item').val('');
                         $('#image').val('');
                         $('#details').val('');
@@ -57,8 +57,8 @@ $(document).ready(function() {
     });
 });
 
-function reloadPostAdModal() {
-    $('#uploadAd').removeClass('hidden', true);
+function reloadCreateListingModal() {
+    $('#uploadListing').removeClass('hidden', true);
     $('#listingSuccessAlert').remove();
 
 }

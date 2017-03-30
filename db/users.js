@@ -18,7 +18,7 @@ exports.findByUsername = function(query, username, cb) {
 
 exports.addUser = function(query, username, email, password, cb) {
     process.nextTick(function() {
-        query("INSERT INTO public.\"Users\" VALUES ('$1::varchar,  $2::varchar,  $3::varchar');", [username, email, bcrypt.hashSync(password, 10)], function(err, result) {
+        query("INSERT INTO public.\"Users\" (username, email, password_hash) VALUES ('$1::varchar,  $2::varchar,  $3::varchar');", [username, email, bcrypt.hashSync(password, 10)], function(err, result) {
             if (err) {
                 cb(err, null);
             } else {
