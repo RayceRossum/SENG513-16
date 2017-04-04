@@ -1,10 +1,18 @@
 $(document).ready(function() {
-    $('#openMessaging').popover({
-        html: true,
-        content: getMessagingList()
+    $('#openMessaging').on('click', function(event) {
+        $('#openMessaging').popover({
+            trigger: 'manual',
+            html: true,
+            content: function() {
+                $.get('/getUserList', function(data) {
+                    var userList = "";
+                    data.forEach(function(elem) {
+                        userList += "<li>" + elem + "</li>";
+                    });
+                    return ("<ul>" + userList + "</ul>");
+                });
+            }
+        });
+        $('#openMessaging').popover('show');
     });
-
-    function getMessagingList() {
-        return ("<ul><li>User</li><li>User</li</ul>");
-    }
 });
