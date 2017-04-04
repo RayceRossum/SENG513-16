@@ -1,7 +1,10 @@
 var express = require('express');
+var app = express();
+
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
-var _ = require('underscore');
+
+var bcrypt = require('bcrypt');
 
 var pg = require('pg');
 var query = require('pg-query');
@@ -13,7 +16,7 @@ db.bootstrap(query);
 passport.use(new Strategy(
     function(username, password, cb) {
         console.log(username);
-        db.findUserByUsername(query, username, function(err, user) {
+        db.users.findByUsername(query, username, function(err, user) {
             if (err) {
                 return cb(err);
             }
@@ -21,11 +24,11 @@ passport.use(new Strategy(
                 return cb(null, false);
             }
             // Check password is equal to entry for password
-            // TODO: Actually implement hashing
-            if (user.password_hash != password) {
-                return cb(null, false);
+            if (bcrypt.compareSync(password, user.password_hash)) {
+                return cb(null, user);
+
             }
-            return cb(null, user);
+            return cb(null, false);
         });
     }));
 
@@ -35,7 +38,7 @@ passport.serializeUser(function(user, cb) {
 });
 
 passport.deserializeUser(function(username, cb) {
-    db.findUserByUsername(query, username, function(err, user) {
+    db.users.findByUsername(query, username, function(err, user) {
         if (err) {
             return cb(err);
         }
@@ -44,7 +47,6 @@ passport.deserializeUser(function(username, cb) {
 });
 
 // Configure Express application.
-var app = express();
 app.use(require('morgan')('combined'));
 app.use(require('cookie-parser')());
 app.use(require('body-parser').urlencoded({
@@ -80,59 +82,19 @@ app.set('port', (process.env.PORT || 5000));
 // }).listen(80, 443, function() {
 //     console.log('Node app is running on port', 80, 443);
 // });
+var authRoutes = require('./routes/authentication')(express, query, passport, db);
+var chatRoutes = require('./routes/chat')(express, query, db);
+var createListingRoutes = require('./routes/createListing')(express, query, db);
+var indexRoutes = require('./routes/index')(express, query, db);
+var listingRoutes = require('./routes/listings')(express, query, db);
 
 
-// TODO: Implement routes.js
-app.get('/', function(request, response) {
-    response.render('pages/index', {
-        user: request.user
-    });
-});
+app.use('/', authRoutes);
+app.use('/', chatRoutes);
+app.use('/', createListingRoutes);
+app.use('/', indexRoutes);
+app.use('/', listingRoutes);
 
-app.post('/login',
-    passport.authenticate('local', {
-        failureRedirect: '/?Error'
-    }),
-    function(req, res) {
-        res.redirect('/buyer');
-    });
-
-app.get('/logout', function(req, res) {
-    req.logout();
-    res.redirect('/');
-});
-
-// TODO: Actually register users
-app.get('/register', function(request, response) {
-    if (request.user) {
-        response.redirect('/'), {
-            user: request.user
-        }
-    } else {
-        response.render('pages/register', {
-            user: request.user
-        });
-    }
-});
-
-app.get('/buyer', function(request, response) {
-    if (request.user) {
-        response.render('pages/buyer', {
-            user: request.user
-        });
-    } else {
-        response.redirect('/');
-    }
-});
-
-app.post('/submitAd', function(request, response) {
-    response.redirect('/');
-    console.log(request.body.item);
-    console.log(request.body.image);
-    console.log(request.body.country);
-    console.log(request.body.details);
-
-});
 
 app.listen(app.get('port'), function() {
     console.log("Node app running on port: " + app.get('port'));

@@ -1,11 +1,9 @@
 exports.users = require("./users");
+exports.profiles = require("./profiles");
+exports.listings = require("./listings");
 
 exports.bootstrap = function(query) {
+    exports.profiles.bootstrap(query);
     exports.users.bootstrap(query);
-    // Add new table bootstraps here
+    exports.listings.bootstrap(query);
 };
-
-// TODO: Remove outer function, users already exported.
-exports.findUserByUsername = function(query, username, cb) {
-    exports.users.findByUsername(query, username, cb);
-}

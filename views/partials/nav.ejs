@@ -9,12 +9,10 @@
             </li>
         </ul>
         <div class="navbar-collapse collapse" id="navbar-main">
-
-
             <% if (!user) { %>
                 <form class="navbar-form navbar-right" role="login" action="/login" method="post">
                     <div class="form-group">
-                        <input class="form-control" placeholder="Username" type="text" name="username" /><br/>
+                        <input class="form-control" placeholder="Email/Username" type="text" name="username" /><br/>
                     </div>
                     <div class="form-group">
                         <input class="form-control" placeholder="Password" type="password" name="password" />
@@ -27,38 +25,28 @@
                     </li>
                 </ul>
                 <% } else { %>
-                  <ul class="nav navbar-nav">
-                      <li><a href="/buyer">Home</a>
-                      </li>
-                      <li><a href="#">Link</a>
-                      </li>
-                      <li><a href="#">Link</a>
-                      </li>
-                      <li><a href="#">Link</a>
-                      </li>
-                      <li class="dropdown">
-                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                          <ul class="dropdown-menu">
-                              <li><a href="#">Action</a>
-                              </li>
-                              <li><a href="#">Another action</a>
-                              </li>
-                              <li><a href="#">Something else here</a>
-                              </li>
-                              <li class="divider"></li>
-                              <li><a href="#">Separated link</a>
-                              </li>
-                              <li class="divider"></li>
-                              <li><a href="#">One more separated link</a>
-                              </li>
-                          </ul>
-                      </li>
-                  </ul>
-                  <ul class="nav navbar-nav navbar-right">
-                      <li>
-                          <a href="logout">Logout</a>
-                      </li>
-                  </ul>
+                    <ul class="nav navbar-nav">
+
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a data-toggle="modal" href="#createListingModal" onclick="reloadCreateListingModal();">Create a Listing</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">My Profile</a>
+                                </li>
+                                <li><a href="#">Profile Settings</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li><a href="#">Account Settings</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="logout">Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                     <% } %>
         </div>
 </nav>
