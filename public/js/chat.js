@@ -1,5 +1,10 @@
 $(document).ready(function() {
-  $('#openChat').on('click', function(event) {
-    alert("chat clicked");
-  });
+    $('#openMessaging').popover({
+        html: true,
+        content: getMessagingList()
+    });
+
+    function getMessagingList() {
+        return ("<ul><li>User</li><li>User</li</ul>");
+    }
 });
