@@ -41,7 +41,13 @@ exports.bootstrap = function(query) {
                         if (err) {
                             console.error(err);
                         } else {
-                            console.log("Success: Users");
+                          query("INSERT INTO public.\"Users\" (username, email, password_hash) VALUES('buyer', 'buyer@handel.com', '" + bcrypt.hashSync("password", 10) + "')", function(err, result) {
+                              if (err) {
+                                  console.error(err);
+                              } else {
+                                  console.log("Success: Users");
+                              }
+                          });
                         }
                     });
 
