@@ -66,8 +66,12 @@
                 </p>
             </div>
             <div class="col-md-8">
+                <% if (userType === "handeler"){ %>
                 <div class="handelerSearch">
                     <% include ../pages/listings.ejs %>
+                </div>
+                <% } %>
+                <div class="handelerSearch">
                 </div>
                 <% include ../partials/listingsModal.ejs %>
             </div>
