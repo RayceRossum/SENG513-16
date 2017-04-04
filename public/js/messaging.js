@@ -1,19 +1,26 @@
 $(document).ready(function() {
-    $('#openMessaging').popover({html:true});
+    $('#openMessaging').popover({
+        html: true
+    });
+    updateUserList();
 
     $('#openMessaging').click(function() {
-        $.get('/getUserList', function(data) {
-            userList = "";
-            data.forEach(function(elem) {
-                userList += "<li>" + elem + "</li>";
-            });
-            var popover = $('#openMessaging').data('bs.popover');
-            popover.options.content = function() {
-                return userList;
-            }
-        });
+        updateUserList();
     });
 });
+
+function updateUserList() {
+    $.get('/getUserList', function(data) {
+        userList = "";
+        data.forEach(function(elem) {
+            userList += "<li>" + elem + "</li>";
+        });
+        var popover = $('#openMessaging').data('bs.popover');
+        popover.options.content = function() {
+            return userList;
+        }
+    });
+}
 
 // $.get('/getUserList', function(data) {
 //     var userList = "";
