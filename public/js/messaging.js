@@ -1,18 +1,25 @@
 $(document).ready(function() {
-    $('#openMessaging').on('click', function(event) {
-        $('#openMessaging').popover({
-            trigger: 'manual',
-            html: true,
-            content: function() {
-                $.get('/getUserList', function(data) {
-                    var userList = "";
-                    data.forEach(function(elem) {
-                        userList += "<li>" + elem + "</li>";
-                    });
-                    return ("<ul>" + userList + "</ul>");
-                });
+    $('#openMessaging').popover({html:true});
+
+    $('#openMessaging').click(function() {
+        $.get('/getUserList', function(data) {
+            userList = "";
+            data.forEach(function(elem) {
+                userList += "<li>" + elem + "</li>";
+            });
+            var popover = $('#openMessaging').data('bs.popover');
+            popover.options.content = function() {
+                return userList;
             }
         });
-        $('#openMessaging').popover('show');
     });
 });
+
+// $.get('/getUserList', function(data) {
+//     var userList = "";
+//     data.forEach(function(elem) {
+//         userList += "<li>" + elem + "</li>";
+//     });
+//     //alert(userList);
+//     return ("<ul>" + userList + "</ul>");
+// });

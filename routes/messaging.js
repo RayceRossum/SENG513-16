@@ -7,7 +7,6 @@ module.exports = function(express, query, db) {
                 if (err) {
                     console.error(err);
                 } else {
-                    console.log(result);
                     response.json(result);
                 }
             });
