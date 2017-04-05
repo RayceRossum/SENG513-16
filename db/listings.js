@@ -138,7 +138,7 @@ exports.getFilteredAdsByPage = function(query, limit, offset, buyerLoc, itemLoc,
             }
         });
     } else if (!itemLoc && buyerLoc) {
-        query("SELECT * FROM public.\"Listings\" where NOT deleted buyerloc = $1::varchar ORDER BY id DESC LIMIT $2::bigint OFFSET $3::bigint;", [buyerLoc, limit, offset], function(err, results) {
+        query("SELECT * FROM public.\"Listings\" where NOT deleted and buyerloc = $1::varchar ORDER BY id DESC LIMIT $2::bigint OFFSET $3::bigint;", [buyerLoc, limit, offset], function(err, results) {
             if (err) console.log(err);
             else {
                 cb(err, results)
