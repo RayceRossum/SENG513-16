@@ -13,7 +13,7 @@ function updateUserList() {
     $.get('/getUserList', function(data) {
         userList = "";
         data.forEach(function(elem, index) {
-            userList += "<tr rowNum=" + index + " class='userList clickable-row'><td>" + elem.username + "</td><td>" + elem.item + "</td></tr>";
+            userList += "<tr user=" + elem.username + " item=" + elem.item + " class='userList clickable-row'><td>" + elem.username + "</td><td>" + elem.item + "</td></tr>";
         });
 
         var popover = $('#openMessaging').data('bs.popover');
@@ -23,6 +23,6 @@ function updateUserList() {
     });
 
     $(".clickable-row").click(function() {
-        alert("Start conversation")
+        alert("Start conversation with " + $(this).attr('user') + " about item " + $(this).attr('item'));
     });
 }
