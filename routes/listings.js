@@ -254,9 +254,24 @@ module.exports = function(express, query, db) {
             }); 
         });
     });
+    
+    router.post('/deleteListing', function(request, response) {
+        
+        if(!request.body.listingId) {
+            console.log(err);
+            response.end("fail");
+        }
+        else {
+            db.listings.deleteListing(query, request.body.listingId);
+            response.end("success");
+        }
+        
+    });
 
     router.post('/getAdDetails', function(request, response) {
 
+        console.log("listingId: " + request.body.listingId);
+        
         if (!request.body.listingId) console.log(err);
 
         else {
@@ -276,7 +291,6 @@ module.exports = function(express, query, db) {
                     }
 
                     if (result[0].imagename === null || result[0].imagename === "undefined") {
-                        console.log(result[0].buyerloc);
                         var listing = {
                             user: result[0].username,
                             item: result[0].item,
