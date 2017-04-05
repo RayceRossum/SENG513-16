@@ -24,7 +24,7 @@ exports.getUserList = function(username, query, cb) {
     query("SELECT * FROM public.\"Messaging\" WHERE usernameBuyer = $1::varchar OR usernameHandeler = $1::varchar;", [username], function(err, result) {
         if (err) {
             console.error(err);
-            cb(err, null);
+            cb(err, null, null);
         } else {
             var userMessages = result.map(function(result) {
                 if (result.usernamehandeler === username) {
@@ -33,7 +33,12 @@ exports.getUserList = function(username, query, cb) {
                     return result.usernamehandeler;
                 }
             });
-            cb(null, userMessages);;
+
+            var listingItems = result.map(function(result){
+              return result.listingitem;
+            });
+            
+            cb(null, userMessages, listingItems);
         }
     });
 };
@@ -42,7 +47,7 @@ exports.acceptListing = function(usernameHandeler, usernameBuyer, listingItem, q
     query("INSERT INTO public.\"Messaging\" (usernameHandeler, usernameBuyer, listingItem) VALUES ($1::varchar, $2::varchar, $3::varchar)", [usernameHandeler, usernameBuyer, listingItem], function(err, result) {
         if (err) {
             console.error(err);
-            cb(err, 'false');
+            cb(err, 'false', null);
         } else {
             cb(null, 'true');
         }

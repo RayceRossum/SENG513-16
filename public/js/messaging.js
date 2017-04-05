@@ -13,11 +13,15 @@ function updateUserList() {
     $.get('/getUserList', function(data) {
         userList = "";
         data.forEach(function(elem) {
-            userList += "<li><button type='button' class='btn btn-default btn-block'>" + elem + "</button></li>";
+            userList += "<tr class='clickable-row'><td>" + elem.user + "</td><td>" + elem.item + "</td></tr>";
         });
         var popover = $('#openMessaging').data('bs.popover');
         popover.options.content = function() {
-            return "<ul class='userList'>" + userList + "</ul>";
+            return "<table><tr class='' data-href='url://'><tr><th>User</th><th>Item</th>" + userList + "</table>";
         }
+    });
+
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
     });
 }
