@@ -13,11 +13,11 @@ function updateUserList() {
     $.get('/getUserList', function(data) {
         userList = "";
         data.forEach(function(elem) {
-            userList += "<li>" + elem + "</li>";
+            userList += "<li><button type='button' class='btn btn-default btn-block'>" + elem + "</button></li>";
         });
         var popover = $('#openMessaging').data('bs.popover');
         popover.options.content = function() {
-            return userList;
+            return "<ul class='userList'>" + userList + "</ul>";
         }
     });
 }

@@ -6,7 +6,6 @@ var buyerLocation;
 $(document).on("pageload")
 
 $(document).ready(function() {
-
     $.ajax({
         type: "GET",
         url: "/getRecentAds",
@@ -177,3 +176,21 @@ $(document).ready(function() {
 
     });
 });
+
+function acceptListing() {
+    var usernameBuyer = $('#listUser').text();
+    var listingItem = $('#listItem').text()
+
+    $.ajax({
+        type: "POST",
+        url: "/acceptListing",
+        data: {
+            'usernameBuyer': usernameBuyer,
+            'listingItem': listingItem
+        },
+        success: function(data) {
+          alert("CREATED")
+
+        }
+    });
+}

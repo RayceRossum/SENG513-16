@@ -13,6 +13,19 @@ module.exports = function(express, query, db) {
         extended: true
     }));
 
+    router.post('/acceptListing', function(request, response) {
+      console.log("HELLO");
+        //TODO: Better input sanitization to make sure it's not possible to create chats with any buyer
+        if (request.user) {
+            db.messaging.acceptListing(request.user.username, request.body.usernameBuyer, request.body.listingItem, query, function(err, result) {
+                console.log(result);
+                response.send(result);
+            });
+        } else {
+            response.redirect('/');
+        }
+    });
+
     router.get('/listings', function(request, response) {
         if (request.user) {
             response.render('pages/listings', {

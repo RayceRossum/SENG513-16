@@ -1,0 +1,12 @@
+.userList {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    overflow: hidden;
+}
+
+.userList li {
+    padding: 5px 10px;
+    width: auto;
+}
