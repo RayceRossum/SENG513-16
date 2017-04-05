@@ -21,12 +21,3 @@ function updateUserList() {
         }
     });
 }
-
-// $.get('/getUserList', function(data) {
-//     var userList = "";
-//     data.forEach(function(elem) {
-//         userList += "<li>" + elem + "</li>";
-//     });
-//     //alert(userList);
-//     return ("<ul>" + userList + "</ul>");
-// });

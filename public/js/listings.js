@@ -189,8 +189,7 @@ function acceptListing() {
             'listingItem': listingItem
         },
         success: function(data) {
-          alert("CREATED")
-
+          updateUserList();
         }
     });
 }

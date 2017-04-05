@@ -39,12 +39,11 @@ exports.getUserList = function(username, query, cb) {
 };
 
 exports.acceptListing = function(usernameHandeler, usernameBuyer, listingItem, query, cb) {
-    query("INSERT INTO public.\"Messaging\" (usernameHandeler, usernameBuyer, listingItem) VALUES ($1::varchar, $2::varchar, $3::varchar)",[usernameHandeler, usernameBuyer, listingItem] ,function(err, result) {
+    query("INSERT INTO public.\"Messaging\" (usernameHandeler, usernameBuyer, listingItem) VALUES ($1::varchar, $2::varchar, $3::varchar)", [usernameHandeler, usernameBuyer, listingItem], function(err, result) {
         if (err) {
             console.error(err);
             cb(err, 'false');
         } else {
-            console.log("****Created message thread for " + usernameHandeler + " and " + usernameBuyer + " for listing number " + listingItem);
             cb(null, 'true');
         }
     });

@@ -3,12 +3,18 @@ exports.bootstrap = function(query) {
         if (err) {
             console.log(err);
         } else {
-            query("CREATE TABLE public.\"Listings\"(id SERIAL PRIMARY KEY, time timestamp DEFAULT current_timestamp, username text NOT NULL, item text NOT NULL, imageName text NULL, buyerloc text NULL, itemloc text NULL, details text NULL);", function(err, result) {
-
+            query("CREATE TABLE public.\"Listings\"(id SERIAL PRIMARY KEY, time timestamp DEFAULT current_timestamp, username text NOT NULL, item text NOT NULL, imageName text NULL, buyerloc text NOT NULL, itemloc text NULL, details text NULL);", function(err, result) {
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log("Success: Listings");
+                    query("INSERT INTO public.\"Listings\" (username, item, buyerLoc) VALUES($1::varchar, $2::varchar, $3::varchar);", ['buyer', 'Random Item', 'Canada'], function(err, result) {
+                        if (err) {
+                            console.log(err)
+                        } else {
+                            console.log("Success: Listings");
+                        };
+                    });
+
                 }
             });
         }

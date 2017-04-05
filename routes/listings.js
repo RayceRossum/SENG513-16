@@ -14,7 +14,7 @@ module.exports = function(express, query, db) {
     }));
 
     router.post('/acceptListing', function(request, response) {
-      console.log("HELLO");
+        console.log("HELLO");
         //TODO: Better input sanitization to make sure it's not possible to create chats with any buyer
         if (request.user) {
             db.messaging.acceptListing(request.user.username, request.body.usernameBuyer, request.body.listingItem, query, function(err, result) {
@@ -198,22 +198,22 @@ module.exports = function(express, query, db) {
 
                 else {
                     var country;
-                    if (result[0].itemloc === "undefined")
+                    if (result[0].itemloc === null || result[0].itemloc === "undefined") {
                         country = "undefined";
-                    else {
+                    } else {
                         country = lookup.countries({
                             alpha3: result[0].itemloc
                         })[0].name;
                     }
 
-                    if (result[0].imagename === "undefined") {
-
+                    if (result[0].imagename === null || result[0].imagename === "undefined") {
+                        console.log(result[0].buyerloc);
                         var listing = {
                             user: result[0].username,
                             item: result[0].item,
                             buyerLoc: lookup.countries({
                                 alpha3: result[0].buyerloc
-                            })[0].name,
+                            })[0],
                             itemLoc: country,
                             details: result[0].details
                         };
