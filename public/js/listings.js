@@ -146,10 +146,9 @@ $(document).ready(function() {
             type: "POST",
             url: "/getAdDetails",
             data: {
-                'listingId': listId
+                listingId: listId
             },
             success: function(data) {
-
                 var jsonObj = JSON.parse(data);
 
                 $('#listUser').empty();
