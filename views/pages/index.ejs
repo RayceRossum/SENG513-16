@@ -66,17 +66,23 @@
                 </p>
             </div>
             <div class="col-md-8">
+                <% if (userType === "handeler"){ %>
                 <div class="handelerSearch">
                     <% include ../pages/listings.ejs %>
                 </div>
+                <% } %>
+                <div class="users">
+                    <% include ../pages/userListings.ejs %>
+                </div>
                 <% include ../partials/listingsModal.ejs %>
+                <% include ../partials/userListingsModal.ejs %>
             </div>
             <% include ../partials/createListingModal.ejs %>
             <% include ../partials/profileSettingsModal.ejs %>
                 </div>
                 </div>
                 <footer class="footer">
-                    <% include ../pages/chat.ejs %>
+                    <% include ../pages/messaging.ejs %>
                 </footer>
                 <% } %>
 

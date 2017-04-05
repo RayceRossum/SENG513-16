@@ -83,17 +83,16 @@ app.set('port', (process.env.PORT || 5000));
 //     console.log('Node app is running on port', 80, 443);
 // });
 var authRoutes = require('./routes/authentication')(express, query, passport, db);
-var chatRoutes = require('./routes/chat')(express, query, db);
 var createListingRoutes = require('./routes/createListing')(express, query, db);
 var indexRoutes = require('./routes/index')(express, query, db);
 var listingRoutes = require('./routes/listings')(express, query, db);
-
+var messagingRoutes = require('./routes/messaging')(express, query, db);
 
 app.use('/', authRoutes);
-app.use('/', chatRoutes);
 app.use('/', createListingRoutes);
 app.use('/', indexRoutes);
 app.use('/', listingRoutes);
+app.use('/', messagingRoutes);
 
 
 app.listen(app.get('port'), function() {

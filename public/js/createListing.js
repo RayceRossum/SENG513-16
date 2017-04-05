@@ -48,6 +48,7 @@ $(document).ready(function() {
                         $('#imagePreview').hide();
                         $('#cs1').val('');
                         $('.handelerSearch').load("/listings");
+                        $('.users').load("/userListings");
                     } else {
                         $('#uploadAd').before('<div class="alert alert-danger alert-dismissable">' + '<a href="#"' + 'class="close" data-dismiss="alert" aria-label="close">&times;</a>' + '<strong>Error!</strong> Please ensure the fields are populated correctly' + '</div>');
                     }
