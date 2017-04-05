@@ -14,7 +14,6 @@ module.exports = function(express, query, db) {
     }));
 
     router.post('/acceptListing', function(request, response) {
-        console.log("HELLO");
         //TODO: Better input sanitization to make sure it's not possible to create chats with any buyer
         if (request.user) {
             db.messaging.acceptListing(request.user.username, request.body.usernameBuyer, request.body.listingItem, query, function(err, result) {
@@ -29,6 +28,16 @@ module.exports = function(express, query, db) {
     router.get('/listings', function(request, response) {
         if (request.user) {
             response.render('pages/listings', {
+                user: request.user
+            });
+        } else {
+            response.redirect('/');
+        }
+    });
+    
+    router.get('/userListings', function(request, response) {
+        if (request.user) {
+            response.render('pages/userListings', {
                 user: request.user
             });
         } else {
@@ -72,6 +81,43 @@ module.exports = function(express, query, db) {
             }
 
 
+        });
+    });
+    
+    router.post('/getUserListingPage', function(request, response) {
+        
+        db.listings.getAllUserAdsCount(query, request.user.username, function(err, count) {
+            if (err) console.log(err);
+            else {
+                let limit = 2;
+                let offset = 2 * parseInt(request.body.pagenum);
+                
+                db.listings.getAllUserAds(query, request.user.username, limit, offset, function(err, result){
+                    if (err) console.log(err);
+                    else{
+                        var listings = [];
+                        var resObj = [];
+                         
+                        if (count <= (offset + limit) || offset == 0) {
+                            resObj.push("true");
+                        } else {
+                            resObj.push("false");
+                        }
+                        
+                        for(var i = 0; i < result.length; i++){
+                            listings.push({
+                                id: result[i].id,
+                                item: result[i].item
+                            });
+                        }
+                        
+                        resObj.push(listings);
+                        response.end(JSON.stringify(resObj));
+                    }
+                });
+            }
+            
+            
         });
     });
 
@@ -236,7 +282,7 @@ module.exports = function(express, query, db) {
                             item: result[0].item,
                             buyerLoc: lookup.countries({
                                 alpha3: result[0].buyerloc
-                            })[0],
+                            })[0].name,
                             itemLoc: country,
                             details: result[0].details
                         };
