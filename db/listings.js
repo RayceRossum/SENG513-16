@@ -15,6 +15,26 @@ exports.bootstrap = function(query) {
     });
 };
 
+exports.getAllUserAds = function(query, user, limit, offset, cb){
+    query("SELECT * FROM public.\"listings\" WHERE username = $1::varchar ORDER BY id DESC LIMIT $2::bigint OFFSET $3::bigint;", [user, limit, offset], function(err, result){
+        if (err) {
+            console.log(err);
+        } else {
+            cb(err, result);
+        }
+    });
+}
+
+exports.getAllUserAdsCount = function(query, user, cb){
+    query("SELECT COUNT(*) FROM public.\"listings\" WHERE username = $1::varchar;", [user], function(err, result){
+        if (err) {
+            console.log(err);
+        } else {
+            cb(err, result);
+        }
+    });
+}
+
 exports.getAllAds = function(query, limit, offset, cb) {
     query("SELECT * FROM public.\"listings\" ORDER BY id DESC LIMIT $1::bigint OFFSET $2::bigint;", [limit, offset], function(err, result) {
         if (err) {

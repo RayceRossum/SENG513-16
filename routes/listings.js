@@ -26,8 +26,7 @@ module.exports = function(express, query, db) {
     router.get('/getRecentAds', function(request, response) {
         let upper = 0 * 2;
         let lower = 0 * 2 + 1;
-
-
+        
         db.listings.getCount(query, function(err, count) {
             if (err) response.end("error");
             else {
@@ -169,8 +168,32 @@ module.exports = function(express, query, db) {
 
     });
 
-    router.get('getAllAds', function(request, response) {
-        response.end("yes");
+    
+    router.get('/getUserListings', function(request, response){
+        let limit = 2;
+        let offset = 0;
+        db.listings.getAllUserAdsCount(query, request.user.username, function(err, count){
+            db.listings.getAllUserAds(query, request.user.username, limit, offset, function(err,result){
+                if (err){
+                    console.log(err);
+                }
+                else{
+                    var listings = [];
+                    var resObj = [];
+                    for(var i = 0; i < result.length; i++){
+                        listings.push({
+                            id: result[i].id,
+                            item: result[i].item
+                        });
+                    }
+                    if (count <= limit) resObj.push("true");
+                    else resObj.push("false");
+                    resObj.push(listings);
+                    response.end(JSON.stringify(resObj));
+                }
+                
+            }); 
+        });
     });
 
     router.post('/getAdDetails', function(request, response) {
