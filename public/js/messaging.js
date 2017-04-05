@@ -18,7 +18,7 @@ function updateUserList() {
 
         var popover = $('#openMessaging').data('bs.popover');
         popover.options.content = function() {
-            return "<table><tr class='userList' data-href='url://'><tr><th>User</th><th>Item</th>" + userList + "</table>";
+            return "<table class='table table-hover table-condensed'><tr class='userList' data-href='url://'><tr><th>User</th><th>Item</th>" + userList + "</table>";
         }
     });
 
