@@ -3,8 +3,6 @@ var filtered = "false";
 var itemLocation;
 var buyerLocation;
 
-$(document).on("pageload")
-
 $(document).ready(function() {
     $.ajax({
         type: "GET",
@@ -22,7 +20,7 @@ $(document).ready(function() {
 
             for (var i = 0; i < jsonObj[1].length; i++) {
                 $('#listings').append('<li class="list-group-item row">' +
-                    '<div class="col-md-4">' + jsonObj[1][i].item + '</div>' +
+                   '<div class="col-md-4">' + jsonObj[1][i].item + '</div>' +
                     '<div class="col-md-4">' + jsonObj[1][i].buyerLoc + '</div>' +
                     '<div class="col-md-4"><a class="openListing" href="#" data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#bannerformmodal">More</a></div>');
             }
