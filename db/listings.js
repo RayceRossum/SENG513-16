@@ -3,11 +3,11 @@ exports.bootstrap = function(query) {
         if (err) {
             console.log(err);
         } else {
-            query("CREATE TABLE public.\"Listings\"(id SERIAL PRIMARY KEY, time timestamp DEFAULT current_timestamp, username text NOT NULL, item text NOT NULL, imageName text NULL, buyerloc text NOT NULL, itemloc text NULL, details text NULL);", function(err, result) {
+            query("CREATE TABLE public.\"Listings\"(id SERIAL PRIMARY KEY, time timestamp DEFAULT current_timestamp, username text NOT NULL, item text NOT NULL, imageName text NULL, buyerloc text NOT NULL, itemloc text NULL, details text NULL, deleted boolean DEFAULT FALSE);", function(err, result) {
                 if (err) {
                     console.log(err);
                 } else {
-                    query("INSERT INTO public.\"Listings\" (username, item, buyerLoc) VALUES($1::varchar, $2::varchar, $3::varchar);", ['buyer', 'Random Item', 'Canada'], function(err, result) {
+                    query("INSERT INTO public.\"Listings\" (username, item, buyerLoc) VALUES($1::varchar, $2::varchar, $3::varchar);", ['buyer', 'Random Item', 'CAN'], function(err, result) {
                         if (err) {
                             console.log(err)
                         } else {
@@ -22,7 +22,7 @@ exports.bootstrap = function(query) {
 };
 
 exports.getAllUserAds = function(query, user, limit, offset, cb){
-    query("SELECT * FROM public.\"listings\" WHERE username = $1::varchar ORDER BY id DESC LIMIT $2::bigint OFFSET $3::bigint;", [user, limit, offset], function(err, result){
+    query("SELECT * FROM public.\"Listings\" WHERE username = $1::varchar ORDER BY id DESC LIMIT $2::bigint OFFSET $3::bigint;", [user, limit, offset], function(err, result){
         if (err) {
             console.log(err);
         } else {
@@ -32,11 +32,11 @@ exports.getAllUserAds = function(query, user, limit, offset, cb){
 }
 
 exports.getAllUserAdsCount = function(query, user, cb){
-    query("SELECT COUNT(*) FROM public.\"listings\" WHERE username = $1::varchar;", [user], function(err, result){
+    query("SELECT COUNT(*) FROM public.\"Listings\" WHERE username = $1::varchar;", [user], function(err, result){
         if (err) {
             console.log(err);
         } else {
-            cb(err, result);
+            cb(err, result[0].count);
         }
     });
 }
@@ -123,7 +123,7 @@ exports.getAdsByCountry = function(query, limit, itemLoc, buyerLoc, cb) {
 exports.getFilteredAdsByPage = function(query, limit, offset, buyerLoc, itemLoc, cb) {
     console.log("getFilteredAdsByPage");
     if (buyerLoc && itemLoc) {
-        query("SELECT * FROM public.\"listings\" where buyerloc = $1::varchar AND itemLoc = $2::varchar ORDER BY id DESC LIMIT $3::bigint OFFSET $4::bigint;", [buyerLoc, itemLoc, limit, offset], function(err, results) {
+        query("SELECT * FROM public.\"Listings\" where buyerloc = $1::varchar AND itemLoc = $2::varchar ORDER BY id DESC LIMIT $3::bigint OFFSET $4::bigint;", [buyerLoc, itemLoc, limit, offset], function(err, results) {
             if (err) console.log(err);
             else {
                 cb(err, results)
