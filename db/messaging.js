@@ -38,7 +38,7 @@ exports.getUserList = function(username, query, cb) {
                   var data = {
                       "username": result.usernamehandeler,
                       "item": result.listingitem,
-                      "conversationID": result.conversationID
+                      "conversationID": result.conversationid
                   };
                     return data;
                 }
