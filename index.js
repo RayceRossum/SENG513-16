@@ -4,6 +4,8 @@ var app = express();
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
 
+var bcrypt = require('bcrypt');
+
 var pg = require('pg');
 var query = require('pg-query');
 var db = require('./db');
@@ -22,11 +24,11 @@ passport.use(new Strategy(
                 return cb(null, false);
             }
             // Check password is equal to entry for password
-            // TODO: Actually implement hashing
-            if (user.password_hash != password) {
-                return cb(null, false);
+            if (bcrypt.compareSync(password, user.password_hash)) {
+                return cb(null, user);
+
             }
-            return cb(null, user);
+            return cb(null, false);
         });
     }));
 
@@ -80,27 +82,18 @@ app.set('port', (process.env.PORT || 5000));
 // }).listen(80, 443, function() {
 //     console.log('Node app is running on port', 80, 443);
 // });
-var authRoutes = require('./routes/authentication')(express, query, passport);
+var authRoutes = require('./routes/authentication')(express, query, passport, db);
+var createListingRoutes = require('./routes/createListing')(express, query, db);
+var indexRoutes = require('./routes/index')(express, query, db);
+var listingRoutes = require('./routes/listings')(express, query, db);
+var messagingRoutes = require('./routes/messaging')(express, query, db);
+
 app.use('/', authRoutes);
+app.use('/', createListingRoutes);
+app.use('/', indexRoutes);
+app.use('/', listingRoutes);
+app.use('/', messagingRoutes);
 
-app.get('/buyer', function(request, response) {
-    if (request.user) {
-        response.render('pages/buyer', {
-            user: request.user
-        });
-    } else {
-        response.redirect('/');
-    }
-});
-
-app.post('/submitAd', function(request, response) {
-    response.redirect('/');
-    console.log(request.body.item);
-    console.log(request.body.image);
-    console.log(request.body.country);
-    console.log(request.body.details);
-
-});
 
 app.listen(app.get('port'), function() {
     console.log("Node app running on port: " + app.get('port'));

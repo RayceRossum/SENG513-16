@@ -1,0 +1,16 @@
+.userList {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.userList td {
+    min-width: 100px;
+}
+
+.clickable-row {
+    cursor: pointer;
+}

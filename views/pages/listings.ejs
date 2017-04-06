@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+        <link rel="stylesheet" href="/stylesheets/createListing.css" />
+</head>
+
+<body>
+    <div class="form-group col-md-12 col-sm-12 col-xs-12 handel-form">
+        <form method="post" id="filterListings">
+            <div class="col-md-4 col-sm-4 col-xs-4">
+                <label class="control-label " for="buyerLoc">Buyer Location:  </label>
+                <input class="control-label" id="buyerLoc" name="buyerLoc" type="text" />
+            </div>
+            <div class="form-group col-md-4 col-sm-4 col-xs-4">
+                <label class="control-label " for="itemLoc">Item Location: </label>
+                <input class="control-label" id="itemLoc" name="itemLoc" type="text" />
+            </div>
+            <div class="form-group col-md-4 col-sm-4 col-xs-4">
+                <button class="btn btn-primary pull-right" style="margin-top: 10px;" name="submitpost" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+    <div class="form-group col-md-12 col-sm-12 col-xs-12">
+        <ul class="list-group stat-panel" style="margin: 0; padding: 0;">
+            <li class="list-group-item row">
+                <div class="col-md-4">Listed Item:</div>
+                <div class="col-md-4">Buyer Location:</div>
+                <div class="col-md-4">Further Details: </div>
+            </li>
+        </ul>
+        <ul class="list-group stat-panel" id="listings" style="margin: 0; padding: 0;">
+        </ul>
+        <button type="button" id="nextbtn" class="btn btn-default" style="float:right; margin-top:5px; margin-left:5px;">Next</button>
+        <button type="button" id="prevbtn" class="btn btn-default" style="float:right; margin-top:5px; margin-right:5px;">Previous</button>
+    </div>
+
+    <script src="/js/listings.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#buyerLoc").countrySelector();
+            $("#itemLoc").countrySelector();
+        });
+    </script>
+</body>
+
+</html>
