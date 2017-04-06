@@ -26,11 +26,13 @@ exports.getMessages = function(conversationID, query, cb) {
             console.error(err);
             cb(err, null, null);
         } else {
+          console.log(result);
             var userMessages = result.map(function(result) {
                 var data = {
                     "usernameSender": result.usernamesender,
                     "usernameReceiver": result.usernamereceiver,
-                    "message": result.message
+                    "message": result.message,
+                    "timestamp": result.time
                 };
                 return data;
             });
