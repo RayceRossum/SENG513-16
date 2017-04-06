@@ -55,6 +55,23 @@
                             </li>
                         </ul>
                     </div>
+                    <% } else { %>
+                        <div class="col-md-4">
+                            <h1>WELCOME <%= userType.toUpperCase() %></h1>
+                            <p>
+                                Successfully logged in as
+                                <%= user.username %>.
+                            </p>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="handelerSearch">
+                                <% include ../pages/listings.ejs %>
+                            </div>
+                            <% include ../partials/listingsModal.ejs %>
+                        </div>
+                        <% include ../partials/createListingModal.ejs %>
+                        <% include ../partials/myProfileModal.ejs %>
+                        <% } %>
             </div>
         </div>
         <% } else { %>
