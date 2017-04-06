@@ -46,9 +46,9 @@ function updateUserList() {
                     });
                 }
                 //$("#openMessaging").popover("hide");
-                //$("#openMessaging").click();
+                $("#openMessaging").click();
                 //$("#openMessage" + conversationID).popover("show");
-                //$("#openMessage" + conversationID).click();
+                $("#openMessage" + conversationID).click();
             }
         });
     });
@@ -60,10 +60,10 @@ function getMessageData(data) {
         var timestampD = new Date(elem.timestamp);
         //var timestamp = timestampD.getMonth()+1 + "/ "+timestampD.getDate() + "/" + timestampD.getFullYear() + "-" + timestampD.getHours() + ":" + timestampD.getMinutes();
         var timestamp = timestampD.toLocaleDateString();
-        messageData += "<b>" + elem.usernameSender + "</b>" + "(" + timestamp + "): " + elem.message;
+        messageData += "<li><b>" + elem.usernameSender + "</b>" + "(" + timestamp + "): " + elem.message + "</li>";
     });
 
-    return messageData;
+    return "<ul>" + messageData + "</ul>";
 
 
 }
