@@ -3,7 +3,7 @@ exports.bootstrap = function(query) {
         if (err) {
             console.log(err);
         } else {
-            query("CREATE TABLE public.\"Messaging\"(id SERIAL PRIMARY KEY, time timestamp DEFAULT current_timestamp, usernameHandeler text NOT NULL, usernameBuyer text NOT NULL, listingItem text NOT NULL);", function(err, result) {
+            query("CREATE TABLE public.\"Messaging\"(id SERIAL PRIMARY KEY, time timestamp DEFAULT current_timestamp, usernameHandeler text NOT NULL, usernameBuyer text NOT NULL, listingItem text NOT NULL, conversationID SERIAL);", function(err, result) {
                 if (err) {
                     console.log(err);
                 } else {
@@ -30,18 +30,20 @@ exports.getUserList = function(username, query, cb) {
                 if (result.usernamehandeler === username) {
                     var data = {
                         "username": result.usernamebuyer,
-                        "item": result.listingitem
+                        "item": result.listingitem,
+                        "conversationID": result.conversationid
                     };
                     return data;
                 } else {
                   var data = {
                       "username": result.usernamehandeler,
-                      "item": result.listingitem
+                      "item": result.listingitem,
+                      "conversationID": result.conversationID
                   };
                     return data;
                 }
             });
-
+            console.log(userMessages);
             cb(null, userMessages);
         }
     });
