@@ -1,33 +1,25 @@
 <!-- Modal -->
-<div id="createListingModal" class="modal fade" role="dialog">
+<div id="profileSettingsModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
 
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Create a Listing</h4>
+                <h4 class="modal-title">Edit Your Profile Settings</h4>
             </div>
             <div class="modal-body row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="col-md-12 col-sm-12 col-xs-12">
-                        <form method="post" id="updateProfile">
+                        <form method="post" id="uploadListing">
                             <div class="form-group ">
-                                <label class="control-label " for="item">Item<span class="asteriskField">*</span></label>
-                                <input class="form-control" id="item" name="item" type="text" minlength="2" required/>
+                                <label class="control-label " for="username">Change Your Username</label>
+                                <input class="form-control" id="username" name="username" type="text" minlength="2" required/>
+                                <small id="username" class="form-text text-muted">Usernames must be greater than one character.</small>
                             </div>
                             <div class="form-group">
-                                <label class="control-label" for="image">Image Preview</label>
-                                <input class="form-group" id="image" name="image" type="file" />
-                                <img id="imagePreview" src="#" style="max-width:50%" ;/>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label" for="cs1">Item Location</label>
+                                <label class="control-label" for="cs1">Edit Your Location</label>
                                 <input class="control-label" id="cs1" name="country" type="text" />
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label" for="details">Further Details and Comments</label>
-                                <textarea class="form-control" id="details" name="details" rows="5" style="max-width:100%" type="text"></textarea>
                             </div>
                             <div class="form-group">
                                 <div>
@@ -43,10 +35,9 @@
 </div>
 
 <script src="/js/jquery.validate.js"></script>
-<script src="/js/createListing.js"></script>
 <script>
     var loaded = false;
-    $('#createListingModal').on('shown.bs.modal', function() {
+    $('#profileSettingsModal').on('shown.bs.modal', function() {
         if (!loaded) {
             $("#cs1").countrySelector();
             loaded = true;

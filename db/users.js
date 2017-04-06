@@ -18,15 +18,22 @@ exports.findByUsername = function(query, username, cb) {
 
 exports.addUser = function(query, username, email, password, cb) {
     process.nextTick(function() {
-        query("INSERT INTO public.\"Users\" (username, email, password_hash) VALUES ('$1::varchar,  $2::varchar,  $3::varchar');", [username, email, bcrypt.hashSync(password, 10)], function(err, result) {
+        query("INSERT INTO public.\"Users\" (username, email, password_hash) VALUES ($1::varchar,  $2::varchar,  $3::varchar);", [username, email, bcrypt.hashSync(password, 10)], function(err, result) {
             if (err) {
                 cb(err, null);
             } else {
-                cb(null, result);
+                query("INSERT INTO public.\"Profiles\" (username, accountType) VALUES ($1::varchar, $2::varchar)", [username, 'buyer'], function(err, result) {
+                    if (err) {
+                        cb(err, null);
+                    } else {
+                        cb(null, result);
+                    }
+
+                });
             }
         });
     });
-};
+}
 
 exports.bootstrap = function(query) {
     query("DROP TABLE IF EXISTS public.\"Users\"", function(err, result) {
@@ -41,7 +48,13 @@ exports.bootstrap = function(query) {
                         if (err) {
                             console.error(err);
                         } else {
-                            console.log("Success: Users");
+                            query("INSERT INTO public.\"Users\" (username, email, password_hash) VALUES('buyer', 'buyer@handel.com', '" + bcrypt.hashSync("password", 10) + "')", function(err, result) {
+                                if (err) {
+                                    console.error(err);
+                                } else {
+                                    console.log("Success: Users");
+                                }
+                            });
                         }
                     });
 

@@ -3,10 +3,7 @@ var filtered = "false";
 var itemLocation;
 var buyerLocation;
 
-$(document).on("pageload")
-
 $(document).ready(function() {
-
     $.ajax({
         type: "GET",
         url: "/getRecentAds",
@@ -23,7 +20,7 @@ $(document).ready(function() {
 
             for (var i = 0; i < jsonObj[1].length; i++) {
                 $('#listings').append('<li class="list-group-item row">' +
-                    '<div class="col-md-4">' + jsonObj[1][i].item + '</div>' +
+                   '<div class="col-md-4">' + jsonObj[1][i].item + '</div>' +
                     '<div class="col-md-4">' + jsonObj[1][i].buyerLoc + '</div>' +
                     '<div class="col-md-4"><a class="openListing" href="#" data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#bannerformmodal">More</a></div>');
             }
@@ -149,10 +146,9 @@ $(document).ready(function() {
             type: "POST",
             url: "/getAdDetails",
             data: {
-                'listingId': listId
+                listingId: listId
             },
             success: function(data) {
-
                 var jsonObj = JSON.parse(data);
 
                 $('#listUser').empty();
@@ -177,3 +173,20 @@ $(document).ready(function() {
 
     });
 });
+
+function acceptListing() {
+    var usernameBuyer = $('#listUser').text();
+    var listingItem = $('#listItem').text()
+
+    $.ajax({
+        type: "POST",
+        url: "/acceptListing",
+        data: {
+            'usernameBuyer': usernameBuyer,
+            'listingItem': listingItem
+        },
+        success: function(data) {
+          updateUserList();
+        }
+    });
+}

@@ -11,7 +11,13 @@ exports.bootstrap = function(query) {
                         if (err) {
                             console.error(err);
                         } else {
-                            console.log("Success: Profiles");
+                          query("INSERT INTO public.\"Profiles\" (username, accountType) VALUES ('buyer', 'buyer')", function(err, result) {
+                              if (err) {
+                                  console.error(err);
+                              } else {
+                                  console.log("Success: Profiles");
+                              }
+                          });
                         }
                     });
                 }

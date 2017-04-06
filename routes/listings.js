@@ -13,9 +13,31 @@ module.exports = function(express, query, db) {
         extended: true
     }));
 
+    router.post('/acceptListing', function(request, response) {
+        //TODO: Better input sanitization to make sure it's not possible to create chats with any buyer
+        if (request.user) {
+            db.messaging.acceptListing(request.user.username, request.body.usernameBuyer, request.body.listingItem, query, function(err, result) {
+                console.log(result);
+                response.send(result);
+            });
+        } else {
+            response.redirect('/');
+        }
+    });
+
     router.get('/listings', function(request, response) {
         if (request.user) {
             response.render('pages/listings', {
+                user: request.user
+            });
+        } else {
+            response.redirect('/');
+        }
+    });
+    
+    router.get('/userListings', function(request, response) {
+        if (request.user) {
+            response.render('pages/userListings', {
                 user: request.user
             });
         } else {
@@ -26,8 +48,7 @@ module.exports = function(express, query, db) {
     router.get('/getRecentAds', function(request, response) {
         let upper = 0 * 2;
         let lower = 0 * 2 + 1;
-
-
+        
         db.listings.getCount(query, function(err, count) {
             if (err) response.end("error");
             else {
@@ -60,6 +81,43 @@ module.exports = function(express, query, db) {
             }
 
 
+        });
+    });
+    
+    router.post('/getUserListingPage', function(request, response) {
+        
+        db.listings.getAllUserAdsCount(query, request.user.username, function(err, count) {
+            if (err) console.log(err);
+            else {
+                let limit = 2;
+                let offset = 2 * parseInt(request.body.pagenum);
+                
+                db.listings.getAllUserAds(query, request.user.username, limit, offset, function(err, result){
+                    if (err) console.log(err);
+                    else{
+                        var listings = [];
+                        var resObj = [];
+                         
+                        if (count <= (offset + limit) || offset == 0) {
+                            resObj.push("true");
+                        } else {
+                            resObj.push("false");
+                        }
+                        
+                        for(var i = 0; i < result.length; i++){
+                            listings.push({
+                                id: result[i].id,
+                                item: result[i].item
+                            });
+                        }
+                        
+                        resObj.push(listings);
+                        response.end(JSON.stringify(resObj));
+                    }
+                });
+            }
+            
+            
         });
     });
 
@@ -169,12 +227,51 @@ module.exports = function(express, query, db) {
 
     });
 
-    router.get('getAllAds', function(request, response) {
-        response.end("yes");
+    
+    router.get('/getUserListings', function(request, response){
+        let limit = 2;
+        let offset = 0;
+        db.listings.getAllUserAdsCount(query, request.user.username, function(err, count){
+            db.listings.getAllUserAds(query, request.user.username, limit, offset, function(err,result){
+                if (err){
+                    console.log(err);
+                }
+                else{
+                    var listings = [];
+                    var resObj = [];
+                    for(var i = 0; i < result.length; i++){
+                        listings.push({
+                            id: result[i].id,
+                            item: result[i].item
+                        });
+                    }
+                    if (count <= limit) resObj.push("true");
+                    else resObj.push("false");
+                    resObj.push(listings);
+                    response.end(JSON.stringify(resObj));
+                }
+                
+            }); 
+        });
+    });
+    
+    router.post('/deleteListing', function(request, response) {
+        
+        if(!request.body.listingId) {
+            console.log(err);
+            response.end("fail");
+        }
+        else {
+            db.listings.deleteListing(query, request.body.listingId);
+            response.end("success");
+        }
+        
     });
 
     router.post('/getAdDetails', function(request, response) {
 
+        console.log("listingId: " + request.body.listingId);
+        
         if (!request.body.listingId) console.log(err);
 
         else {
@@ -185,16 +282,15 @@ module.exports = function(express, query, db) {
 
                 else {
                     var country;
-                    if (result[0].itemloc === "undefined")
+                    if (result[0].itemloc === null || result[0].itemloc === "undefined") {
                         country = "undefined";
-                    else {
+                    } else {
                         country = lookup.countries({
                             alpha3: result[0].itemloc
                         })[0].name;
                     }
 
-                    if (result[0].imagename === "undefined") {
-
+                    if (result[0].imagename === null || result[0].imagename === "undefined") {
                         var listing = {
                             user: result[0].username,
                             item: result[0].item,

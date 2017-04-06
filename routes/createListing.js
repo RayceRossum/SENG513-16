@@ -39,6 +39,7 @@ module.exports = function(express, query, db) {
                         stats.push(results);
 
                         //temp until we can query for actual handelers
+                        //need to change!!
                         db.listings.getUserCount(query, function(err, results){
                             if (err) console.log(err);
                             else{
@@ -68,7 +69,7 @@ module.exports = function(express, query, db) {
         var itemCountry;
 
         var count;
-
+        console.log(request);
         if (!request.body.item) {
             response.end("false");
         } else {
