@@ -116,15 +116,14 @@ io.on('connection', function(socket) {
     });
 
     socket.on('chat', function(data) {
+        console.log(data);
         if (socketUsers.filter(function(user) {
                 return user.username === data.usernameReceiver
             }).length) {
             console.log("EMIT TO " + data.usernameReceiver);
         }
 
-
-        console.log(socketUsers);
-        console.log(data);
+        db.messages.sendMessage(data.usernameSender, data.usernameReceiver, data.message, data.conversationID, query, function(err, result) {})
     });
 
     socket.on('disconnect', function() {

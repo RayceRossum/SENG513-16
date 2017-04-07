@@ -55,6 +55,5 @@ exports.sendMessage = function(usernameSender, usernameReceiver, message, conver
         } else {
             cb(null, true)
         }
-
     });
 }
