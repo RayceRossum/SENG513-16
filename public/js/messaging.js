@@ -12,12 +12,13 @@ $(document).ready(function() {
 function updateUserList() {
     $.get('/getUserList', function(data) {
         userList = "";
-        data.forEach(function(elem) {
-            userList += "<tr class='clickable-row'><td>" + elem.user + "</td><td>" + elem.item + "</td></tr>";
+        data.forEach(function(elem, index) {
+            userList += "<tr class='userList clickable-row'><td>" + elem.username + "</td><td>" + elem.item + "</td></tr>";
         });
+
         var popover = $('#openMessaging').data('bs.popover');
         popover.options.content = function() {
-            return "<table><tr class='' data-href='url://'><tr><th>User</th><th>Item</th>" + userList + "</table>";
+            return "<table><tr class='userList' data-href='url://'><tr><th>User</th><th>Item</th>" + userList + "</table>";
         }
     });
 

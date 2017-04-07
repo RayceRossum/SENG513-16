@@ -28,17 +28,21 @@ exports.getUserList = function(username, query, cb) {
         } else {
             var userMessages = result.map(function(result) {
                 if (result.usernamehandeler === username) {
-                    return result.usernamebuyer;
+                    var data = {
+                        "username": result.usernamebuyer,
+                        "item": result.listingitem
+                    };
+                    return data;
                 } else {
-                    return result.usernamehandeler;
+                  var data = {
+                      "username": result.usernamehandeler,
+                      "item": result.listingitem
+                  };
+                    return data;
                 }
             });
 
-            var listingItems = result.map(function(result){
-              return result.listingitem;
-            });
-            
-            cb(null, userMessages, listingItems);
+            cb(null, userMessages);
         }
     });
 };
