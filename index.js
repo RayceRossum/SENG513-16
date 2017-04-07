@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var server = require('http').Server(app);
 
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
@@ -9,6 +10,15 @@ var bcrypt = require('bcrypt');
 var pg = require('pg');
 var query = require('pg-query');
 var db = require('./db');
+
+var io = require('socket.io')(server);
+
+io.on('connection', function(socket) {
+    socket.on('chat', function(data) {
+        console.log(data);
+    });
+});
+
 
 query.connectionParameters = process.env.DATABASE_URL || "postgres://postgres:password@localhost:5432/handel";
 db.bootstrap(query);
@@ -95,6 +105,6 @@ app.use('/', listingRoutes);
 app.use('/', messagingRoutes);
 
 
-app.listen(app.get('port'), function() {
+server.listen(app.get('port'), function() {
     console.log("Node app running on port: " + app.get('port'));
 });

@@ -55,10 +55,6 @@ function updateUserList() {
                         sendMessage(this);
                     }
                 });
-
-                $('#g' + conversationID).click(function(e) {
-                    sendMessage($('#m' + conversationID));
-                });
             }
         });
     });
@@ -67,6 +63,13 @@ function updateUserList() {
 function sendMessage(context) {
     if ($(context).val() != '') {
         $(context).attr("disabled");
+
+        var socket = io.connect('http://localhost:5000');
+        socket.emit('chat', {
+            message: $(context).val(),
+            conversationID: $(context).attr('id').substr(1)
+        });
+
         $(context).val('');
         $(context).removeAttr("disabled");
     }
