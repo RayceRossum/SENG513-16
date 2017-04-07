@@ -80,5 +80,5 @@ function getMessageData(data, conversationID) {
         messageData += "<li class='list-group-item'><b>" + elem.usernameSender + "</b>" + " (" + timestamp + "): " + elem.message + "</li>";
     });
 
-    return "<ul class='list-group'>" + messageData + "</ul>" + "<div><input type='text' id='m" + conversationID + "' class='form-control' autocomplete='off'/><button id='g" + conversationID + "'type='button' class='btn btn-primary pull-right'><span class='glyphicon glyphicon-send'></span></button></div>";
+    return "<ul class='list-group'>" + messageData + "</ul>" + "<div class='inner-addon right-addon'><input type='text' id='m" + conversationID + "' class='form-control' autocomplete='off'/><i class='glyphicon glyphicon-send'></i></div>";
 }
