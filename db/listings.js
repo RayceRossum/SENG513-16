@@ -173,3 +173,12 @@ exports.getUserCount = function(query, cb) {
         }
     });
 }
+
+exports.getHandelerCount = function(query, cb) {
+    query("SELECT COUNT(*) FROM public.\"Profiles\" WHERE accounttype = 'handeler';", function(err, result){
+        if (err) console.log(err);
+        else{
+            cb(err, result[0].count);
+        }
+    });
+}
