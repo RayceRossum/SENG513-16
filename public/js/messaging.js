@@ -15,10 +15,16 @@ $(document).ready(function() {
     });
 
     socket.io.on('chat', function(data) {
-      var timestampD = new Date(data.timestamp);
-      var timestamp = timestampD.toLocaleDateString();
-      var messageData = "<li class='list-group-item'><b>" + data.usernameSender + "</b>" + " (" + timestamp + "): " + data.message + "</li>";
-      $('#l' + data.conversationID).append(messageData);
+        var timestampD = new Date(data.timestamp);
+        var timestamp = timestampD.toLocaleDateString();
+        var messageData = "<li class='list-group-item'><b>" + data.usernameSender + "</b>" + " (" + timestamp + "): " + data.message + "</li>";
+        $('#l' + data.conversationID).append(messageData);
+        $('.popover-content').animate({
+                scrollTop: $('#l' + data.conversationID + ' li').last().offset().top
+            },
+            50,
+            "swing"
+        );
     });
 });
 
@@ -63,6 +69,13 @@ function updateUserList() {
                 if (!$("#openMessage" + conversationID).next('div.popover:visible').length) {
                     $("#openMessage" + conversationID).click();
                 }
+
+                $('.popover-content').animate({
+                        scrollTop: $('#l' + conversationID + ' li').last().offset().top
+                    },
+                    50,
+                    "swing"
+                );
 
                 $('#m' + conversationID).on('keypress', function(e) {
                     if (e.which === 13) {
