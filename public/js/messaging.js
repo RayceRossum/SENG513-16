@@ -1,3 +1,4 @@
+var socket = {};
 $(document).ready(function() {
     $('#openMessaging').popover({
         html: true
@@ -7,7 +8,13 @@ $(document).ready(function() {
     $('#openMessaging').click(function() {
         updateUserList();
     });
+
+    socket.io = io.connect(window.location.host);
+    socket.io.emit('register', {
+        username: $('#currentUser').text(),
+    });
 });
+
 
 function updateUserList() {
     $.get('/getUserList', function(data) {
@@ -64,8 +71,8 @@ function sendMessage(context) {
     if ($(context).val() != '') {
         $(context).attr("disabled");
         var conversationID = $(context).attr('id').substr(1);
-        var socket = io.connect('http://localhost:5000');
-        socket.emit('chat', {
+
+        socket.io.emit('chat', {
             usernameSender: $('#currentUser').text(),
             usernameReceiver: $('#l' + conversationID).attr('usernameReceiver'),
             message: $(context).val(),

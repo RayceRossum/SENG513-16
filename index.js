@@ -98,10 +98,43 @@ app.use('/', listingRoutes);
 app.use('/', messagingRoutes);
 
 //================================Socket.io====================================
+var socketUsers = [];
+
 io.on('connection', function(socket) {
+    socket.on('register', function(data) {
+        var userSocket = {
+            "username": data.username,
+            "socket": socket
+        };
+
+        if (!socketUsers.filter(function(user) {
+                return user.username === userSocket.username
+            }).length) {
+            socketUsers.push(userSocket);
+        }
+        console.log(socketUsers);
+    });
+
     socket.on('chat', function(data) {
-        console.log(socket.handshake.headers);
+        if (socketUsers.filter(function(user) {
+                return user.username === data.usernameReceiver
+            }).length) {
+            console.log("EMIT TO " + data.usernameReceiver);
+        }
+
+
+        console.log(socketUsers);
         console.log(data);
+    });
+
+    socket.on('disconnect', function() {
+        var removeMap = socketUsers.map(function(user) {
+            console.log(user.socket.id + " " + socket.id);
+            return user.socket.id === socket.id
+        });
+
+        socketUsers.splice(removeMap.indexOf(true), 1);
+        console.log(socketUsers);
     });
 });
 
