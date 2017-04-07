@@ -147,11 +147,20 @@ exports.getFilteredAdsByPage = function(query, limit, offset, buyerLoc, itemLoc,
     } else cb(false, false);
 }
 
+exports.getImageName = function(query, listingId, cb){
+    query("SELECT imagename FROM public.\"Listings\" where id = $1::bigint", [listingId], function(err, result){
+        if (err) console.log(err);
+        else{
+            cb(err, result);
+            console.log(result);
+        }
+    });
+};
+
 exports.getListing = function(query, listingId, cb) {
     query("SELECT * FROM public.\"Listings\" where id = $1::bigint", [listingId], function(err, result) {
         if (err) console.log(err);
         else {
-            console.log(result);
             cb(err, result);
         }
 
@@ -159,8 +168,13 @@ exports.getListing = function(query, listingId, cb) {
 };
 
 exports.deleteListing = function(query, listingId){
-    console.log(listingId);
     query("UPDATE public.\"Listings\" SET deleted = TRUE WHERE id = $1::bigint;", [listingId], function(err, result){
+        if (err) console.log(err);
+    });
+}
+
+exports.updateListing = function(query, listingId, item, country, details){
+    query("UPDATE public.\"Listings\" SET item = $1::varchar, itemloc = $2::varchar, details = $3::varchar WHERE id = $4::bigint", [item, country, details, listingId], function(err, result){
         if (err) console.log(err);
     });
 }
@@ -172,6 +186,13 @@ exports.getUserCount = function(query, cb) {
             cb(err, result[0].count);
         }
     });
+}
+
+exports.updateImage = function(query, listingId, fileName){
+    query("UPDATE public.\"Listings\" SET imagename = $1::varchar WHERE id = $2::bigint", [fileName, listingId], function(err, results){
+        if (err) console.log(err);
+    }
+);
 }
 
 exports.getHandelerCount = function(query, cb) {
