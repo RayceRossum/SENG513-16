@@ -13,13 +13,6 @@ var db = require('./db');
 
 var io = require('socket.io')(server);
 
-io.on('connection', function(socket) {
-    socket.on('chat', function(data) {
-        console.log(data);
-    });
-});
-
-
 query.connectionParameters = process.env.DATABASE_URL || "postgres://postgres:password@localhost:5432/handel";
 db.bootstrap(query);
 
@@ -104,6 +97,13 @@ app.use('/', indexRoutes);
 app.use('/', listingRoutes);
 app.use('/', messagingRoutes);
 
+//================================Socket.io====================================
+io.on('connection', function(socket) {
+    socket.on('chat', function(data) {
+        console.log(socket.handshake.headers);
+        console.log(data);
+    });
+});
 
 server.listen(app.get('port'), function() {
     console.log("Node app running on port: " + app.get('port'));

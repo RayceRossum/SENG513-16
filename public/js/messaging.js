@@ -42,7 +42,7 @@ function updateUserList() {
                     $("#messageBar").append("<div class='col-md-2 col-sm-2 col-xs-4'> <button id='openMessage" + conversationID + "' data-toggle='popover' data-trigger = 'click' data-placement = 'top' type='button' class='btn btn-default btn-block'>" + user + "</button> </div>");
                     $("#openMessage" + conversationID).popover({
                         html: true,
-                        content: getMessageData(data, conversationID)
+                        content: getMessageData(data, conversationID, user)
                     });
                 }
                 $("#openMessaging").click();
@@ -63,11 +63,13 @@ function updateUserList() {
 function sendMessage(context) {
     if ($(context).val() != '') {
         $(context).attr("disabled");
-
+        var conversationID = $(context).attr('id').substr(1);
         var socket = io.connect('http://localhost:5000');
         socket.emit('chat', {
+            usernameSender: $('#currentUser').text(),
+            usernameReceiver: $('#l' + conversationID).attr('usernameReceiver'),
             message: $(context).val(),
-            conversationID: $(context).attr('id').substr(1)
+            conversationID: conversationID
         });
 
         $(context).val('');
@@ -75,7 +77,7 @@ function sendMessage(context) {
     }
 }
 
-function getMessageData(data, conversationID) {
+function getMessageData(data, conversationID, usernameReceiver) {
     var messageData = "";
     data.forEach(function(elem, index) {
         var timestampD = new Date(elem.timestamp);
@@ -83,5 +85,5 @@ function getMessageData(data, conversationID) {
         messageData += "<li class='list-group-item'><b>" + elem.usernameSender + "</b>" + " (" + timestamp + "): " + elem.message + "</li>";
     });
 
-    return "<ul class='list-group'>" + messageData + "</ul>" + "<div class='inner-addon right-addon'><input type='text' id='m" + conversationID + "' class='form-control' autocomplete='off'/><i class='glyphicon glyphicon-send'></i></div>";
+    return "<ul id='l" + conversationID + "' usernameReceiver='" + usernameReceiver + "' class='list-group'>" + messageData + "</ul>" + "<div class='inner-addon right-addon'><input type='text' id='m" + conversationID + "' class='form-control' autocomplete='off'/><i class='glyphicon glyphicon-send'></i></div>";
 }
