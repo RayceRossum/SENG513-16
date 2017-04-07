@@ -116,12 +116,26 @@ io.on('connection', function(socket) {
     });
 
     socket.on('chat', function(data) {
-        console.log(data);
-        if (socketUsers.filter(function(user) {
-                return user.username === data.usernameReceiver
-            }).length) {
-            console.log("EMIT TO " + data.usernameReceiver);
+        var receiver = socketUsers.filter(function(user) {
+            return user.username === data.usernameReceiver
+        });
+
+        if (receiver.length) {
+            io.to(receiver[0].socket.id).emit('chat', {
+                usernameSender: data.usernameSender,
+                usernameReceiver: data.usernameReceiver,
+                message: data.message,
+                conversationID: data.conversationID,
+                timestamp: Date.now()
+            });
         }
+        socket.emit('chat', {
+            usernameSender: data.usernameSender,
+            usernameReceiver: data.usernameReceiver,
+            message: data.message,
+            conversationID: data.conversationID,
+            timestamp: Date.now()
+        });
 
         db.messages.sendMessage(data.usernameSender, data.usernameReceiver, data.message, data.conversationID, query, function(err, result) {})
     });

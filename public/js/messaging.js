@@ -13,6 +13,13 @@ $(document).ready(function() {
     socket.io.emit('register', {
         username: $('#currentUser').text(),
     });
+
+    socket.io.on('chat', function(data) {
+      var timestampD = new Date(data.timestamp);
+      var timestamp = timestampD.toLocaleDateString();
+      var messageData = "<li class='list-group-item'><b>" + data.usernameSender + "</b>" + " (" + timestamp + "): " + data.message + "</li>";
+      $('#l' + data.conversationID).append(messageData);
+    });
 });
 
 
