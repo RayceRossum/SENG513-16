@@ -60,10 +60,10 @@ function getMessageData(data, conversationID) {
         var timestampD = new Date(elem.timestamp);
         //var timestamp = timestampD.getMonth()+1 + "/ "+timestampD.getDate() + "/" + timestampD.getFullYear() + "-" + timestampD.getHours() + ":" + timestampD.getMinutes();
         var timestamp = timestampD.toLocaleDateString();
-        messageData += "<li class='list-group-item'><b>" + elem.usernameSender + "</b>" + "(" + timestamp + "): " + elem.message + "</li>";
+        messageData += "<li class='list-group-item'><b>" + elem.usernameSender + "</b>" + " (" + timestamp + "): " + elem.message + "</li>";
     });
 
-    return "<ul class='list-group'>" + messageData + "</ul>" + "<input type='text' id='m" + conversationID + "' class='form-control' autocomplete='off' />";
+    return "<ul class='list-group'>" + messageData + "</ul>" + "<div class='inner-addon right-addon'><i class='glyphicon glyphicon-send'></i><input type='text' id='m" + conversationID + "' class='form-control' autocomplete='off'/></div>";
 
 
 }
