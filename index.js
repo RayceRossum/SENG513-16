@@ -100,6 +100,7 @@ app.use('/', messagingRoutes);
 //================================Socket.io====================================
 var socketUsers = [];
 
+// TODO: ADD REGEX TO STOP JAVASCRIPT INJECTION
 io.on('connection', function(socket) {
     socket.on('register', function(data) {
         var userSocket = {
