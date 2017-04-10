@@ -255,9 +255,9 @@ module.exports = function(express, query, db) {
         });
     });
     
-    router.post('/rateHandeler', function(request, reponse){
+    router.post('/rateHandeler', function(request, response){
         console.log(request);
-        response.log("success");
+        response.end("success");
     });
     
     router.post('/deleteListing', function(request, response) {
