@@ -148,8 +148,7 @@ $(document).ready(function() {
             },
             success: function(data) {
                 if(data === "success"){
-                    $('.handelerSearch').load("/listings");
-                    $('.users').load("/userListings");
+                    location.reload();
                 }
                 
             }
