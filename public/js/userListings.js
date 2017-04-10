@@ -26,6 +26,27 @@ $(document).ready(function() {
 
     });
     
+    $("#rateHandelerForm").submit(function(event){
+        event.preventDefault();
+        
+        var form = $('#rateHandelerForm')[0];
+        var formData = new FormData(form);
+        
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: "/rateHandeler", //path of url where u want to submit form
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function(data) {
+                alert(data);
+    }
+    });
+        
+    });
+    
     $("#editListing").validate({
         submitHandler: function() {
             event.preventDefault();
@@ -95,7 +116,7 @@ $(document).ready(function() {
                     $('#userListings').append('<li class="list-group-item row">' +
                                               '<div class="col-md-6">' + jsonObj[1][i].item + '</div>' +
                                               '<div class="col-md-3"><a class="editListing"  data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#editListingModal">Edit</a></div>' +
-                                              '<div class="col-md-3"><a class="deleteListing" data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#deleteListingModal">Delete</a></div>');
+                                              '<div class="col-md-3"><a class="deleteListing" data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#deleteListingModal">Close</a></div>');
                 }
                 $('#prevbtnL').prop('disabled', false);
             }
@@ -147,8 +168,15 @@ $(document).ready(function() {
                 listingId: listId
             },
             success: function(data) {
-                if(data === "success"){
-                    location.reload();
+                if (data === "error"){
+                    alert("Error closing listing");
+                }
+                else{
+                    var jsonObj = JSON.parse(data);
+                    $('#selectHandeler').empty();
+                    for(var i = 0; i < jsonObj[0].length; i++){
+                        $('#selectHandeler').append("<option>" + jsonObj[0][i] + "</option>");
+                    }
                 }
                 
             }
