@@ -283,7 +283,6 @@ module.exports = function(express, query, db) {
                         }
                         else{
                             var convIds = [];
-                            console.log(result[0].conversationid);
                             for(var i = 0; i < result.length; i++){
                                 db.messages.deleteMessages(result[i].conversationid, query, function(err, result3){
                                    if (err) {

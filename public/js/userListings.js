@@ -14,7 +14,7 @@ $(document).ready(function() {
             if (jsonObj[0] === "true") {
                 $('#nextbtnL').prop('disabled', true);
             }
-
+            
             for (var i = 0; i < jsonObj[1].length; i++) {
                 $('#userListings').append('<li class="list-group-item row">' +
                                           '<div class="col-md-6">' + jsonObj[1][i].item + '</div>' +
@@ -42,6 +42,7 @@ $(document).ready(function() {
             cache: false,
             success: function(data) {
                 alert(data);
+                location.reload();
     }
     });
         
@@ -173,6 +174,11 @@ $(document).ready(function() {
                 }
                 else{
                     var jsonObj = JSON.parse(data);
+                }
+                if (!jsonObj[0]){
+                    location.reload();
+                }
+                else{
                     $('#selectHandeler').empty();
                     for(var i = 0; i < jsonObj[0].length; i++){
                         $('#selectHandeler').append("<option>" + jsonObj[0][i] + "</option>");
