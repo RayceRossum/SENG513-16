@@ -14,7 +14,7 @@ $(document).ready(function() {
             if (jsonObj[0] === "true") {
                 $('#nextbtnL').prop('disabled', true);
             }
-
+            
             for (var i = 0; i < jsonObj[1].length; i++) {
                 $('#userListings').append('<li class="list-group-item row">' +
                                           '<div class="col-md-6">' + jsonObj[1][i].item + '</div>' +
@@ -24,6 +24,28 @@ $(document).ready(function() {
             userpgnumber = 0;
         }
 
+    });
+    
+    $("#rateHandelerForm").submit(function(event){
+        event.preventDefault();
+        
+        var form = $('#rateHandelerForm')[0];
+        var formData = new FormData(form);
+        
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: "/rateHandeler", //path of url where u want to submit form
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function(data) {
+                alert(data);
+                location.reload();
+    }
+    });
+        
     });
     
     $("#editListing").validate({
@@ -95,7 +117,7 @@ $(document).ready(function() {
                     $('#userListings').append('<li class="list-group-item row">' +
                                               '<div class="col-md-6">' + jsonObj[1][i].item + '</div>' +
                                               '<div class="col-md-3"><a class="editListing"  data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#editListingModal">Edit</a></div>' +
-                                              '<div class="col-md-3"><a class="deleteListing" data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#deleteListingModal">Delete</a></div>');
+                                              '<div class="col-md-3"><a class="deleteListing" data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#deleteListingModal">Close</a></div>');
                 }
                 $('#prevbtnL').prop('disabled', false);
             }
@@ -147,9 +169,20 @@ $(document).ready(function() {
                 listingId: listId
             },
             success: function(data) {
-                if(data === "success"){
-                    $('.handelerSearch').load("/listings");
-                    $('.users').load("/userListings");
+                if (data === "error"){
+                    alert("Error closing listing");
+                }
+                else{
+                    var jsonObj = JSON.parse(data);
+                }
+                if (!jsonObj[0]){
+                    location.reload();
+                }
+                else{
+                    $('#selectHandeler').empty();
+                    for(var i = 0; i < jsonObj[0].length; i++){
+                        $('#selectHandeler').append("<option>" + jsonObj[0][i] + "</option>");
+                    }
                 }
                 
             }

@@ -57,3 +57,13 @@ exports.sendMessage = function(usernameSender, usernameReceiver, message, conver
         }
     });
 }
+
+exports.deleteMessages = function(conversationID, query, cb){
+    query("DELETE FROM public.\"Messages\" WHERE conversationID = $1::int;", [conversationID], function(err, result){
+        if (err) {
+            cb(err, false);
+        } else{
+           cb(null, false); 
+        }
+    });
+}

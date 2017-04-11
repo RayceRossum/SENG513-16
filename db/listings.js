@@ -65,7 +65,6 @@ exports.getCount = function(query, cb) {
 };
 
 exports.getFilteredCount = function(query, itemLoc, buyerLoc, cb) {
-    console.log("getFilteredCount");
     if (itemLoc !== "" && buyerLoc !== "") {
         query("SELECT COUNT(*) FROM public.\"Listings\" where NOT deleted AND buyerloc=$1::varchar AND itemloc=$2::varchar;", [buyerLoc, itemLoc], function(err, result) {
 
@@ -93,7 +92,6 @@ exports.getFilteredCount = function(query, itemLoc, buyerLoc, cb) {
 }
 
 exports.getAdsByCountry = function(query, limit, itemLoc, buyerLoc, cb) {
-    console.log("getAdsByCountry");
     if (itemLoc && buyerLoc) {
         query("SELECT * FROM public.\"Listings\" where NOT deleted AND buyerloc=$1::varchar AND itemloc=$2::varchar ORDER BY id DESC LIMIT $3::bigint OFFSET 0;", [buyerLoc, itemLoc, limit], function(err, result) {
 
@@ -121,7 +119,6 @@ exports.getAdsByCountry = function(query, limit, itemLoc, buyerLoc, cb) {
 };
 
 exports.getFilteredAdsByPage = function(query, limit, offset, buyerLoc, itemLoc, cb) {
-    console.log("getFilteredAdsByPage");
     if (buyerLoc && itemLoc) {
         query("SELECT * FROM public.\"Listings\" where NOT deleted AND buyerloc = $1::varchar AND itemLoc = $2::varchar ORDER BY id DESC LIMIT $3::bigint OFFSET $4::bigint;", [buyerLoc, itemLoc, limit, offset], function(err, results) {
             if (err) console.log(err);
@@ -152,7 +149,6 @@ exports.getImageName = function(query, listingId, cb){
         if (err) console.log(err);
         else{
             cb(err, result);
-            console.log(result);
         }
     });
 };

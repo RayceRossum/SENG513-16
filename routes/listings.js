@@ -255,18 +255,50 @@ module.exports = function(express, query, db) {
         });
     });
     
+    router.post('/rateHandeler', function(request, response){
+        console.log(request);
+        response.end("success");
+    });
+    
     router.post('/deleteListing', function(request, response) {
+        var resObj = [];
         
         if(!request.body.listingId) {
-            response.end("fail");
-            console.log("done");
+            resObj.push("error");
+            response.end(resObj);
         }
         else {
-            db.listings.deleteListing(query, request.body.listingId);
-            response.end("success");
-            console.log("done");
-        }
-        
+            let listingItem = parseInt(request.body.listingId);
+            db.listings.deleteListing(query, listingItem);
+            db.messaging.getIds(listingItem, query, function(err, result){
+                if (err) {
+                    resObj.push("error");
+                    response.end(resObj);
+                }
+                else{
+                    db.messaging.deleteConv(listingItem, query, function(err, result2){
+                        if (err) {
+                            resObj.push("error");
+                            response.end(resObj);
+                        }
+                        else{
+                            var convIds = [];
+                            for(var i = 0; i < result.length; i++){
+                                db.messages.deleteMessages(result[i].conversationid, query, function(err, result3){
+                                   if (err) {
+                                       resObj.push("error");
+                                       response.end(resObj);
+                                   } 
+                                });
+                                convIds.push(result[i].usernamehandeler);  
+                            }
+                            resObj.push(convIds);
+                            response.end(JSON.stringify(resObj));
+                        }
+                    });
+                }
+            });
+        }                 
     });
     
     router.post('/saveListing', function(request, response){

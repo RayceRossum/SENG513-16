@@ -66,23 +66,38 @@
         </div>
     </div>
 </div>
-
-<div id="deleteListingModal" class="modal fade" role="dialog">
+    <script src="/js/userListings.js"></script>
+    <div id="deleteListingModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
 
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Successfully removed listing</h4>
+                <h4 class="modal-title">Successfully Closed Your Listing</h4>
+            </div>
+            <div class="modal-body row">
+                <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                    <form method="post" id="rateHandelerForm">
+                    <div class="form-group" id="selectHandelerGroup">
+                        <label class="control-label " for="selectHandeler">Select your Handeler<span class="asteriskField">*</span></label>
+                        <select class="form-control" id="selectHandeler" name="selectHandeler"></select>
+                    </div>
+                    <div class="form-group" id="rateHandelerGroup">
+                        <label class="control-label " for="rateHandeler">Rate your Handeler<span class="asteriskField">*</span></label>
+                        <input type="number" name="rateHandeler" id="rateHandeler" class="rating" />
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
+                <button class="btn btn-primary" style="float:right;" type="submit">Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
-    <script src="/js/userListings.js"></script>
 </body>
 
 </html>

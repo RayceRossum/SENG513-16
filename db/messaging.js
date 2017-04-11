@@ -64,3 +64,26 @@ exports.acceptListing = function(usernameHandeler, usernameBuyer, listingItem, q
         }
     });
 }
+
+exports.getIds = function(listingItem, query, cb){
+    query("SELECT conversationid, usernamehandeler FROM public.\"Messaging\" WHERE listingItem = $1::int;", [listingItem], function(err, result){
+        if (err) {
+            console.error(err);
+            cb(err, null);
+        }
+        else{
+            cb(null, result);
+        }
+    });
+}
+
+exports.deleteConv = function(listingItem, query, cb){
+    query("DELETE FROM public.\"Messaging\" WHERE listingItem = $1::int", [listingItem], function(err, result){
+        if (err){
+            console.log(err);
+        }
+        else{
+            cb(null, 'true');
+        }
+    });
+}
