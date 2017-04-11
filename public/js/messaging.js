@@ -45,25 +45,40 @@ function updateUserList() {
                         content: getMessageData(data, conversationID)
                     });
                 }
-                //$("#openMessaging").popover("hide");
                 $("#openMessaging").click();
-                //$("#openMessage" + conversationID).popover("show");
-                $("#openMessage" + conversationID).click();
+                if (!$("#openMessage" + conversationID).next('div.popover:visible').length) {
+                    $("#openMessage" + conversationID).click();
+                }
+
+                $('#m' + conversationID).on('keypress', function(e) {
+                    if (e.which === 13) {
+                        sendMessage(this);
+                    }
+                });
+
+                $('#g' + conversationID).click(function(e) {
+                    sendMessage($('#m' + conversationID));
+                });
             }
         });
     });
+}
+
+function sendMessage(context) {
+    if ($(context).val() != '') {
+        $(context).attr("disabled");
+        $(context).val('');
+        $(context).removeAttr("disabled");
+    }
 }
 
 function getMessageData(data, conversationID) {
     var messageData = "";
     data.forEach(function(elem, index) {
         var timestampD = new Date(elem.timestamp);
-        //var timestamp = timestampD.getMonth()+1 + "/ "+timestampD.getDate() + "/" + timestampD.getFullYear() + "-" + timestampD.getHours() + ":" + timestampD.getMinutes();
         var timestamp = timestampD.toLocaleDateString();
         messageData += "<li class='list-group-item'><b>" + elem.usernameSender + "</b>" + " (" + timestamp + "): " + elem.message + "</li>";
     });
 
-    return "<ul class='list-group'>" + messageData + "</ul>" + "<div class='inner-addon right-addon'><i class='glyphicon glyphicon-send'></i><input type='text' id='m" + conversationID + "' class='form-control' autocomplete='off'/></div>";
-
-
+    return "<ul class='list-group'>" + messageData + "</ul>" + "<div class='inner-addon right-addon'><input type='text' id='m" + conversationID + "' class='form-control' autocomplete='off'/><i class='glyphicon glyphicon-send'></i></div>";
 }
