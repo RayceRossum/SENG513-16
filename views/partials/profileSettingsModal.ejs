@@ -18,8 +18,8 @@
                                 <small id="username" class="form-text text-muted">Usernames must be greater than one character.</small>
                             </div>
                             <div class="form-group">
-                                <label class="control-label" for="cs1">Edit Your Location</label>
-                                <input class="control-label" id="cs1" name="country" type="text" />
+                                <label class="control-label" for="profileSettingsCS">Edit Your Location</label>
+                                <input class="control-label" id="profileSettingsCS" name="country" type="text" />
                             </div>
                             <div class="form-group">
                                 <div>
@@ -34,13 +34,11 @@
     </div>
 </div>
 
-<script src="/js/jquery.validate.js"></script>
-<script src="/js/postad.js"></script>
 <script>
     var loaded = false;
     $('#profileSettingsModal').on('shown.bs.modal', function() {
         if (!loaded) {
-            $("#cs1").countrySelector();
+            $("#profileSettingsCS").countrySelector();
             loaded = true;
         }
     });
