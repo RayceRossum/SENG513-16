@@ -31,14 +31,15 @@ $(document).ready(function() {
 
 function updateUserList() {
     $.get('/getUserList', function(data) {
-        userList = "";
-        data.forEach(function(elem, index) {
-            userList += "<tr user='" + elem.username + "' item='" + elem.item + "' conversationID='" + elem.conversationID + "' class='userList clickable-row'><td>" + elem.username + "</td><td>" + elem.item + "</td></tr>";
-        });
-
-        var popover = $('#openMessaging').data('bs.popover');
-        popover.options.content = function() {
-            return "<table id='messaging' class='table table-hover table-condensed'><tr class='userList'><tr><th>User</th><th>Item</th>" + userList + "</table>";
+        if (data) {
+            userList = "";
+            data.forEach(function(elem, index) {
+                userList += "<tr user='" + elem.username + "' item='" + elem.item + "' conversationID='" + elem.conversationID + "' class='userList clickable-row'><td>" + elem.username + "</td><td>" + elem.item + "</td></tr>";
+            });
+            var popover = $('#openMessaging').data('bs.popover');
+            popover.options.content = function() {
+                return "<table id='messaging' class='table table-hover table-condensed'><tr class='userList'><tr><th>User</th><th>Item</th>" + userList + "</table>";
+            }
         }
     });
 

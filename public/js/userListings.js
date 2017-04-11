@@ -14,7 +14,7 @@ $(document).ready(function() {
             if (jsonObj[0] === "true") {
                 $('#nextbtnL').prop('disabled', true);
             }
-            
+
             for (var i = 0; i < jsonObj[1].length; i++) {
                 $('#userListings').append('<li class="list-group-item row">' +
                                           '<div class="col-md-6">' + jsonObj[1][i].item + '</div>' +
@@ -25,13 +25,13 @@ $(document).ready(function() {
         }
 
     });
-    
+
     $("#rateHandelerForm").submit(function(event){
         event.preventDefault();
-        
+
         var form = $('#rateHandelerForm')[0];
         var formData = new FormData(form);
-        
+
         $.ajax({
             type: "POST",
             enctype: 'multipart/form-data',
@@ -41,13 +41,13 @@ $(document).ready(function() {
             contentType: false,
             cache: false,
             success: function(data) {
-                alert(data);
-                location.reload();
+                $('.handelerSearch').load("/listings");
+                $('.users').load("/userListings");
     }
     });
-        
+
     });
-    
+
     $("#editListing").validate({
         submitHandler: function() {
             event.preventDefault();
@@ -65,13 +65,14 @@ $(document).ready(function() {
                 cache: false,
                 success: function(data) {
                     if(data === "true"){
-                        location.reload();
+                      $('.handelerSearch').load("/listings");
+                      $('.users').load("/userListings");
                 }
                 }
             });
         }
     });
-    
+
     $("#editimagePreview").error(function() {
         $(this).hide();
     });
@@ -94,7 +95,7 @@ $(document).ready(function() {
             reader.readAsDataURL(input.files[0]);
         }
     }
-    
+
 
     $('#nextbtnL').on('click', function(e) {
         userpgnumber++;
@@ -154,10 +155,10 @@ $(document).ready(function() {
 
             }
         });
-    
-    
+
+
     });
-    
+
     $(document).on("click", ".deleteListing", function(){
         var listId = $(this).data('id');
 
@@ -176,7 +177,8 @@ $(document).ready(function() {
                     var jsonObj = JSON.parse(data);
                 }
                 if (!jsonObj[0]){
-                    location.reload();
+                  $('.handelerSearch').load("/listings");
+                  $('.users').load("/userListings");
                 }
                 else{
                     $('#selectHandeler').empty();
@@ -184,15 +186,15 @@ $(document).ready(function() {
                         $('#selectHandeler').append("<option>" + jsonObj[0][i] + "</option>");
                     }
                 }
-                
+
             }
         });
     });
-    
+
     $(document).on("click", ".editListing", function() {
         var listId = $(this).data('id');
         $('#idnum').val(listId);
-        
+
         $.ajax({
             type: "POST",
             url: "/editListing",
@@ -202,11 +204,11 @@ $(document).ready(function() {
             },
             success: function(data){
                 var jsonObj = JSON.parse(data);
-                $('#listingIdNum').hide();    
-                    
+                $('#listingIdNum').hide();
+
                 $("#editItem").val(jsonObj.item);
                 $("#editDetails").val(jsonObj.details);
-                
+
                 if(jsonObj.imagedata){
                     if($("#oldImg").length > 0){
                         $("#oldImg").remove();
@@ -216,7 +218,7 @@ $(document).ready(function() {
                         $("#editItemGroup").after('<div id="oldImg"><label class="control-label"> Current Image </label>' + jsonObj.imagedata + '</div>');
                     }
                 }
-                
+
                 if(jsonObj.itemLoc !== "undefined"){
                     $('#countryPickerLabel').empty();
                     $('#countryPickerLabel').append('<label id ="countryPickerLabel" class="control-label" for="editcs1">Item Location</label>');
@@ -231,6 +233,6 @@ $(document).ready(function() {
                 }
             }
         });
-        
+
     });
 });
