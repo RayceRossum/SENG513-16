@@ -65,7 +65,6 @@ exports.getCount = function(query, cb) {
 };
 
 exports.getFilteredCount = function(query, itemLoc, buyerLoc, cb) {
-    console.log("getFilteredCount");
     if (itemLoc !== "" && buyerLoc !== "") {
         query("SELECT COUNT(*) FROM public.\"Listings\" where NOT deleted AND buyerloc=$1::varchar AND itemloc=$2::varchar;", [buyerLoc, itemLoc], function(err, result) {
 
@@ -93,7 +92,6 @@ exports.getFilteredCount = function(query, itemLoc, buyerLoc, cb) {
 }
 
 exports.getAdsByCountry = function(query, limit, itemLoc, buyerLoc, cb) {
-    console.log("getAdsByCountry");
     if (itemLoc && buyerLoc) {
         query("SELECT * FROM public.\"Listings\" where NOT deleted AND buyerloc=$1::varchar AND itemloc=$2::varchar ORDER BY id DESC LIMIT $3::bigint OFFSET 0;", [buyerLoc, itemLoc, limit], function(err, result) {
 
@@ -121,7 +119,6 @@ exports.getAdsByCountry = function(query, limit, itemLoc, buyerLoc, cb) {
 };
 
 exports.getFilteredAdsByPage = function(query, limit, offset, buyerLoc, itemLoc, cb) {
-    console.log("getFilteredAdsByPage");
     if (buyerLoc && itemLoc) {
         query("SELECT * FROM public.\"Listings\" where NOT deleted AND buyerloc = $1::varchar AND itemLoc = $2::varchar ORDER BY id DESC LIMIT $3::bigint OFFSET $4::bigint;", [buyerLoc, itemLoc, limit, offset], function(err, results) {
             if (err) console.log(err);
@@ -147,11 +144,19 @@ exports.getFilteredAdsByPage = function(query, limit, offset, buyerLoc, itemLoc,
     } else cb(false, false);
 }
 
+exports.getImageName = function(query, listingId, cb){
+    query("SELECT imagename FROM public.\"Listings\" where id = $1::bigint", [listingId], function(err, result){
+        if (err) console.log(err);
+        else{
+            cb(err, result);
+        }
+    });
+};
+
 exports.getListing = function(query, listingId, cb) {
     query("SELECT * FROM public.\"Listings\" where id = $1::bigint", [listingId], function(err, result) {
         if (err) console.log(err);
         else {
-            console.log(result);
             cb(err, result);
         }
 
@@ -159,8 +164,13 @@ exports.getListing = function(query, listingId, cb) {
 };
 
 exports.deleteListing = function(query, listingId){
-    console.log(listingId);
     query("UPDATE public.\"Listings\" SET deleted = TRUE WHERE id = $1::bigint;", [listingId], function(err, result){
+        if (err) console.log(err);
+    });
+}
+
+exports.updateListing = function(query, listingId, item, country, details){
+    query("UPDATE public.\"Listings\" SET item = $1::varchar, itemloc = $2::varchar, details = $3::varchar WHERE id = $4::bigint", [item, country, details, listingId], function(err, result){
         if (err) console.log(err);
     });
 }
@@ -169,6 +179,22 @@ exports.getUserCount = function(query, cb) {
     query("SELECT COUNT(*) FROM public.\"Users\"", function(err, result) {
         if (err) console.log(err);
         else {
+            cb(err, result[0].count);
+        }
+    });
+}
+
+exports.updateImage = function(query, listingId, fileName){
+    query("UPDATE public.\"Listings\" SET imagename = $1::varchar WHERE id = $2::bigint", [fileName, listingId], function(err, results){
+        if (err) console.log(err);
+    }
+);
+}
+
+exports.getHandelerCount = function(query, cb) {
+    query("SELECT COUNT(*) FROM public.\"Profiles\" WHERE accounttype = 'handeler';", function(err, result){
+        if (err) console.log(err);
+        else{
             cb(err, result[0].count);
         }
     });

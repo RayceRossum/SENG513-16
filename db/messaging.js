@@ -3,11 +3,11 @@ exports.bootstrap = function(query) {
         if (err) {
             console.log(err);
         } else {
-            query("CREATE TABLE public.\"Messaging\"(id SERIAL PRIMARY KEY, time timestamp DEFAULT current_timestamp, usernameHandeler text NOT NULL, usernameBuyer text NOT NULL, listingItem text NOT NULL, conversationID SERIAL);", function(err, result) {
+            query("CREATE TABLE public.\"Messaging\"(id SERIAL PRIMARY KEY, time timestamp DEFAULT current_timestamp, usernameHandeler text NOT NULL, usernameBuyer text NOT NULL, listingItem int NOT NULL, conversationID SERIAL);", function(err, result) {
                 if (err) {
                     console.log(err);
                 } else {
-                    query("INSERT INTO public.\"Messaging\" (usernameHandeler, usernameBuyer, listingItem) VALUES ('username', 'buyer', 'Random Item')", function(err, result) {
+                    query("INSERT INTO public.\"Messaging\" (usernameHandeler, usernameBuyer, listingItem) VALUES ('username', 'buyer', 1)", function(err, result) {
                         if (err) {
                             console.error(err);
                         } else {
@@ -26,18 +26,21 @@ exports.getUserList = function(username, query, cb) {
             console.error(err);
             cb(err, null, null);
         } else {
+          console.log("ID:" + result[0].listingitem);
+          query("SELECT * FROM public.\"Listings\" WHERE id = $1::int AND NOT deleted;", [result[0].listingitem], function (err2, result2) {
+            console.log(result2);
             var userMessages = result.map(function(result) {
                 if (result.usernamehandeler === username) {
                     var data = {
                         "username": result.usernamebuyer,
-                        "item": result.listingitem,
+                        "item": result2[0].item,
                         "conversationID": result.conversationid
                     };
                     return data;
                 } else {
                   var data = {
                       "username": result.usernamehandeler,
-                      "item": result.listingitem,
+                      "item": result2[0].item,
                       "conversationID": result.conversationid
                   };
                     return data;
@@ -45,16 +48,41 @@ exports.getUserList = function(username, query, cb) {
             });
             console.log(userMessages);
             cb(null, userMessages);
+          });
+
         }
     });
 };
 
 exports.acceptListing = function(usernameHandeler, usernameBuyer, listingItem, query, cb) {
-    query("INSERT INTO public.\"Messaging\" (usernameHandeler, usernameBuyer, listingItem) VALUES ($1::varchar, $2::varchar, $3::varchar)", [usernameHandeler, usernameBuyer, listingItem], function(err, result) {
+    query("INSERT INTO public.\"Messaging\" (usernameHandeler, usernameBuyer, listingItem) VALUES ($1::varchar, $2::varchar, $3::int)", [usernameHandeler, usernameBuyer, listingItem], function(err, result) {
         if (err) {
             console.error(err);
             cb(err, 'false', null);
         } else {
+            cb(null, 'true');
+        }
+    });
+}
+
+exports.getIds = function(listingItem, query, cb){
+    query("SELECT conversationid, usernamehandeler FROM public.\"Messaging\" WHERE listingItem = $1::int;", [listingItem], function(err, result){
+        if (err) {
+            console.error(err);
+            cb(err, null);
+        }
+        else{
+            cb(null, result);
+        }
+    });
+}
+
+exports.deleteConv = function(listingItem, query, cb){
+    query("DELETE FROM public.\"Messaging\" WHERE listingItem = $1::int", [listingItem], function(err, result){
+        if (err){
+            console.log(err);
+        }
+        else{
             cb(null, 'true');
         }
     });

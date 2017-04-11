@@ -255,22 +255,162 @@ module.exports = function(express, query, db) {
         });
     });
     
+    router.post('/rateHandeler', function(request, response){
+        console.log(request);
+        response.end("success");
+    });
+    
     router.post('/deleteListing', function(request, response) {
+        var resObj = [];
         
         if(!request.body.listingId) {
-            console.log(err);
-            response.end("fail");
+            resObj.push("error");
+            response.end(resObj);
         }
         else {
-            db.listings.deleteListing(query, request.body.listingId);
-            response.end("success");
+            let listingItem = parseInt(request.body.listingId);
+            db.listings.deleteListing(query, listingItem);
+            db.messaging.getIds(listingItem, query, function(err, result){
+                if (err) {
+                    resObj.push("error");
+                    response.end(resObj);
+                }
+                else{
+                    db.messaging.deleteConv(listingItem, query, function(err, result2){
+                        if (err) {
+                            resObj.push("error");
+                            response.end(resObj);
+                        }
+                        else{
+                            var convIds = [];
+                            for(var i = 0; i < result.length; i++){
+                                db.messages.deleteMessages(result[i].conversationid, query, function(err, result3){
+                                   if (err) {
+                                       resObj.push("error");
+                                       response.end(resObj);
+                                   } 
+                                });
+                                convIds.push(result[i].usernamehandeler);  
+                            }
+                            resObj.push(convIds);
+                            response.end(JSON.stringify(resObj));
+                        }
+                    });
+                }
+            });
+        }                 
+    });
+    
+    router.post('/saveListing', function(request, response){
+        console.log(request);
+        if(!request.body.editItem){
+            response.end("false");
+        }
+        else{
+            db.listings.updateListing(query, request.body.idnum, request.body.editItem, request.body.country, request.body.editDetails);
+            
+            if(request.files.editImage){
+                db.listings.getImageName(query, request.body.idnum, function(err, result){
+                    let file = request.files.editImage;
+                    var fileName;
+                    //if image already exists, replace
+                    if(result[0].imagename){
+                        fileName = result[0].imagename.substring(0,result[0].imagename.indexOf('.'));
+                        fileName = fileName + "." + request.files.editImage.name.split('.').pop();
+
+                        file.mv('./images/ads/' + fileName, function(err) {
+                            if (err)
+                                console.log(err);
+                            else{
+                                console.log("Successful upload");
+                                response.end("true");
+                            }
+                        });
+                    }
+                    //if not current image, add new one
+                    else{
+                        fileName = "img" + request.body.idnum + "." + request.files.editImage.name.split('.').pop();
+                        file.mv('./images/ads/' + fileName, function(err) {
+                            if (err)
+                                console.log(err);
+                            else{
+                                console.log("Successful upload");
+                                db.listings.updateImage(query, request.body.idnum, fileName);
+                                response.end("true");
+                            }
+                        });
+                    }
+                });
+            }
+            else{
+                response.end("true");
+            }
+        }
+    });
+                
+
+    
+    router.post('/editListing', function(request, response){
+        
+        if (!request.body.listingId) console.log(err);
+
+        else {
+            db.listings.getListing(query, request.body.listingId, function(err, result) {
+
+                if (!result)
+                    response.end("invalid");
+
+                else {
+                    var country;
+                    if (result[0].itemloc === null || result[0].itemloc === "undefined") {
+                        country = "undefined";
+                    } else {
+                        country = lookup.countries({
+                            alpha3: result[0].itemloc
+                        })[0].name;
+                    }
+
+                    if (result[0].imagename === null || result[0].imagename === "undefined") {
+                        var listing = {
+                            itemLocCode: result[0].itemloc,
+                            user: result[0].username,
+                            item: result[0].item,
+                            buyerLoc: lookup.countries({
+                                alpha3: result[0].buyerloc
+                            })[0].name,
+                            itemLoc: country,
+                            details: result[0].details
+                        };
+                        response.end(JSON.stringify(listing));
+                    } else {
+                        fs.readFile("./images/ads/" + result[0].imagename, function(err, file) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                var imagedata = new Buffer(file).toString('base64');
+
+                                var listing = {
+                                    itemLocCode: result[0].itemloc,
+                                    user: result[0].username,
+                                    item: result[0].item,
+                                    buyerLoc: lookup.countries({
+                                        alpha3: result[0].buyerloc
+                                    })[0].name,
+                                    itemLoc: country,
+                                    imagedata: '<img style="max-width:50%" src="data:image/gif;base64,' + imagedata + '">',
+                                    details: result[0].details
+                                };
+                                response.end(JSON.stringify(listing));
+                            }
+                        });
+                    }
+                }
+            });
         }
         
     });
 
     router.post('/getAdDetails', function(request, response) {
-
-        console.log("listingId: " + request.body.listingId);
         
         if (!request.body.listingId) console.log(err);
 

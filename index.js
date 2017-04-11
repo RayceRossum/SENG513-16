@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var server = require('http').Server(app);
 
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
@@ -9,6 +10,8 @@ var bcrypt = require('bcrypt');
 var pg = require('pg');
 var query = require('pg-query');
 var db = require('./db');
+
+var io = require('socket.io')(server);
 
 query.connectionParameters = process.env.DATABASE_URL || "postgres://postgres:password@localhost:5432/handel";
 db.bootstrap(query);
@@ -94,7 +97,61 @@ app.use('/', indexRoutes);
 app.use('/', listingRoutes);
 app.use('/', messagingRoutes);
 
+//================================Socket.io====================================
+var socketUsers = [];
 
-app.listen(app.get('port'), function() {
+// TODO: ADD REGEX TO STOP JAVASCRIPT INJECTION
+io.on('connection', function(socket) {
+    socket.on('register', function(data) {
+        var userSocket = {
+            "username": data.username,
+            "socket": socket
+        };
+
+        if (!socketUsers.filter(function(user) {
+                return user.username === userSocket.username
+            }).length) {
+            socketUsers.push(userSocket);
+        }
+        console.log(socketUsers);
+    });
+
+    socket.on('chat', function(data) {
+        var receiver = socketUsers.filter(function(user) {
+            return user.username === data.usernameReceiver
+        });
+
+        if (receiver.length) {
+            io.to(receiver[0].socket.id).emit('chat', {
+                usernameSender: data.usernameSender,
+                usernameReceiver: data.usernameReceiver,
+                message: data.message,
+                conversationID: data.conversationID,
+                timestamp: Date.now()
+            });
+        }
+        socket.emit('chat', {
+            usernameSender: data.usernameSender,
+            usernameReceiver: data.usernameReceiver,
+            message: data.message,
+            conversationID: data.conversationID,
+            timestamp: Date.now()
+        });
+
+        db.messages.sendMessage(data.usernameSender, data.usernameReceiver, data.message, data.conversationID, query, function(err, result) {})
+    });
+
+    socket.on('disconnect', function() {
+        var removeMap = socketUsers.map(function(user) {
+            console.log(user.socket.id + " " + socket.id);
+            return user.socket.id === socket.id
+        });
+
+        socketUsers.splice(removeMap.indexOf(true), 1);
+        console.log(socketUsers);
+    });
+});
+
+server.listen(app.get('port'), function() {
     console.log("Node app running on port: " + app.get('port'));
 });

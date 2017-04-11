@@ -1,3 +1,4 @@
+var socket = {};
 $(document).ready(function() {
     $('#openMessaging').popover({
         html: true
@@ -7,7 +8,26 @@ $(document).ready(function() {
     $('#openMessaging').click(function() {
         updateUserList();
     });
+
+    socket.io = io.connect(window.location.host);
+    socket.io.emit('register', {
+        username: $('#currentUser').text(),
+    });
+
+    socket.io.on('chat', function(data) {
+        var timestampD = new Date(data.timestamp);
+        var timestamp = timestampD.toLocaleDateString();
+        var messageData = "<li class='list-group-item'><b>" + data.usernameSender + "</b>" + " (" + timestamp + "): " + data.message + "</li>";
+        $('#l' + data.conversationID).append(messageData);
+        $('.popover-content').animate({
+                scrollTop: $('#l' + data.conversationID + ' li').last().offset().top
+            },
+            50,
+            "swing"
+        );
+    });
 });
+
 
 function updateUserList() {
     $.get('/getUserList', function(data) {
@@ -42,7 +62,7 @@ function updateUserList() {
                     $("#messageBar").append("<div class='col-md-2 col-sm-2 col-xs-4'> <button id='openMessage" + conversationID + "' data-toggle='popover' data-trigger = 'click' data-placement = 'top' type='button' class='btn btn-default btn-block'>" + user + "</button> </div>");
                     $("#openMessage" + conversationID).popover({
                         html: true,
-                        content: getMessageData(data, conversationID)
+                        content: getMessageData(data, conversationID, user)
                     });
                 }
                 $("#openMessaging").click();
@@ -50,14 +70,17 @@ function updateUserList() {
                     $("#openMessage" + conversationID).click();
                 }
 
+                $('.popover-content').animate({
+                        scrollTop: $('#l' + conversationID + ' li').last().offset().top
+                    },
+                    50,
+                    "swing"
+                );
+
                 $('#m' + conversationID).on('keypress', function(e) {
                     if (e.which === 13) {
                         sendMessage(this);
                     }
-                });
-
-                $('#g' + conversationID).click(function(e) {
-                    sendMessage($('#m' + conversationID));
                 });
             }
         });
@@ -67,12 +90,21 @@ function updateUserList() {
 function sendMessage(context) {
     if ($(context).val() != '') {
         $(context).attr("disabled");
+        var conversationID = $(context).attr('id').substr(1);
+
+        socket.io.emit('chat', {
+            usernameSender: $('#currentUser').text(),
+            usernameReceiver: $('#l' + conversationID).attr('usernameReceiver'),
+            message: $(context).val(),
+            conversationID: conversationID
+        });
+
         $(context).val('');
         $(context).removeAttr("disabled");
     }
 }
 
-function getMessageData(data, conversationID) {
+function getMessageData(data, conversationID, usernameReceiver) {
     var messageData = "";
     data.forEach(function(elem, index) {
         var timestampD = new Date(elem.timestamp);
@@ -80,5 +112,5 @@ function getMessageData(data, conversationID) {
         messageData += "<li class='list-group-item'><b>" + elem.usernameSender + "</b>" + " (" + timestamp + "): " + elem.message + "</li>";
     });
 
-    return "<ul class='list-group'>" + messageData + "</ul>" + "<div class='inner-addon right-addon'><input type='text' id='m" + conversationID + "' class='form-control' autocomplete='off'/><i class='glyphicon glyphicon-send'></i></div>";
+    return "<ul id='l" + conversationID + "' usernameReceiver='" + usernameReceiver + "' class='list-group'>" + messageData + "</ul>" + "<div class='inner-addon right-addon'><input type='text' id='m" + conversationID + "' class='form-control' autocomplete='off'/><i class='glyphicon glyphicon-send'></i></div>";
 }

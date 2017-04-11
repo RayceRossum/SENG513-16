@@ -11,13 +11,13 @@ exports.bootstrap = function(query) {
                         if (err) {
                             console.error(err);
                         } else {
-                          query("INSERT INTO public.\"Messages\" (usernameSender, usernameReceiver, message, conversationID) VALUES ('buyer', 'username', 'Hello! I am buyer. I would like you to help you find a Random Item.', 1)", function(err, result) {
-                              if (err) {
-                                  console.error(err);
-                              } else {
-                                  console.log("Success: Messages");
-                              }
-                          });
+                            query("INSERT INTO public.\"Messages\" (usernameSender, usernameReceiver, message, conversationID) VALUES ('buyer', 'username', 'Hello! I am buyer. I would like you to help you find a Random Item.', 1)", function(err, result) {
+                                if (err) {
+                                    console.error(err);
+                                } else {
+                                    console.log("Success: Messages");
+                                }
+                            });
                         }
                     });
                 }
@@ -32,7 +32,7 @@ exports.getMessages = function(conversationID, query, cb) {
             console.error(err);
             cb(err, null, null);
         } else {
-          console.log(result);
+            console.log(result);
             var userMessages = result.map(function(result) {
                 var data = {
                     "usernameSender": result.usernamesender,
@@ -44,6 +44,26 @@ exports.getMessages = function(conversationID, query, cb) {
             });
 
             cb(null, userMessages);
+        }
+    });
+}
+
+exports.sendMessage = function(usernameSender, usernameReceiver, message, conversationID, query, cb) {
+    query("INSERT INTO public.\"Messages\" (usernameSender, usernameReceiver, message, conversationID) VALUES ($1::varchar, $2::varchar, $3::varchar, $4::int)", [usernameSender, usernameReceiver, message, conversationID], function(err, result) {
+        if (err) {
+            cb(err, false);
+        } else {
+            cb(null, true)
+        }
+    });
+}
+
+exports.deleteMessages = function(conversationID, query, cb){
+    query("DELETE FROM public.\"Messages\" WHERE conversationID = $1::int;", [conversationID], function(err, result){
+        if (err) {
+            cb(err, false);
+        } else{
+           cb(null, false); 
         }
     });
 }
