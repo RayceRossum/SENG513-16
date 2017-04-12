@@ -141,7 +141,6 @@ $(document).ready(function(){
     $(document).on("click", ".editListing", function() {
         var listId = $(this).data('id');
         $('#idnum').val(listId);
-        alert(listId);
 
         $.ajax({
             type: "POST",
