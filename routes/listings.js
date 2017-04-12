@@ -255,50 +255,144 @@ module.exports = function(express, query, db) {
         });
     });
     
-    router.post('/rateHandeler', function(request, response){
-        console.log(request);
-        response.end("success");
+    router.post('/fetchHandelers', function(request, response){
+        var resObj = [];
+        
+        if(!request.body.listingId){
+            resObj.push("error");
+            esponse.end(JSON.stringify(resObj));
+        } 
+        else{
+            let listingItem = parseInt(request.body.listingId);
+            db.messaging.getIds(listingItem, query, function(err, result){
+                if (err) {
+                    resObj.push("error");
+                    response.end(JSON.stringify(resObj));
+                }
+                else{
+                    var handelers = [];
+                    for(var i = 0; i < result.length; i++){
+                        handelers.push(result[i].usernamehandeler);
+                    }
+                    resObj.push(handelers);
+                    response.end(JSON.stringify(resObj));
+                }
+            });
+        }
+        
     });
     
-    router.post('/deleteListing', function(request, response) {
+    router.post('/deleteListing', function(request, response){
+        var resObj = [];
+        
+        if(!request.body.listingId){
+            resObj.push("error");
+            response.end(JSON.stringify(resObj));
+        } 
+        else{
+            let listingItem = parseInt(request.body.listingId);
+            db.listings.deleteListing(query, listingItem, function(err){
+                if (err){
+                    resObj.push("error");
+                    response.end(JSON.stringify(resObj));
+                }
+                else{
+                    resObj.push("success");
+                    response.end(JSON.stringify(resObj));
+                }
+            });
+        }
+    });
+    
+
+    router.post('/rateHandeler', function(request, response){
+        var resObj = [];
+        if(!request.body.selectHandeler){
+            resObj.push("error");
+            response.end(JSON.stringify(resObj));            
+        }
+        else if(!request.body.rateHandeler || parseInt(request.body.rateHandeler) < 1 || parseInt(request.body.rateHandeler) > 5){
+            resObj.push("error");
+            response.end(JSON.stringify(resObj));           
+        }
+        else if(!request.body.listingId || parseInt(request.body.listingId) < 0){
+            resObj.push("error");
+            response.end(JSON.stringify(resObj));            
+        }
+        
+        db.profiles.fetchRatingData(query, request.body.selectHandeler, function(err, result){
+            if(err){
+            resObj.push("error");
+            response.end(JSON.stringify(resObj));                
+            }
+            else{
+                let oldRating = parseFloat(result[0].handelerrating);
+                let oldTotalRatings = parseFloat(result[0].totalratings);
+                
+                let newRating = (oldRating * oldTotalRatings + parseFloat(request.body.rateHandeler)) / (oldTotalRatings + 1);
+                let newTotalRatings = oldTotalRatings + 1;
+                
+
+                db.profiles.updateRatingData(query, request.body.selectHandeler, newRating, newTotalRatings, function(err){
+                    if(err){
+                        resObj.push("error");
+                        response.end(JSON.stringify(resObj));                         
+                    }
+                    else{
+                        resObj.push("success");
+                        response.end(JSON.stringify(resObj));
+                    }
+                });
+            }
+        });
+        
+    });
+    
+    router.post('/closeListing', function(request, response) {
         var resObj = [];
         
         if(!request.body.listingId) {
             resObj.push("error");
-            response.end(resObj);
+            response.end(JSON.stringify(resObj));
         }
         else {
             let listingItem = parseInt(request.body.listingId);
-            db.listings.deleteListing(query, listingItem);
-            db.messaging.getIds(listingItem, query, function(err, result){
-                if (err) {
+            
+            db.listings.deleteListing(query, listingItem, function(err){
+                
+                if(err){
                     resObj.push("error");
-                    response.end(resObj);
+                    response.end(JSON.stringify(resObj));                    
                 }
-                else{
-                    db.messaging.deleteConv(listingItem, query, function(err, result2){
-                        if (err) {
-                            resObj.push("error");
-                            response.end(resObj);
-                        }
-                        else{
-                            var convIds = [];
-                            for(var i = 0; i < result.length; i++){
-                                db.messages.deleteMessages(result[i].conversationid, query, function(err, result3){
-                                   if (err) {
-                                       resObj.push("error");
-                                       response.end(resObj);
-                                   } 
-                                });
-                                convIds.push(result[i].usernamehandeler);  
+                
+                db.messaging.getIds(listingItem, query, function(err, result){
+                    if (err) {
+                        resObj.push("error");
+                        response.end(JSON.stringify(resObj));
+                    }
+                    else{
+                        db.messaging.deleteConv(listingItem, query, function(err, result2){
+                            if (err) {
+                                resObj.push("error");
+                                response.end(JSON.stringify(resObj));
                             }
-                            resObj.push(convIds);
-                            response.end(JSON.stringify(resObj));
-                        }
-                    });
-                }
+                            else{
+                                for(var i = 0; i < result.length; i++){
+                                    db.messages.deleteMessages(result[i].conversationid, query, function(err, result3){
+                                        if (err) {
+                                            resObj.push("error");
+                                            response.end(JSON.stringify(resObj));
+                                        } 
+                                    });
+                                }
+                                resObj.push("success");
+                                response.end(JSON.stringify(resObj));
+                            }
+                        });
+                    }
+                });
             });
-        }                 
+            }                 
     });
     
     router.post('/saveListing', function(request, response){
@@ -310,18 +404,22 @@ module.exports = function(express, query, db) {
             db.listings.updateListing(query, request.body.idnum, request.body.editItem, request.body.country, request.body.editDetails);
             
             if(request.files.editImage){
+                console.log("editImage exists");
                 db.listings.getImageName(query, request.body.idnum, function(err, result){
                     let file = request.files.editImage;
                     var fileName;
                     //if image already exists, replace
-                    if(result[0].imagename){
+                    if((result[0].imagename) && (result[0].imagename !== "undefined")){
                         fileName = result[0].imagename.substring(0,result[0].imagename.indexOf('.'));
                         fileName = fileName + "." + request.files.editImage.name.split('.').pop();
 
                         file.mv('./images/ads/' + fileName, function(err) {
-                            if (err)
+                            if (err){
+                                console.log("error updating new image");
                                 console.log(err);
+                            }
                             else{
+                                db.listings.updateImage(query, request.body.idnum, fileName);
                                 console.log("Successful upload");
                                 response.end("true");
                             }
@@ -329,10 +427,13 @@ module.exports = function(express, query, db) {
                     }
                     //if not current image, add new one
                     else{
+                        console.log("No image exists")
                         fileName = "img" + request.body.idnum + "." + request.files.editImage.name.split('.').pop();
                         file.mv('./images/ads/' + fileName, function(err) {
-                            if (err)
+                            if (err){
+                                console.log("error uploading new image");
                                 console.log(err);
+                            }
                             else{
                                 console.log("Successful upload");
                                 db.listings.updateImage(query, request.body.idnum, fileName);
@@ -397,7 +498,7 @@ module.exports = function(express, query, db) {
                                         alpha3: result[0].buyerloc
                                     })[0].name,
                                     itemLoc: country,
-                                    imagedata: '<img style="max-width:50%" src="data:image/gif;base64,' + imagedata + '">',
+                                    imagedata: '<img id="storedImg" style="max-width:50%" src="data:image/gif;base64,' + imagedata + '">',
                                     details: result[0].details
                                 };
                                 response.end(JSON.stringify(listing));
