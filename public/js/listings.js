@@ -95,7 +95,18 @@ $(document).ready(function() {
 
     });
 
-    $('#filterListings').submit(function(event) {
+    $('#clearCountries').click(function(event){
+        event.preventDefault();
+        
+        $('#countryPickerFilter').empty();
+        $('#countryPickerFilter').append('<div class="col-md-4 col-sm-4 col-xs-4"><label class="control-label " for="buyerLoc">Buyer Location:  </label><input class="control-label" id="buyerLoc" name="buyerLoc" type="text" /></div><div class="form-group col-md-4 col-sm-4 col-xs-4"><label class="control-label " for="itemLoc">Item Location: </label><input class="control-label" id="itemLoc" name="itemLoc" type="text" /></div>');
+        $('#buyerLoc').countrySelector();
+        $('#itemLoc').countrySelector();
+        $('.handelerSearch').load("/listings");
+        $('.users').load("/userListings");
+    });
+    
+    $('#submitpost').click(function(event) {
         event.preventDefault();
 
         var form = $('#filterListings')[0];
