@@ -20,7 +20,7 @@ $(document).ready(function() {
                 $('#userListings').append('<li class="list-group-item row">' +
                                           '<div class="col-md-6">' + jsonObj[1][i].item + '</div>' +
                                           '<div class="col-md-3"><a class="editListing" href="#" data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#editListingModal">Edit</a></div>' +
-                                          '<div class="col-md-3"><a class="fetchHandelers" href="#" data-id="' + jsonObj[1][i].id + '">Delete</a></div>');
+                                          '<div class="col-md-3"><a class="fetchHandelers" href="#" data-id="' + jsonObj[1][i].id + '">Close</a></div>');
             }
             userpgnumber = 0;
         }
@@ -79,7 +79,7 @@ $(document).ready(function() {
                     $('#userListings').append('<li class="list-group-item row">' +
                                               '<div class="col-md-6">' + jsonObj[1][i].item + '</div>' +
                                               '<div class="col-md-3"><a class="editListing" data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#editListingModal">Edit</a></div>' +
-                                              '<div class="col-md-3"><a class="deleteListing" data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#deleteListingModal">Delete</a></div>');
+                                              '<div class="col-md-3"><a class="deleteListing" data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#deleteListingModal">Close</a></div>');
                 }
                 $('#nextbtnL').prop('disabled', false);
 
