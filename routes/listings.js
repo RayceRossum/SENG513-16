@@ -47,13 +47,15 @@ module.exports = function(express, query, db) {
     });
 
     router.get('/getRecentAds', function(request, response) {
-        let upper = 0 * 2;
-        let lower = 0 * 2 + 1;
+
+        let upper = 0 * 5;
+        let lower = 0 * 5 + 1;
+        
 
         db.listings.getCount(query, function(err, count) {
             if (err) response.end("error");
             else {
-                let limit = 2;
+                let limit = 5;
                 let offset = 0;
 
                 db.listings.getAllAds(query, limit, offset, function(err, result) {
@@ -90,8 +92,10 @@ module.exports = function(express, query, db) {
         db.listings.getAllUserAdsCount(query, request.user.username, function(err, count) {
             if (err) console.log(err);
             else {
-                let limit = 2;
-                let offset = 2 * parseInt(request.body.pagenum);
+
+                let limit = 5;
+                let offset = 5 * parseInt(request.body.pagenum);
+                
 
                 db.listings.getAllUserAds(query, request.user.username, limit, offset, function(err, result){
                     if (err) console.log(err);
@@ -129,8 +133,8 @@ module.exports = function(express, query, db) {
             db.listings.getCount(query, function(err, count) {
                 if (err) response.end("error");
                 else {
-                    let limit = 2;
-                    let offset = 2 * parseInt(request.body.pagenum);
+                    let limit = 5;
+                    let offset = 5 * parseInt(request.body.pagenum);
 
                     db.listings.getAllAds(query, limit, offset, function(err, result) {
                         var resObj = []
@@ -160,8 +164,8 @@ module.exports = function(express, query, db) {
 
             });
         } else {
-            let limit = 2;
-            let offset = parseInt(request.body.pagenum) * 2;
+            let limit = 5;
+            let offset = parseInt(request.body.pagenum) * 5;
             let buyerLoc = request.body.buyerLocation;
             let itemLoc = request.body.itemLocation;
 
@@ -191,7 +195,7 @@ module.exports = function(express, query, db) {
     });
 
     router.post('/filterListings', function(request, response) {
-        let limit = 2;
+        let limit = 5;
         let offset = 0;
         let buyerLoc = request.body.buyerLoc;
         let itemLoc = request.body.itemLoc;
@@ -230,7 +234,7 @@ module.exports = function(express, query, db) {
 
 
     router.get('/getUserListings', function(request, response){
-        let limit = 2;
+        let limit = 5;
         let offset = 0;
         db.listings.getAllUserAdsCount(query, request.user.username, function(err, count){
             db.listings.getAllUserAds(query, request.user.username, limit, offset, function(err,result){
