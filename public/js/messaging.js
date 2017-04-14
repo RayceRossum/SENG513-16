@@ -76,6 +76,23 @@ function updateUserList() {
 
                 }
 
+                $("#openMessage" + conversationID).click(function() {
+                    var popover = $("#openMessage" + conversationID).data('bs.popover');
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/getMessages",
+                        data: {
+                            conversationID: conversationID
+                        },
+                        success: function(data) {
+                            popover.options.content = function() {
+                                return getMessageData(data, conversationID, user);
+                            }
+                        }
+                    });
+                });
+
                 $('#m' + conversationID).on('keypress', function(e) {
                     if (e.which === 13) {
                         sendMessage(this);
@@ -86,9 +103,7 @@ function updateUserList() {
     });
 }
 
-$('.message-tab').click(function() {
-    alert("Update messages");
-});
+
 
 function sendMessage(context) {
     if ($(context).val() != '') {
