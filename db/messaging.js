@@ -33,14 +33,24 @@ exports.getUserList = function(username, query, cb) {
 
                 result.forEach(function(elem, index) {
                     query("SELECT * FROM public.\"Listings\" WHERE id = $1::int AND NOT deleted;", [elem.listingitem], function(err2, result2) {
-                        var data = {
-                            "username": result[index].usernamebuyer,
-                            "item": result2[0].item,
-                            "conversationID": result[index].conversationid
-                        };
 
-                        userMessages.push(data);
+                        if (result[index].usernamehandeler === username) {
+                            var data = {
+                                "username": result[index].usernamebuyer,
+                                "item": result2[0].item,
+                                "conversationID": result[index].conversationid
+                            };
 
+                            userMessages.push(data);
+                        } else {
+                            var data = {
+                                "username": result[index].handeler,
+                                "item": result2[0].item,
+                                "conversationID": result[index].conversationid
+                            };
+
+                            userMessages.push(data);
+                        }
                         if (index === result.length - 1) {
                             cb(null, userMessages);
                         }
