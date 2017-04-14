@@ -1,10 +1,10 @@
-$(document).ready(function(){
-    $("#rateHandelerForm").submit(function(event){
+$(document).ready(function() {
+    $("#rateHandelerForm").submit(function(event) {
         event.preventDefault();
 
         var form = $('#rateHandelerForm')[0];
         var formData = new FormData(form);
-        formData.append("listingId" , currentListing);
+        formData.append("listingId", currentListing);
 
         $.ajax({
             type: "POST",
@@ -16,12 +16,12 @@ $(document).ready(function(){
             cache: false,
             success: function(data) {
                 var jsonObj = JSON.parse(data);
-                if(jsonObj[0] !== "error"){
+                if (jsonObj[0] !== "error") {
                     $.ajax({
                         type: "POST",
                         url: "/closeListing",
                         async: true,
-                        data:{
+                        data: {
                             listingId: currentListing
                         },
                         success: function(data) {
@@ -29,12 +29,18 @@ $(document).ready(function(){
                             $('#rateHandelerModal').modal('hide');
                             $('.handelerSearch').load("/listings");
                             $('.users').load("/userListings");
+                            $("[type='button'][user=" + $('#selectHandeler').val() + "]").click();
+                            $("[type='button'][user=" + $('#selectHandeler').val() + "]").remove();
+                            if ($("#openMessaging").next('div.popover:visible').length) {
+                                $("#openMessaging").click();
+                            }
+                            updateUserList();
                         }
                     });
                 }
                 currentListing = null;
-    }
-    });
+            }
+        });
 
     });
 
@@ -54,11 +60,11 @@ $(document).ready(function(){
                 contentType: false,
                 cache: false,
                 success: function(data) {
-                    if(data === "true"){
+                    if (data === "true") {
                         $('#editListingModal').modal('hide');
                         $('.handelerSearch').load("/listings");
                         $('.users').load("/userListings");
-                }
+                    }
                 }
             });
         }
@@ -86,14 +92,14 @@ $(document).ready(function(){
             reader.readAsDataURL(input.files[0]);
         }
     }
-    
-    $("#editListingModal").on("hidden.bs.modal", function () {
+
+    $("#editListingModal").on("hidden.bs.modal", function() {
         $("#oldImg").empty();
         $("#editimagePreview").attr('src', '');
         $("#editImage").val('');
     });
 
-    $(document).on("click", ".fetchHandelers", function(){
+    $(document).on("click", ".fetchHandelers", function() {
         var listId = $(this).data('id');
 
         $.ajax({
@@ -104,31 +110,35 @@ $(document).ready(function(){
                 listingId: listId
             },
             success: function(data) {
-                if (data === "error"){
+                if (data === "error") {
                     alert("Error closing listing");
-                }
-                else{
+                } else {
                     var jsonObj = JSON.parse(data);
                 }
-                if (jsonObj[0].length == 0){
+                if (jsonObj[0].length == 0) {
                     $.ajax({
                         type: "POST",
                         url: "/deleteListing",
                         async: true,
-                        data:{
+                        data: {
                             listingId: listId
                         },
                         success: function(data) {
                             $('#rateHandelerModal').modal('hide');
                             $('.handelerSearch').load("/listings");
                             $('.users').load("/userListings");
+                            $("input[type='button'][user=" + $('#selectHandeler').val() + "]").click();
+                            $("input[type='button'][user=" + $('#selectHandeler').val() + "]").remove();
+                            if ($("#openMessaging").next('div.popover:visible').length) {
+                                $("#openMessaging").click();
+                            }
+                            updateUserList();
                         }
                     });
-                }
-                else{
+                } else {
                     currentListing = parseInt(listId);
                     $('#selectHandeler').empty();
-                    for(var i = 0; i < jsonObj[0].length; i++){
+                    for (var i = 0; i < jsonObj[0].length; i++) {
                         $('#selectHandeler').append("<option>" + jsonObj[0][i] + "</option>");
                     }
                     $('#rateHandelerModal').modal('show');
@@ -149,24 +159,23 @@ $(document).ready(function(){
             data: {
                 listingId: listId
             },
-            success: function(data){
+            success: function(data) {
                 var jsonObj = JSON.parse(data);
                 $('#listingIdNum').hide();
 
                 $("#editItem").val(jsonObj.item);
                 $("#editDetails").val(jsonObj.details);
 
-                if(jsonObj.imagedata){
+                if (jsonObj.imagedata) {
                     $("#oldImg").append('<div class="col-md-12 col-sm-12 col-xs-12"><label class="control-label"> Current Image </label></div>' + '<div class="col-md-12 col-sm-12 col-xs-12">' + jsonObj.imagedata + '</div>');
                 }
 
-                if(jsonObj.itemLoc !== "undefined"){
+                if (jsonObj.itemLoc !== "undefined") {
                     $('#countryPickerLabel').empty();
                     $('#countryPickerLabel').append('<label id ="countryPickerLabel" class="control-label" for="editcs1">Item Location</label>');
                     $('#countryPickerLabel').append('<input class="control-label" id="editcs1" name="country" type="text" value="' + jsonObj.itemLocCode + '"/>');
                     $("#editcs1").countrySelector();
-                }
-                else{
+                } else {
                     $('#countryPickerLabel').empty();
                     $('countryPickerLabel').append('<label id ="countryPickerLabel" class="control-label" for="editcs1">Item Location</label>');
                     $('#countryPickerLabel').append('<input class="control-label" id="editcs1" name="country" type="text"/>');

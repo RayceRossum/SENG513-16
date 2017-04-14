@@ -3,10 +3,9 @@ $(document).ready(function() {
     $('#openMessaging').popover({
         html: true
     });
-    updateUserList();
 
-    $('#openMessaging').click(function() {
-        updateUserList();
+    $('#openMessaging').click(function (){
+      updateUserList();
     });
 
     socket.io = io.connect(window.location.host);
@@ -26,6 +25,8 @@ $(document).ready(function() {
             "swing"
         );
     });
+
+    updateUserList();
 });
 
 
