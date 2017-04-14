@@ -44,7 +44,7 @@ exports.getUserList = function(username, query, cb) {
                             userMessages.push(data);
                         } else {
                             var data = {
-                                "username": result[index].handeler,
+                                "username": result[index].usernamehandeler,
                                 "item": result2[0].item,
                                 "conversationID": result[index].conversationid
                             };
