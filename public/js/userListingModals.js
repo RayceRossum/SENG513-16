@@ -30,7 +30,7 @@ $(document).ready(function() {
                             $('.handelerSearch').load("/listings");
                             $('.users').load("/userListings");
                             $("[type='button'][user=" + $('#selectHandeler').val() + "]").click();
-                            $("[type='button'][user=" + $('#selectHandeler').val() + "]").remove();
+                            $("[type='button'][user=" + $('#selectHandeler').val() + "]").parent().remove();
                             if ($("#openMessaging").next('div.popover:visible').length) {
                                 $("#openMessaging").click();
                             }
@@ -128,7 +128,7 @@ $(document).ready(function() {
                             $('.handelerSearch').load("/listings");
                             $('.users').load("/userListings");
                             $("input[type='button'][user=" + $('#selectHandeler').val() + "]").click();
-                            $("input[type='button'][user=" + $('#selectHandeler').val() + "]").remove();
+                            $("[type='button'][user=" + $('#selectHandeler').val() + "]").parent().remove();
                             if ($("#openMessaging").next('div.popover:visible').length) {
                                 $("#openMessaging").click();
                             }
