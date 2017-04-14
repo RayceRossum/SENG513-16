@@ -47,6 +47,7 @@ $(document).ready(function() {
                         $('#details').val('');
                         $('#imagePreview').hide();
                         $('#cs1').val('');
+                        $('#submitListing').hide();
                         $('.handelerSearch').load("/listings");
                         $('.users').load("/userListings");
                     } else {
@@ -60,5 +61,6 @@ $(document).ready(function() {
 
 function reloadCreateListingModal() {
     $('#uploadListing').removeClass('hidden', true);
+    $('#submitListing').show();
     $('#listingSuccessAlert').remove();
 }
