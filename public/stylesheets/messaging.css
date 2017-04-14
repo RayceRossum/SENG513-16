@@ -4,13 +4,38 @@
     padding: 0;
     width: auto;
     overflow: hidden;
+    border-radius: 3px;
 }
 
-.userList li {
-    padding: 5px 10px;
-    width: auto;
+.userList td {
+    min-width: 100px;
 }
 
 .clickable-row {
-  cursor: pointer;
+    cursor: pointer;
 }
+
+/* enable absolute positioning */
+.inner-addon {
+    position: relative;
+}
+
+/* style icon */
+.inner-addon .glyphicon {
+  position: absolute;
+  padding: 10px;
+  pointer-events: none;
+}
+
+/* align icon */
+.left-addon .glyphicon  { left:  0px;}
+.right-addon .glyphicon { right: 0px;}
+
+/* add padding  */
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 30px; }
+
+.popover-content {
+  height: 360px;
+  overflow-y: auto;
+ }

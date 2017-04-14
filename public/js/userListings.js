@@ -1,4 +1,5 @@
 var userpgnumber = 0;
+var currentListing = null;
 
 $(document).ready(function() {
     $.ajax({
@@ -19,12 +20,12 @@ $(document).ready(function() {
                 $('#userListings').append('<li class="list-group-item row">' +
                                           '<div class="col-md-6">' + jsonObj[1][i].item + '</div>' +
                                           '<div class="col-md-3"><a class="editListing" href="#" data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#editListingModal">Edit</a></div>' +
-                                          '<div class="col-md-3"><a class="deleteListing" href="#" data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#deleteListingModal">Delete</a></div>');
+                                          '<div class="col-md-3"><a class="fetchHandelers" href="#" data-id="' + jsonObj[1][i].id + '">Delete</a></div>');
             }
+            userpgnumber = 0;
         }
 
     });
-    
 
     $('#nextbtnL').on('click', function(e) {
         userpgnumber++;
@@ -46,8 +47,8 @@ $(document).ready(function() {
                 for (var i = 0; i < jsonObj[1].length; i++) {
                     $('#userListings').append('<li class="list-group-item row">' +
                                               '<div class="col-md-6">' + jsonObj[1][i].item + '</div>' +
-                                              '<div class="col-md-3"><a class="editListing" href="#" data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#editListingModal">Edit</a></div>' +
-                                              '<div class="col-md-3"><a class="deleteListing" href="#" data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#deleteListingModal">Delete</a></div>');
+                                              '<div class="col-md-3"><a class="editListing"  data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#editListingModal">Edit</a></div>' +
+                                              '<div class="col-md-3"><a class="deleteListing" data-id="' + jsonObj[1][i].id + '" >Close</a></div>');
                 }
                 $('#prevbtnL').prop('disabled', false);
             }
@@ -77,37 +78,15 @@ $(document).ready(function() {
                 for (var i = 0; i < jsonObj[1].length; i++) {
                     $('#userListings').append('<li class="list-group-item row">' +
                                               '<div class="col-md-6">' + jsonObj[1][i].item + '</div>' +
-                                              '<div class="col-md-3"><a class="editListing" href="#" data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#editListingModal">Edit</a></div>' +
-                                              '<div class="col-md-3"><a class="deleteListing" href="#" data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#deleteListingModal">Delete</a></div>');
+                                              '<div class="col-md-3"><a class="editListing" data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#editListingModal">Edit</a></div>' +
+                                              '<div class="col-md-3"><a class="deleteListing" data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#deleteListingModal">Delete</a></div>');
                 }
                 $('#nextbtnL').prop('disabled', false);
 
             }
         });
-    
-    
-});
-    
-    $(document).on("click", ".deleteListing", function() {
-        
-        var listId = $(this).data('id');
 
-        $.ajax({
-            type: "POST",
-            url: "/deleteListing",
-            data: {
-                listingId: listId
-            },
-            success: function(data) {
-                
-                if(data === "success"){
-                    $('.handelerSearch').load("/listings");
-                    $('.users').load("/userListings");
-                }
-                
-            }
-        });
-        
+
     });
     
 });
