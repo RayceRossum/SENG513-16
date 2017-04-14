@@ -180,7 +180,9 @@ $(document).ready(function() {
                 if (jsonObj.details)
                     $('#listDetails').append(jsonObj.details);
 
-                $('#acceptListing').click(acceptListing(listId));
+                $('#acceptListing').on('click', function() {
+                        acceptListing(listId);
+                });
             }
         });
 

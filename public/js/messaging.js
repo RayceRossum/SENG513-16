@@ -4,8 +4,8 @@ $(document).ready(function() {
         html: true
     });
 
-    $('#openMessaging').click(function (){
-      updateUserList();
+    $('#openMessaging').click(function() {
+        updateUserList();
     });
 
     socket.io = io.connect(window.location.host);
@@ -32,7 +32,7 @@ $(document).ready(function() {
 
 function updateUserList() {
     $.get('/getUserList', function(data) {
-        //alert(JSON.stringify(data));
+        alert(JSON.stringify(data));
         userList = "";
         data.forEach(function(elem, index) {
             userList += "<tr user='" + elem.username + "' item='" + elem.item + "' conversationID='" + elem.conversationID + "' class='userList clickable-row'><td>" + elem.username + "</td><td>" + elem.item + "</td></tr>";
@@ -90,6 +90,7 @@ function updateUserList() {
                             popover.options.content = function() {
                                 return getMessageData(data, conversationID, user);
                             }
+
                         }
                     });
                 });
