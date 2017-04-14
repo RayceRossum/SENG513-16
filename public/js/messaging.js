@@ -32,7 +32,7 @@ $(document).ready(function() {
 
 function updateUserList() {
     $.get('/getUserList', function(data) {
-        alert(JSON.stringify(data));
+        //alert(JSON.stringify(data));
         userList = "";
         data.forEach(function(elem, index) {
             userList += "<tr user='" + elem.username + "' item='" + elem.item + "' conversationID='" + elem.conversationID + "' class='userList clickable-row'><td>" + elem.username + "</td><td>" + elem.item + "</td></tr>";

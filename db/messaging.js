@@ -21,37 +21,33 @@ exports.bootstrap = function(query) {
 };
 
 exports.getUserList = function(username, query, cb) {
+
     query("SELECT * FROM public.\"Messaging\" WHERE usernameBuyer = $1::varchar OR usernameHandeler = $1::varchar;", [username], function(err, result) {
         if (err) {
             console.error(err);
             cb(err, null, null);
         } else {
-          console.log(result[0]);
-            if (result[0]) {
-                query("SELECT * FROM public.\"Listings\" WHERE id = $1::int AND NOT deleted;", [result[0].listingitem], function(err2, result2) {
-                    console.log(result2);
-                    var userMessages = result.map(function(result) {
-                        if (result.usernamehandeler === username) {
-                            var data = {
-                                "username": result.usernamebuyer,
-                                "item": result2[0].item,
-                                "conversationID": result.conversationid
-                            };
-                            return data;
-                        } else {
-                            var data = {
-                                "username": result.usernamehandeler,
-                                "item": result2[0].item,
-                                "conversationID": result.conversationid
-                            };
-                            return data;
+            console.log("RESULT: " + JSON.stringify(result));
+            if (result.length) {
+                var userMessages = [];
+
+                result.forEach(function(elem, index) {
+                    query("SELECT * FROM public.\"Listings\" WHERE id = $1::int AND NOT deleted;", [elem.listingitem], function(err2, result2) {
+                        var data = {
+                            "username": result[index].usernamebuyer,
+                            "item": result2[0].item,
+                            "conversationID": result[index].conversationid
+                        };
+
+                        userMessages.push(data);
+
+                        if (index === result.length - 1) {
+                            cb(null, userMessages);
                         }
                     });
-                    console.log(userMessages);
-                    cb(null, userMessages);
                 });
             } else {
-              cb(null, []);
+                cb(null, []);
             }
         }
     });
