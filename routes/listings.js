@@ -15,6 +15,7 @@ module.exports = function(express, query, db) {
 
     router.post('/acceptListing', function(request, response) {
         //TODO: Better input sanitization to make sure it's not possible to create chats with any buyer
+        console.log("USERNAME" + request.user.username);
         if (request.user) {
             db.messaging.acceptListing(request.user.username, request.body.usernameBuyer, request.body.listingItem, query, function(err, result) {
                 console.log(result);
@@ -34,7 +35,7 @@ module.exports = function(express, query, db) {
             response.redirect('/');
         }
     });
-    
+
     router.get('/userListings', function(request, response) {
         if (request.user) {
             response.render('pages/userListings', {
@@ -46,9 +47,11 @@ module.exports = function(express, query, db) {
     });
 
     router.get('/getRecentAds', function(request, response) {
+
         let upper = 0 * 5;
         let lower = 0 * 5 + 1;
         
+
         db.listings.getCount(query, function(err, count) {
             if (err) response.end("error");
             else {
@@ -83,41 +86,43 @@ module.exports = function(express, query, db) {
 
         });
     });
-    
+
     router.post('/getUserListingPage', function(request, response) {
-        
+
         db.listings.getAllUserAdsCount(query, request.user.username, function(err, count) {
             if (err) console.log(err);
             else {
+
                 let limit = 5;
                 let offset = 5 * parseInt(request.body.pagenum);
                 
+
                 db.listings.getAllUserAds(query, request.user.username, limit, offset, function(err, result){
                     if (err) console.log(err);
                     else{
                         var listings = [];
                         var resObj = [];
-                         
+
                         if (count <= (offset + limit) || offset == 0) {
                             resObj.push("true");
                         } else {
                             resObj.push("false");
                         }
-                        
+
                         for(var i = 0; i < result.length; i++){
                             listings.push({
                                 id: result[i].id,
                                 item: result[i].item
                             });
                         }
-                        
+
                         resObj.push(listings);
                         response.end(JSON.stringify(resObj));
                     }
                 });
             }
-            
-            
+
+
         });
     });
 
@@ -227,7 +232,7 @@ module.exports = function(express, query, db) {
 
     });
 
-    
+
     router.get('/getUserListings', function(request, response){
         let limit = 5;
         let offset = 0;
@@ -250,18 +255,18 @@ module.exports = function(express, query, db) {
                     resObj.push(listings);
                     response.end(JSON.stringify(resObj));
                 }
-                
-            }); 
+
+            });
         });
     });
-    
+
     router.post('/fetchHandelers', function(request, response){
         var resObj = [];
-        
+
         if(!request.body.listingId){
             resObj.push("error");
             esponse.end(JSON.stringify(resObj));
-        } 
+        }
         else{
             let listingItem = parseInt(request.body.listingId);
             db.messaging.getIds(listingItem, query, function(err, result){
@@ -279,16 +284,16 @@ module.exports = function(express, query, db) {
                 }
             });
         }
-        
+
     });
-    
+
     router.post('/deleteListing', function(request, response){
         var resObj = [];
-        
+
         if(!request.body.listingId){
             resObj.push("error");
             response.end(JSON.stringify(resObj));
-        } 
+        }
         else{
             let listingItem = parseInt(request.body.listingId);
             db.listings.deleteListing(query, listingItem, function(err){
@@ -303,40 +308,40 @@ module.exports = function(express, query, db) {
             });
         }
     });
-    
+
 
     router.post('/rateHandeler', function(request, response){
         var resObj = [];
         if(!request.body.selectHandeler){
             resObj.push("error");
-            response.end(JSON.stringify(resObj));            
+            response.end(JSON.stringify(resObj));
         }
         else if(!request.body.rateHandeler || parseInt(request.body.rateHandeler) < 1 || parseInt(request.body.rateHandeler) > 5){
             resObj.push("error");
-            response.end(JSON.stringify(resObj));           
+            response.end(JSON.stringify(resObj));
         }
         else if(!request.body.listingId || parseInt(request.body.listingId) < 0){
             resObj.push("error");
-            response.end(JSON.stringify(resObj));            
+            response.end(JSON.stringify(resObj));
         }
-        
+
         db.profiles.fetchRatingData(query, request.body.selectHandeler, function(err, result){
             if(err){
             resObj.push("error");
-            response.end(JSON.stringify(resObj));                
+            response.end(JSON.stringify(resObj));
             }
             else{
                 let oldRating = parseFloat(result[0].handelerrating);
                 let oldTotalRatings = parseFloat(result[0].totalratings);
-                
+
                 let newRating = (oldRating * oldTotalRatings + parseFloat(request.body.rateHandeler)) / (oldTotalRatings + 1);
                 let newTotalRatings = oldTotalRatings + 1;
-                
+
 
                 db.profiles.updateRatingData(query, request.body.selectHandeler, newRating, newTotalRatings, function(err){
                     if(err){
                         resObj.push("error");
-                        response.end(JSON.stringify(resObj));                         
+                        response.end(JSON.stringify(resObj));
                     }
                     else{
                         resObj.push("success");
@@ -345,26 +350,26 @@ module.exports = function(express, query, db) {
                 });
             }
         });
-        
+
     });
-    
+
     router.post('/closeListing', function(request, response) {
         var resObj = [];
-        
+
         if(!request.body.listingId) {
             resObj.push("error");
             response.end(JSON.stringify(resObj));
         }
         else {
             let listingItem = parseInt(request.body.listingId);
-            
+
             db.listings.deleteListing(query, listingItem, function(err){
-                
+
                 if(err){
                     resObj.push("error");
-                    response.end(JSON.stringify(resObj));                    
+                    response.end(JSON.stringify(resObj));
                 }
-                
+
                 db.messaging.getIds(listingItem, query, function(err, result){
                     if (err) {
                         resObj.push("error");
@@ -382,7 +387,7 @@ module.exports = function(express, query, db) {
                                         if (err) {
                                             resObj.push("error");
                                             response.end(JSON.stringify(resObj));
-                                        } 
+                                        }
                                     });
                                 }
                                 resObj.push("success");
@@ -392,9 +397,9 @@ module.exports = function(express, query, db) {
                     }
                 });
             });
-            }                 
+            }
     });
-    
+
     router.post('/saveListing', function(request, response){
         console.log(request);
         if(!request.body.editItem){
@@ -402,7 +407,7 @@ module.exports = function(express, query, db) {
         }
         else{
             db.listings.updateListing(query, request.body.idnum, request.body.editItem, request.body.country, request.body.editDetails);
-            
+
             if(request.files.editImage){
                 console.log("editImage exists");
                 db.listings.getImageName(query, request.body.idnum, function(err, result){
@@ -448,11 +453,11 @@ module.exports = function(express, query, db) {
             }
         }
     });
-                
 
-    
+
+
     router.post('/editListing', function(request, response){
-        
+
         if (!request.body.listingId) console.log(err);
 
         else {
@@ -508,11 +513,11 @@ module.exports = function(express, query, db) {
                 }
             });
         }
-        
+
     });
 
     router.post('/getAdDetails', function(request, response) {
-        
+
         if (!request.body.listingId) console.log(err);
 
         else {
