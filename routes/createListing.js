@@ -40,7 +40,7 @@ module.exports = function(express, query, db) {
 
                         //temp until we can query for actual handelers
                         //need to change!!
-                        db.listings.getUserCount(query, function(err, results){
+                        db.listings.getHandelerCount(query, function(err, results){
                             if (err) console.log(err);
                             else{
                                 stats.push(results);
@@ -76,7 +76,8 @@ module.exports = function(express, query, db) {
             db.listings.getCount(query, function(err, rows) {
                 console.log(request);
                 if (request.files.image) {
-                    fileName = "img_" + rows + "." + request.files.image.name.split('.').pop();
+                    let imgNumber = parseInt(rows) + 1;
+                    fileName = "img" + imgNumber + "." + request.files.image.name.split('.').pop();
                     let file = request.files.image;
 
                     file.mv('./images/ads/' + fileName, function(err) {

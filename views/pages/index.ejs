@@ -16,7 +16,7 @@
                     <div class="col-md-3">
                         <h1>HANDEL</h1>
                         <p>
-                            Not logged in. <a href="register">Create an account?</a>
+                            Not logged in. <a href="register">Create an account</a>?
                         </p>
                     </div>
                     <div class="col-md-offset-6 col-md-3">
@@ -61,22 +61,26 @@
             <div class="col-md-4">
                 <h1>WELCOME <%= userType.toUpperCase() %></h1>
                 <p>
-                    Successfully logged in as
-                    <%= user.username %>.
+                    Successfully logged in as <span id="currentUser"><%= user.username %></span>.
                 </p>
             </div>
             <div class="col-md-8">
+                <div class="users">
+                    <% include ../pages/userListings.ejs %>
+                </div>
                 <% if (userType === "handeler"){ %>
                     <div class="handelerSearch">
                         <% include ../pages/listings.ejs %>
                     </div>
                     <% } %>
-                        <div class="users">
-                            <% include ../pages/userListings.ejs %>
-                        </div>
                         <% include ../partials/listingsModal.ejs %>
-                            <% include ../partials/userListingsModal.ejs %>
+                            <% include ../partials/createListingModal.ejs %>
+                                <% include ../partials/profileSettingsModal.ejs %>
+                                    <% include ../partials/rateHandelerModal.ejs %>
+                                        <% include ../partials/editListingModal.ejs %>
+                                            <% include ../partials/myProfileModal.ejs %>
             </div>
+
             <% include ../partials/createListingModal.ejs %>
                 <% include ../partials/profileSettingsModal.ejs %>
                 <% include ../partials/myProfileModal.ejs %>
@@ -86,6 +90,13 @@
                         <% include ../pages/messaging.ejs %>
                     </footer>
                     <% } %>
+
+            </div>
+            </div>
+            <footer class="footer">
+                <% include ../pages/messaging.ejs %>
+            </footer>
+            <% } %>
 
 
 </body>

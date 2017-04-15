@@ -1,4 +1,4 @@
-﻿(function ($) {
+(function ($) {
     var ALPHA2_CODE = 0,
         ALPHA3_CODE = 1,
         NUMERIC_CODE = 2,
@@ -157,10 +157,11 @@
 
                 setValue(_$input.val());
             });
-        }
+        },
     };
 
     $.fn.countrySelector = function (method) {
+        alert(method);
         if (methods[method]) {
             return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
         } else if (typeof method === 'object' || !method) {

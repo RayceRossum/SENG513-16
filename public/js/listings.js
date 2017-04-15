@@ -20,7 +20,7 @@ $(document).ready(function() {
 
             for (var i = 0; i < jsonObj[1].length; i++) {
                 $('#listings').append('<li class="list-group-item row">' +
-                   '<div class="col-md-4">' + jsonObj[1][i].item + '</div>' +
+                    '<div class="col-md-4">' + jsonObj[1][i].item + '</div>' +
                     '<div class="col-md-4">' + jsonObj[1][i].buyerLoc + '</div>' +
                     '<div class="col-md-4"><a class="openListing" href="#" data-id="' + jsonObj[1][i].id + '" data-toggle="modal" data-target="#bannerformmodal">More</a></div>');
             }
@@ -95,7 +95,18 @@ $(document).ready(function() {
 
     });
 
-    $('#filterListings').submit(function(event) {
+    $('#clearCountries').click(function(event) {
+        event.preventDefault();
+
+        $('#countryPickerFilter').empty();
+        $('#countryPickerFilter').append('<div class="col-md-4 col-sm-4 col-xs-4"><label class="control-label " for="buyerLoc">Buyer Location:  </label><input class="control-label" id="buyerLoc" name="buyerLoc" type="text" /></div><div class="form-group col-md-4 col-sm-4 col-xs-4"><label class="control-label " for="itemLoc">Item Location: </label><input class="control-label" id="itemLoc" name="itemLoc" type="text" /></div>');
+        $('#buyerLoc').countrySelector();
+        $('#itemLoc').countrySelector();
+        $('.handelerSearch').load("/listings");
+        $('.users').load("/userListings");
+    });
+
+    $('#submitpost').click(function(event) {
         event.preventDefault();
 
         var form = $('#filterListings')[0];
@@ -157,6 +168,7 @@ $(document).ready(function() {
                 $('#listItemLoc').empty();
                 $('#listImage').empty();
                 $('#listDetails').empty();
+                $('#acceptListing').show();
 
                 $('#listUser').append(jsonObj.user);
                 $('#listItem').append(jsonObj.item);
@@ -168,15 +180,24 @@ $(document).ready(function() {
                     $('#listImage').append(jsonObj.imagedata);
                 if (jsonObj.details)
                     $('#listDetails').append(jsonObj.details);
+
+                if ($('#currentUser').text() === jsonObj.user) {
+                  $('#acceptListing').hide();
+                } else {
+                  $("#acceptListing").off('click');
+                    $('#acceptListing').on('click', function() {
+                        acceptListing(listId);
+                    });
+                }
             }
         });
 
     });
 });
 
-function acceptListing() {
+function acceptListing(listingId) {
     var usernameBuyer = $('#listUser').text();
-    var listingItem = $('#listItem').text()
+    var listingItem = listingId
 
     $.ajax({
         type: "POST",
@@ -186,7 +207,7 @@ function acceptListing() {
             'listingItem': listingItem
         },
         success: function(data) {
-          updateUserList();
+            updateUserList();
         }
     });
 }
