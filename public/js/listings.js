@@ -184,6 +184,7 @@ $(document).ready(function() {
                 if ($('#currentUser').text() === jsonObj.user) {
                   $('#acceptListing').hide();
                 } else {
+                  $("#acceptListing").off('click');
                     $('#acceptListing').on('click', function() {
                         acceptListing(listId);
                     });
