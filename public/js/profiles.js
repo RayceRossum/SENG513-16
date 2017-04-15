@@ -9,7 +9,9 @@ $(document).ready(function(){
             username: username
         },
         success: function(profile) {
+          console.log(profile);
           $('#myProfileModal .profile-username').text(profile.username);
+          $('#myProfileModal .profile-type').text(profile.accounttype);
           $('#myProfileModal .profile-country').text(profile.country);
           $('#myProfileModal .profile-rating').text(profile.rating);
         }
