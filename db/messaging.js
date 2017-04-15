@@ -21,7 +21,6 @@ exports.bootstrap = function(query) {
 };
 
 exports.getUserList = function(username, query, cb) {
-
     query("SELECT * FROM public.\"Messaging\" WHERE usernameBuyer = $1::varchar OR usernameHandeler = $1::varchar;", [username], function(err, result) {
         if (err) {
             console.error(err);
@@ -51,6 +50,7 @@ exports.getUserList = function(username, query, cb) {
 
                             userMessages.push(data);
                         }
+                        console.log(userMessages);
                         if (index === result.length - 1) {
                             cb(null, userMessages);
                         }

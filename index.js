@@ -120,7 +120,7 @@ io.on('connection', function(socket) {
         var receiver = socketUsers.filter(function(user) {
             return user.username === data.usernameReceiver
         });
-
+        console.log(receiver.length);
         if (receiver.length) {
             io.to(receiver[0].socket.id).emit('chat', {
                 usernameSender: data.usernameSender,

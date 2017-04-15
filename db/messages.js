@@ -7,19 +7,19 @@ exports.bootstrap = function(query) {
                 if (err) {
                     console.log(err);
                 } else {
-                    // query("INSERT INTO public.\"Messages\" (usernameSender, usernameReceiver, message, conversationID) VALUES ('username', 'buyer', 'Hello! I am username. I would like to help you find your Random Item.', 1)", function(err, result) {
-                    //     if (err) {
-                    //         console.error(err);
-                    //     } else {
-                    //         query("INSERT INTO public.\"Messages\" (usernameSender, usernameReceiver, message, conversationID) VALUES ('buyer', 'username', 'Hello! I am buyer. I would like you to help you find a Random Item.', 1)", function(err, result) {
-                    //             if (err) {
-                    //                 console.error(err);
-                    //             } else {
+                    query("INSERT INTO public.\"Messages\" (usernameSender, usernameReceiver, message, conversationID) VALUES ('username', 'buyer', 'Hello! I am username. I would like to help you find your Random Item.', 1)", function(err, result) {
+                        if (err) {
+                            console.error(err);
+                        } else {
+                            query("INSERT INTO public.\"Messages\" (usernameSender, usernameReceiver, message, conversationID) VALUES ('buyer', 'username', 'Hello! I am buyer. I would like you to help you find a Random Item.', 1)", function(err, result) {
+                                if (err) {
+                                    console.error(err);
+                                } else {
                                     console.log("Success: Messages");
-                //                 }
-                //             });
-                //         }
-                //     });
+                                }
+                            });
+                        }
+                    });
                 }
             });
         }
