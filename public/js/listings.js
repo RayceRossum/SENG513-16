@@ -168,6 +168,7 @@ $(document).ready(function() {
                 $('#listItemLoc').empty();
                 $('#listImage').empty();
                 $('#listDetails').empty();
+                $('#acceptListing').show();
 
                 $('#listUser').append(jsonObj.user);
                 $('#listItem').append(jsonObj.item);
@@ -180,9 +181,13 @@ $(document).ready(function() {
                 if (jsonObj.details)
                     $('#listDetails').append(jsonObj.details);
 
-                $('#acceptListing').on('click', function() {
+                if ($('#currentUser').text() === jsonObj.user) {
+                  $('#acceptListing').hide();
+                } else {
+                    $('#acceptListing').on('click', function() {
                         acceptListing(listId);
-                });
+                    });
+                }
             }
         });
 
