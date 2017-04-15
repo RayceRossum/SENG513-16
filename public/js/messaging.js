@@ -8,10 +8,7 @@ $(document).ready(function() {
         updateUserList();
     });
 
-    socket.io = io.connect(window.location.host);
-    socket.io.emit('register', {
-        username: $('#currentUser').text(),
-    });
+    socket.io = io.connect(window.location.host, { query: "username=" + $('#currentUser').text()});
 
     socket.io.on('chat', function(data) {
         var timestampD = new Date(data.timestamp);
