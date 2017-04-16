@@ -41,6 +41,21 @@ exports.isHandeler = function(query, username, cb) {
         });
 }
 
+
+exports.getProfile = function(query, username, cb)  {
+  query("SELECT * FROM public.\"Profiles\" WHERE username = $1::varchar;", [username],
+      function(err, result) {
+          if (err) {
+              console.error(err)
+          } else {
+              if (result[0]) {
+                  cb(null, result[0]);
+              } else {
+                  cb(username + " not found.", null);
+              }
+          }
+      });
+
 exports.fetchRatingData = function(query, username, cb) {
     query("SELECT handelerRating, totalRatings FROM public.\"Profiles\" WHERE username = $1::varchar;", [username],
          function(err, result){
@@ -66,4 +81,5 @@ exports.updateRatingData = function(query, username, rating, totalRatings, cb){
             cb(null);
         }
     });
+
 }

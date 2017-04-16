@@ -82,12 +82,14 @@ var createListingRoutes = require('./routes/createListing')(express, query, db);
 var indexRoutes = require('./routes/index')(express, query, db);
 var listingRoutes = require('./routes/listings')(express, query, db);
 var messagingRoutes = require('./routes/messaging')(express, query, db);
+var profileRoutes = require('./routes/profiles')(express, query, db);
 
 app.use('/', authRoutes);
 app.use('/', createListingRoutes);
 app.use('/', indexRoutes);
 app.use('/', listingRoutes);
 app.use('/', messagingRoutes);
+app.use('/', profileRoutes);
 
 //================================ Socket.io ====================================
 var socketUsers = [];
