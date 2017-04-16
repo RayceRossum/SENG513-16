@@ -170,7 +170,7 @@ $(document).ready(function() {
                 $('#listDetails').empty();
                 $('#acceptListing').show();
 
-                $('#listUser').append(jsonObj.user);
+                $('#listUser').append("<a class='profile-button' data-toggle='modal' href='#myProfileModal' onclick='getProfile(\"" + jsonObj.user + "\", false);'>" + jsonObj.user + "</a>");
                 $('#listItem').append(jsonObj.item);
                 $('#listBuyerLoc').append(jsonObj.buyerLoc);
 
