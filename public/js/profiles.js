@@ -9,11 +9,11 @@ $(document).ready(function() {
                 username: username
             },
             success: function(profile) {
-                console.log(profile);
+                alert(JSON.stringify(profile));
                 $('#myProfileModal .profile-username').text(profile.username);
-                $('#myProfileModal .profile-type').text(profile.accounttype);
+                $('#myProfileModal .profile-type').text(profile.accounttype.charAt(0).toUpperCase() + profile.accounttype.slice(1));
                 $('#myProfileModal .profile-country').text(profile.country);
-                $('#myProfileModal .profile-rating').text(profile.rating);
+                $('#myProfileModal .profile-rating').text(parseInt(profile.handelerrating)/parseInt(profile.totalratings));
             }
         });
     });

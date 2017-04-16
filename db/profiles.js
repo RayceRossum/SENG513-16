@@ -3,15 +3,15 @@ exports.bootstrap = function(query) {
         if (err) {
             console.log(err);
         } else {
-            query("CREATE TABLE public.\"Profiles\"(id SERIAL PRIMARY KEY, time timestamp DEFAULT current_timestamp, username text NOT NULL, accountType text NOT NULL, handelerRating int DEFAULT 0, totalRatings int DEFAULT 0);", function(err, result) {
+            query("CREATE TABLE public.\"Profiles\"(id SERIAL PRIMARY KEY, time timestamp DEFAULT current_timestamp, username text NOT NULL, accountType text NOT NULL, country text NOT NULL, handelerRating int DEFAULT 0, totalRatings int DEFAULT 0);", function(err, result) {
                 if (err) {
                     console.error(err);
                 } else {
-                    query("INSERT INTO public.\"Profiles\" (username, accountType) VALUES ('username', 'handeler')", function(err, result) {
+                    query("INSERT INTO public.\"Profiles\" (username, accountType, country, handelerRating, totalRatings) VALUES ('username', 'handeler', 'CAN', 9, 2)", function(err, result) {
                         if (err) {
                             console.error(err);
                         } else {
-                            query("INSERT INTO public.\"Profiles\" (username, accountType) VALUES ('buyer', 'buyer')", function(err, result) {
+                            query("INSERT INTO public.\"Profiles\" (username, accountType, country) VALUES ('buyer', 'buyer', 'CAN')", function(err, result) {
                                 if (err) {
                                     console.error(err);
                                 } else {
