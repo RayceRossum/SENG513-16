@@ -12,11 +12,26 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <form method="post" id="updateAccountSettingsForm">
-                            <div class="form-group">
-                                <label class="control-label" for="profileSettingsCS">Update Your L</label>
-                                <input class="control-label" id="profileSettingsCS" name="country" type="text"/>
+                            <div class="form-group ">
+                                <label class="control-label " for="currentPassword">Current Password (Provide only if changing password)</label>
+                                <input class="form-control" id="currentPassword" name="currentPassword" type="password" minlength="8"/>
                             </div>
-                            
+                            <div class="form-group ">
+                                <label class="control-label " for="newPassword">New Password</label>
+                                <input class="form-control" id="newPassword" name="newPassword" type="password" minlength="8"/>
+                            </div>
+                             <div class="form-group ">
+                                <label class="control-label " for="confirmPassword">Confirm Password</label>
+                                <input class="form-control" id="confirmPassword" name="confirmPassword" type="password" minlength="8"/>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Current Email: </label>
+                                <label class="control-label" id="currentEmail"></label>
+                            </div>
+                            <div class="form-group ">
+                                <label class="control-label " for="newEmail">New Email (Leave blank to keep the same email)</label>
+                                <input class="form-control" id="newEmail" name="newEmail" type="text"/>
+                            </div>
                     </div>
                 </div>
             </div>
@@ -31,3 +46,4 @@
         </div>
     </div>
 </div>
+<script src="/js/updateAccountSettings.js"></script>
