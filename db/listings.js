@@ -163,9 +163,15 @@ exports.getListing = function(query, listingId, cb) {
     });
 };
 
-exports.deleteListing = function(query, listingId){
+exports.deleteListing = function(query, listingId, cb){
     query("UPDATE public.\"Listings\" SET deleted = TRUE WHERE id = $1::bigint;", [listingId], function(err, result){
-        if (err) console.log(err);
+        if (err){
+            console.log(err);
+            cb(err);
+        }
+        else{
+            cb(null);
+        }
     });
 }
 

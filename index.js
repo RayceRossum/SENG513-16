@@ -13,6 +13,7 @@ var db = require('./db');
 
 var io = require('socket.io')(server);
 
+//================================ Initialization =======================================
 query.connectionParameters = process.env.DATABASE_URL || "postgres://postgres:password@localhost:5432/handel";
 db.bootstrap(query);
 
@@ -75,16 +76,7 @@ app.set('view engine', 'ejs');
 
 app.set('port', (process.env.PORT || 5000));
 
-// 'use strict';
-//
-// require('greenlock-express').create({
-//     server: 'staging',
-//     email: 'john.doe@example.com',
-//     agreeTos: true,
-//     approveDomains: ['localhost', 'fathomless-scrubland-31742.com']
-// }).listen(80, 443, function() {
-//     console.log('Node app is running on port', 80, 443);
-// });
+//================================ Routes =======================================
 var authRoutes = require('./routes/authentication')(express, query, passport, db);
 var createListingRoutes = require('./routes/createListing')(express, query, db);
 var indexRoutes = require('./routes/index')(express, query, db);
@@ -97,30 +89,28 @@ app.use('/', indexRoutes);
 app.use('/', listingRoutes);
 app.use('/', messagingRoutes);
 
-//================================Socket.io====================================
+//================================ Socket.io ====================================
 var socketUsers = [];
 
 // TODO: ADD REGEX TO STOP JAVASCRIPT INJECTION
 io.on('connection', function(socket) {
-    socket.on('register', function(data) {
-        var userSocket = {
-            "username": data.username,
-            "socket": socket
-        };
+    var userSocket = {
+        "username": socket.request._query['username'],
+        "socket": socket
+    };
 
-        if (!socketUsers.filter(function(user) {
-                return user.username === userSocket.username
-            }).length) {
-            socketUsers.push(userSocket);
-        }
-        console.log(socketUsers);
-    });
+    if (!socketUsers.filter(function(user) {
+            return user.username === userSocket.username
+        }).length) {
+        socketUsers.push(userSocket);
+    }
+    console.log(socketUsers);
 
     socket.on('chat', function(data) {
         var receiver = socketUsers.filter(function(user) {
             return user.username === data.usernameReceiver
         });
-
+        console.log(receiver.length);
         if (receiver.length) {
             io.to(receiver[0].socket.id).emit('chat', {
                 usernameSender: data.usernameSender,

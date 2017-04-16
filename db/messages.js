@@ -63,7 +63,7 @@ exports.deleteMessages = function(conversationID, query, cb){
         if (err) {
             cb(err, false);
         } else{
-           cb(null, false); 
+           cb(null, false);
         }
     });
 }

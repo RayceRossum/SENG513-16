@@ -3,16 +3,12 @@ $(document).ready(function() {
     $('#openMessaging').popover({
         html: true
     });
-    updateUserList();
 
     $('#openMessaging').click(function() {
         updateUserList();
     });
 
-    socket.io = io.connect(window.location.host);
-    socket.io.emit('register', {
-        username: $('#currentUser').text(),
-    });
+    socket.io = io.connect(window.location.host, { query: "username=" + $('#currentUser').text()});
 
     socket.io.on('chat', function(data) {
         var timestampD = new Date(data.timestamp);
@@ -26,16 +22,18 @@ $(document).ready(function() {
             "swing"
         );
     });
+
+    updateUserList();
 });
 
 
 function updateUserList() {
     $.get('/getUserList', function(data) {
+        //alert(JSON.stringify(data));
         userList = "";
         data.forEach(function(elem, index) {
             userList += "<tr user='" + elem.username + "' item='" + elem.item + "' conversationID='" + elem.conversationID + "' class='userList clickable-row'><td>" + elem.username + "</td><td>" + elem.item + "</td></tr>";
         });
-
         var popover = $('#openMessaging').data('bs.popover');
         popover.options.content = function() {
             return "<table id='messaging' class='table table-hover table-condensed'><tr class='userList'><tr><th>User</th><th>Item</th>" + userList + "</table>";
@@ -53,13 +51,8 @@ function updateUserList() {
                 conversationID: conversationID
             },
             success: function(data) {
-                if (data[0]) {
-                    //alert("Start conversation between " + data[0].usernameSender + " and " + data[0].usernameReceiver + " " + conversationID + "\n" + JSON.stringify(data));
-                } else {
-                    //alert("No messages");
-                }
                 if (!$("#openMessage" + conversationID).length) {
-                    $("#messageBar").append("<div class='col-md-2 col-sm-2 col-xs-4'> <button id='openMessage" + conversationID + "' data-toggle='popover' data-trigger = 'click' data-placement = 'top' type='button' class='btn btn-default btn-block'>" + user + "</button> </div>");
+                    $("#messageBar").append("<div class='col-md-2 col-sm-2 col-xs-4'> <button user='" + user + "' item='" + item + "' conversationID='" + conversationID + "' id='openMessage" + conversationID + "' data-toggle='popover' data-trigger = 'click' data-placement = 'top' type='button' class='btn btn-default btn-block message-tab'>" + user + "</button> </div>");
                     $("#openMessage" + conversationID).popover({
                         html: true,
                         content: getMessageData(data, conversationID, user)
@@ -70,12 +63,34 @@ function updateUserList() {
                     $("#openMessage" + conversationID).click();
                 }
 
-                $('.popover-content').animate({
-                        scrollTop: $('#l' + conversationID + ' li').last().offset().top
-                    },
-                    50,
-                    "swing"
-                );
+                try {
+                    $('.popover-content').animate({
+                            scrollTop: $('#l' + conversationID + ' li').last().offset().top
+                        },
+                        50,
+                        "swing"
+                    );
+                } catch (e) {
+
+                }
+
+                $("#openMessage" + conversationID).click(function() {
+                    var popover = $("#openMessage" + conversationID).data('bs.popover');
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/getMessages",
+                        data: {
+                            conversationID: conversationID
+                        },
+                        success: function(data) {
+                            popover.options.content = function() {
+                                return getMessageData(data, conversationID, user);
+                            }
+
+                        }
+                    });
+                });
 
                 $('#m' + conversationID).on('keypress', function(e) {
                     if (e.which === 13) {
@@ -86,6 +101,8 @@ function updateUserList() {
         });
     });
 }
+
+
 
 function sendMessage(context) {
     if ($(context).val() != '') {

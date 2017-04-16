@@ -16,7 +16,7 @@
                     <div class="col-md-3">
                         <h1>HANDEL</h1>
                         <p>
-                            Not logged in. <a href="register">Create an account?</a>
+                            Not logged in. <a href="register">Create an account</a>?
                         </p>
                     </div>
                     <div class="col-md-offset-6 col-md-3">
@@ -73,16 +73,19 @@
                         <% include ../pages/listings.ejs %>
                     </div>
                     <% } %>
-                <% include ../partials/listingsModal.ejs %>
-                <% include ../partials/createListingModal.ejs %>
-                <% include ../partials/profileSettingsModal.ejs %>
+                        <% include ../partials/listingsModal.ejs %>
+                            <% include ../partials/createListingModal.ejs %>
+                                <% include ../partials/profileSettingsModal.ejs %>
+                                    <% include ../partials/rateHandelerModal.ejs %>
+                                        <% include ../partials/editListingModal.ejs %>
+                                            <% include ../partials/myProfileModal.ejs %>
             </div>
-                    </div>
-                    </div>
-                    <footer class="footer">
-                        <% include ../pages/messaging.ejs %>
-                    </footer>
-                    <% } %>
+            </div>
+            </div>
+            <footer class="footer">
+                <% include ../pages/messaging.ejs %>
+            </footer>
+            <% } %>
 
 </body>
 
