@@ -11,13 +11,13 @@ exports.bootstrap = function(query) {
                         if (err) {
                             console.error(err);
                         } else {
-                          query("INSERT INTO public.\"Profiles\" (username, accountType) VALUES ('buyer', 'buyer')", function(err, result) {
-                              if (err) {
-                                  console.error(err);
-                              } else {
-                                  console.log("Success: Profiles");
-                              }
-                          });
+                            query("INSERT INTO public.\"Profiles\" (username, accountType) VALUES ('buyer', 'buyer')", function(err, result) {
+                                if (err) {
+                                    console.error(err);
+                                } else {
+                                    console.log("Success: Profiles");
+                                }
+                            });
                         }
                     });
                 }
@@ -42,44 +42,43 @@ exports.isHandeler = function(query, username, cb) {
 }
 
 
-exports.getProfile = function(query, username, cb)  {
-  query("SELECT * FROM public.\"Profiles\" WHERE username = $1::varchar;", [username],
-      function(err, result) {
-          if (err) {
-              console.error(err)
-          } else {
-              if (result[0]) {
-                  cb(null, result[0]);
-              } else {
-                  cb(username + " not found.", null);
-              }
-          }
-      });
+exports.getProfile = function(query, username, cb) {
+    query("SELECT * FROM public.\"Profiles\" WHERE username = $1::varchar;", [username],
+        function(err, result) {
+            if (err) {
+                console.error(err)
+            } else {
+                if (result[0]) {
+                    cb(null, result[0]);
+                } else {
+                    cb(username + " not found.", null);
+                }
+            }
+        });
+}
 
 exports.fetchRatingData = function(query, username, cb) {
     query("SELECT handelerRating, totalRatings FROM public.\"Profiles\" WHERE username = $1::varchar;", [username],
-         function(err, result){
-        if (err) {
-            console.log(err);
-            cb(err, null);
-        }
-        else{
-            cb(null, result);
-        }
-    });
+        function(err, result) {
+            if (err) {
+                console.log(err);
+                cb(err, null);
+            } else {
+                cb(null, result);
+            }
+        });
 }
 
-exports.updateRatingData = function(query, username, rating, totalRatings, cb){
+exports.updateRatingData = function(query, username, rating, totalRatings, cb) {
     query("UPDATE public.\"Profiles\" SET handelerRating = $1::int, totalRatings = $2::int WHERE username = $3::varchar;", [rating, totalRatings, username],
-         function(err, result){
-        if (err) {
-            console.log("username:" + username + " rating: " + rating + " nRatings: " + totalRatings);
-            console.log(err);
-            cb(err);
-        }
-        else{
-            cb(null);
-        }
-    });
+        function(err, result) {
+            if (err) {
+                console.log("username:" + username + " rating: " + rating + " nRatings: " + totalRatings);
+                console.log(err);
+                cb(err);
+            } else {
+                cb(null);
+            }
+        });
 
 }
