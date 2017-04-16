@@ -18,6 +18,7 @@ $(document).ready(function() {
                     $('#myProfileModal .profile-total-ratings').text(parseInt(profile[0].totalratings));
                 } else {
                     $('#profileRating').hide();
+                    $('#myProfileModal .profile-type').append("<button type='button' class='btn btn-xs btn-primary pull-right'>Upgrade</button>")
                 }
                 $('#myProfileModal .profile-total-postings').text(profile[1].count);
             }
