@@ -49,7 +49,14 @@ exports.getProfile = function(query, username, cb) {
                 console.error(err)
             } else {
                 if (result[0]) {
-                    cb(null, result[0]);
+                    query("SELECT COUNT(*) FROM public.\"Listings\" WHERE username = $1::varchar;", [username],
+                        function(err, result2) {
+                            if (err) {
+                                console.error(err)
+                            } else {
+                                cb(null, result.concat(result2));
+                            }
+                        });
                 } else {
                     cb(username + " not found.", null);
                 }
