@@ -3,7 +3,7 @@ exports.bootstrap = function(query) {
         if (err) {
             console.log(err);
         } else {
-            query("CREATE TABLE public.\"Profiles\"(id SERIAL PRIMARY KEY, time timestamp DEFAULT current_timestamp, username text NOT NULL, accountType text NOT NULL, country text NOT NULL, handelerRating int DEFAULT 0, totalRatings int DEFAULT 0);", function(err, result) {
+            query("CREATE TABLE public.\"Profiles\"(id SERIAL PRIMARY KEY, time timestamp DEFAULT current_timestamp, username text NOT NULL, accountType text NOT NULL, country text, handelerRating int DEFAULT 0, totalRatings int DEFAULT 0);", function(err, result) {
                 if (err) {
                     console.error(err);
                 } else {
@@ -30,7 +30,7 @@ exports.isHandeler = function(query, username, cb) {
     query("SELECT * FROM public.\"Profiles\" WHERE username = $1::varchar;", [username],
         function(err, result) {
             if (err) {
-                console.error(err)
+                console.error(err);
             } else {
                 if (result[0]) {
                     cb(null, result[0].accounttype);
@@ -52,7 +52,7 @@ exports.getProfile = function(query, username, cb) {
                     query("SELECT COUNT(*) FROM public.\"Listings\" WHERE username = $1::varchar;", [username],
                         function(err, result2) {
                             if (err) {
-                                console.error(err)
+                                console.error(err);
                             } else {
                                 cb(null, result.concat(result2));
                             }
@@ -62,6 +62,23 @@ exports.getProfile = function(query, username, cb) {
                 }
             }
         });
+}
+
+exports.getUserCountry = function(query, username, cb){
+    query("SELECT country FROM public.\"Profiles\" WHERE username = $1::varchar;", [username],
+          function(err, result) {
+              if (err) {
+                  console.error(err);
+              } else{
+                  if(result[0]){
+                      cb(null, result[0]);
+                  }
+                  else{
+                      cb("No country found for username: " + username, null);
+                  }
+             
+              }
+            });
 }
 
 exports.fetchRatingData = function(query, username, cb) {
@@ -100,4 +117,16 @@ exports.upgrade = function(query, username, cb) {
                 cb(null, true);
             }
         });
+}
+
+exports.updateCountry = function(query, username, country, cb){
+    query("UPDATE public.\"Profiles\" SET country = $1::varchar WHERE username = $2::varchar;", [country, username],
+         function(err, result){
+            if (err) {
+                console.log(err);
+                cb(false, null);
+            } else {
+                cb(null, true);
+            }
+    });
 }

@@ -16,6 +16,24 @@ module.exports = function(express, query, db) {
             response.redirect('/');
         }
     });
+    
+    router.post('/updateProfileSettings', function(request, response) {
+        
+        if (request.user){
+            db.profiles.updateCountry(query, request.user.username, request.body.country, function(err, result){
+                if (err){
+                    console.log(err);
+                    response.end("false");
+                } else{
+                    response.end("true");
+                }
+                
+            });
+        }
+        else{
+            response.redirect('/');
+        }
+    });
 
     router.post('/upgrade', function(request, response) {
         if (request.user) {

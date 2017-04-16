@@ -1,19 +1,19 @@
 <!-- Modal -->
-<div id="profileSettingsModal" class="modal fade" role="dialog">
+<div id="accountSettingsModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
 
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Edit Your Profile Settings</h4>
+                <h4 class="modal-title">Edit Your Account Settings</h4>
             </div>
             <div class="modal-body row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="col-md-12 col-sm-12 col-xs-12">
-                        <form method="post" id="updateProfileSettingsForm">
+                        <form method="post" id="updateAccountSettingsForm">
                             <div class="form-group">
-                                <label class="control-label" for="profileSettingsCS">Update Your Location</label>
+                                <label class="control-label" for="profileSettingsCS">Update Your L</label>
                                 <input class="control-label" id="profileSettingsCS" name="country" type="text"/>
                             </div>
                             
@@ -21,7 +21,7 @@
                 </div>
             </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary" id="updateProfileSettings" name="updateProfileSettings" type="submit">Update</button>
+                        <button class="btn btn-primary" id="updateProfileSettings" name="updateAccountSettings" type="submit">Update</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                         </form>
@@ -31,13 +31,3 @@
         </div>
     </div>
 </div>
-<script src="/js/updateProfileSettings.js"></script>
-<script>
-    var profileSettingsLoaded = false;
-    $('#profileSettingsModal').on('shown.bs.modal', function() {
-        if (!profileSettingsLoaded) {
-            $("#profileSettingsCS").countrySelector();
-            profileSettingsLoaded = true;
-        }
-    });
-</script>
