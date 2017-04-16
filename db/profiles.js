@@ -89,3 +89,15 @@ exports.updateRatingData = function(query, username, rating, totalRatings, cb) {
         });
 
 }
+
+exports.upgrade = function(query, username, cb) {
+    query("UPDATE public.\"Profiles\" SET accounttype = 'handeler' WHERE username = $1::varchar;", [username],
+        function(err, result) {
+            if (err) {
+                console.log(err);
+                cb(false, null);
+            } else {
+                cb(null, true);
+            }
+        });
+}

@@ -18,7 +18,21 @@ $(document).ready(function() {
                     $('#myProfileModal .profile-total-ratings').text(parseInt(profile[0].totalratings));
                 } else {
                     $('#profileRating').hide();
-                    $('#myProfileModal .profile-type').append("<button type='button' class='btn btn-xs btn-primary pull-right'>Upgrade</button>")
+                    $('#myProfileModal .profile-type').append("<button id='upgradeToHandeler' username=" + username + " type='button' class='btn btn-xs btn-primary pull-right'>Upgrade</button>")
+
+                    $('#upgradeToHandeler').on("click", function() {
+                        $.ajax({
+                            type: "POST",
+                            url: "/upgrade",
+                            data: {
+                                username: username
+                            },
+                            success: function(profile) {
+                              //TODO: Is there a better way to handle this?
+                                location.reload();
+                            }
+                        });
+                    });
                 }
                 $('#myProfileModal .profile-total-postings').text(profile[1].count);
             }
