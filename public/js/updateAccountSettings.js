@@ -63,7 +63,7 @@ $("#updateAccountSettingsForm").submit(function(event) {
         cache: false,
         success: function(data) {
             if(data === "true"){
-                $('#updateAccountSettingsForm').before('<div id="AccountSettingsSuccessAlert" class="alert alert-success alert-dismissable">' + '<a href="#"' + 'class="close" data-dismiss="alert" aria-label="close">&times;</a>' +   '<strong>Success!</strong> Successfully Update Your Country' + '</div>');
+                $('#updateAccountSettingsForm').before('<div id="AccountSettingsSuccessAlert" class="alert alert-success alert-dismissable">' + '<a href="#"' + 'class="close" data-dismiss="alert" aria-label="close">&times;</a>' +   '<strong>Success!</strong> Successfully Updated Your Settings' + '</div>');
             } else if (data === "badPass"){
                 $('#updateAccountSettingsForm').before('<div class="alert alert-danger alert-dismissable">' + '<a href="#"' + 'class="close" data-dismiss="alert" aria-label="close">&times;</a>' + '<strong>Error!</strong> Your Password Does Not Match' + '</div>');
             } else{

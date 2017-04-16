@@ -15,7 +15,7 @@ $("#updateProfileSettingsForm").submit(function(event) {
         cache: false,
         success: function(data) {
             if(data === "true"){
-                $('#updateProfileSettingsForm').before('<div id="ProfileSettingsSuccessAlert" class="alert alert-success alert-dismissable">' + '<a href="#"' + 'class="close" data-dismiss="alert" aria-label="close">&times;</a>' +   '<strong>Success!</strong> Successfully Update Your Country' + '</div>');
+                $('#updateProfileSettingsForm').before('<div id="ProfileSettingsSuccessAlert" class="alert alert-success alert-dismissable">' + '<a href="#"' + 'class="close" data-dismiss="alert" aria-label="close">&times;</a>' +   '<strong>Success!</strong> Successfully Updated Your Country' + '</div>');
             } else{
                 $('#updateProfileSettingsForm').before('<div class="alert alert-danger alert-dismissable">' + '<a href="#"' + 'class="close" data-dismiss="alert" aria-label="close">&times;</a>' + '<strong>Error!</strong> Error Updating Your Country' + '</div>');
             }
