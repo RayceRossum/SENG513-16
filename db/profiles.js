@@ -7,7 +7,7 @@ exports.bootstrap = function(query) {
                 if (err) {
                     console.error(err);
                 } else {
-                    query("INSERT INTO public.\"Profiles\" (username, accountType, country, handelerRating, totalRatings) VALUES ('username', 'handeler', 'CAN', 9, 2)", function(err, result) {
+                    query("INSERT INTO public.\"Profiles\" (username, accountType, country, handelerRating, totalRatings) VALUES ('username', 'handeler', 'CAN', 4.5, 2)", function(err, result) {
                         if (err) {
                             console.error(err);
                         } else {

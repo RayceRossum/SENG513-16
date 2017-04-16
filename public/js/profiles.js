@@ -14,7 +14,8 @@ $(document).ready(function() {
                 $('#myProfileModal .profile-type').text(profile.accounttype.charAt(0).toUpperCase() + profile.accounttype.slice(1));
                 $('#myProfileModal .profile-country').text(profile.country);
                 if (profile.accounttype === "handeler") {
-                    $('#myProfileModal .profile-rating').text(parseInt(profile.handelerrating) / parseInt(profile.totalratings));
+                    $('#myProfileModal .profile-rating').text(parseInt(profile.handelerrating));
+                    $('#myProfileModal .profile-total-ratings').text(parseInt(profile.totalratings));
                 } else {
                     $('#profileRating').hide();
                 }
