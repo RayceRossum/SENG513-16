@@ -1,10 +1,10 @@
-HANDEL
+#HANDEL
 
-SENG 513 Final Project Report
+##SENG 513 Final Project Report
 
 Group Number: Group 16 Group Members: Dominic Hul, Zoe King, Randy Le, Rayce Rossum, Vincent Wong Project: Online Trade Application INTRODUCTION Background General background. Why useful, who would use, how it would benefit, etc.
 
-“We’re like Uber… but for couriers.”
+###“We’re like Uber… but for couriers.”
 The emergence of social media platforms such as Facebook, Instagram, and Snapchat has created a gap in the market for people who have been exposed to products that they would like to buy, but who have no way of obtaining those products without paying outrageous shipping fees. Our application, Handel, aims to connect these potential buyers with travellers (henceforth referred to as Handelers) who would already be going to the product’s location and would therefore be able to transport those products to the buyer at a fraction of the cost.
 
 Handel would benefit the buyers who would be able to obtain their desired products and the Handelers who would earn extra money for minimal extra work. Handel would also benefit economies around the world by adding more customers to their markets. People around the world would be incentivized to shop in markets they were once reluctant to shop in due to hefty shipping and customs fees. By reducing financial overhead and complication, both the buyers and Handelers benefit from and be encouraged to use our application.
