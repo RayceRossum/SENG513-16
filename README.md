@@ -217,7 +217,7 @@ As a result, the main differences between the proposed project and the current i
 
 # 4. REQUIREMENTS
 
-*Does our project meet requirements? *
+*Does our project meet requirements?*
 
 All of the original requirements of the project were met. For further details, a justification for each is given:
 
@@ -259,7 +259,7 @@ Users may interact with each other by accepting each other’s listings. When th
 
 # 5. TECHNOLOGIES
 
-	*Describe and justify technologies used.*
+*Describe and justify technologies used.*
 
 *In this section you will also need to describe in detail how to run your project from the submitted*
 
@@ -299,7 +299,7 @@ Five tables were used for for operation of the site:
 
 ## **Heroku**
 
-Heroku[5] is a container-based cloud Platform as a Service that is used to deploy, manage, and scale apps. We used Heroku as it provided a free, full service for hosting our web app. Heroku provided our application with both basic web hosting, as well as hosting our PostgreSQL database. Furthermore, Heroku made it easy to deploy our web app whenever updates were made through its GitHub plugin.
+  Heroku[5] is a container-based cloud Platform as a Service that is used to deploy, manage, and scale apps. We used Heroku as it provided a free, full service for hosting our web app. Heroku provided our application with both basic web hosting, as well as hosting our PostgreSQL database. Furthermore, Heroku made it easy to deploy our web app whenever updates were made through its GitHub plugin.
 
 ## **BCrypt**
 
@@ -333,7 +333,7 @@ Should we decide to take this application/idea to a serious, business-oriented l
 
 # 7. CONCLUSIONS
 
-*Anything else we want to talk about.  Link to github repo containing all sources. *
+*Anything else we want to talk about.  Link to github repo containing all sources.*
 
 In conclusion, we hope Handel will allow our Handelers to subsidize their travel, and our buyers to get the items they want at a lower cost than traditional shipping methods. Handel has a long way to go to being a marketable product but as a proof of concept we believe we have a solid core concept that given a critical mass of users and more time to develop features could be a viable product in these times of increasing globalization.
 
