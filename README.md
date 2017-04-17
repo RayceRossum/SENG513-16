@@ -8,15 +8,15 @@ Group Members:	Dominic Hul, Zoe King, Randy Le, Rayce Rossum, Vincent Wong
 
 Project:		Online Trade Application
 
-## 1. INTRODUCTION
+# 1. INTRODUCTION
 
-### 1.1 Background
+## 1.1 Background
 
 *General background.  Why useful, who would use, how it would benefit, etc.*
 
 
 
-#### **_"We’re like Uber… but for couriers."_**
+### **_"We’re like Uber… but for couriers."_**
 
 
 
@@ -24,19 +24,19 @@ The emergence of social media platforms such as Facebook, Instagram, and Snapcha
 
 Handel would benefit the buyers who would be able to obtain their desired products and the Handelers who would earn extra money for minimal extra work.  Handel would also benefit economies around the world by adding more customers to their markets. People around the world would be incentivized to shop in markets they were once reluctant to shop in due to hefty shipping and customs fees. By reducing financial overhead and complication, both the buyers and Handelers benefit from and be encouraged to use our application.
 
-### 1.2 Project Goals
+## 1.2 Project Goals
 
 *Overall goals of project.  *
 
 The goal of this project was to create a social networking platform that connects buyers and Handelers on a one-to-one basis. In order to differentiate ourselves from other ecommerce businesses and enterprises, our project aims to reduce the overhead that accompanies typical e-commerce transactions. The proposed functionality of this platform was: buyers can post requests for items, Handelers can review and accept requests, and Handelers and buyers can communicate with each other within the app. Additionally, in current businesses and applications, when one buys a product from overseas or from a foreign location, customer support and status updates are almost always absent. Our project aims to reduce automated support and create a more personal experience between client and server.
 
-### 1.3 Project Accomplishments
+## 1.3 Project Accomplishments
 
 Given the current implementation, users may register with the website and creating postings or listings for their desired items. If the user is a Handeler, then they may view and filter listings that they can accept. When a Handeler accepts a listing, a conversation will be started and the two users may communicate further about the transaction. Along with the features discussed above, users may update their profile settings, account settings, and if the user is a buyer, they have the option to upgrade their account type to Handeler.
 
 
 
-## 2. PROJECT DESCRIPTION
+# 2. PROJECT DESCRIPTION
 
 *User manual.  Task descriptions with screenshots and explanations.  Document all UI elements.  Not too technical.  Include instructions for all user groups.*
 
@@ -199,7 +199,7 @@ Once a Handeler has accepted a listing, an entry is added to the Handeler and th
 
 
 
-3. PROPOSAL COMPARISON
+# 3. PROPOSAL COMPARISON
 
 *Compare proposal and final.  Discuss and justify differences and additions.  Technical.*
 
@@ -215,13 +215,9 @@ Given the current implementation, a major difference from the proposed project w
 
 As a result, the main differences between the proposed project and the current implementation of the project, are functionalities that were not implemented due to several factors. The proposal included several ambitious features that were excluded from the final implementation, as well as features that there just wasn’t enough time for. Furthermore, with a clearer understanding of the requirements and scope of the project, choices were made to exclude certain elements, simply because the requirements of the project were already fulfilled. The inclusion or expansion of these functionalities would be considered supplemental.
 
-4. REQUIREMENTS
+# 4. REQUIREMENTS
 
 *Does our project meet requirements? *
-
-The original project requirements were:
-
-	![image alt text](image_13.png)
 
 All of the original requirements of the project were met. For further details, a justification for each is given:
 
@@ -261,7 +257,7 @@ Persistence is present in our application because users may not only create, edi
 
 Users may interact with each other by accepting each other’s listings. When they accept a listing, chat will be prompted between the respective users and they will further interact with each other for their one-to-one transaction via the messaging system.
 
-5. TECHNOLOGIES
+# 5. TECHNOLOGIES
 
 	*Describe and justify technologies used.*
 
@@ -269,7 +265,7 @@ Users may interact with each other by accepting each other’s listings. When th
 
 *sources. If there are any special requirements to run your project, you must include them here (e.g. operating system, extra libraries, external servers or services).*
 
-## **PostgreSQL **
+## **PostgreSQL**
 
 	PostgreSQL[1] is an open-source object-relational database system.  A PostgreSQL database was used for storing and retrieving all necessary data. PostgreSQL was specifically used for convenience, combined with Heroku. Heroku provides database services, utilizing PostgreSQL.
 
@@ -323,7 +319,7 @@ Heroku[5] is a container-based cloud Platform as a Service that is used to deplo
 
 	Once Postgres is installed and configured, open the project folder and run the command "npm install" which will install all the necessary plugins from the Node package manager. After a few minutes this will complete and you will be able to run the program using the command “node index.js”. This command will bootstrap the database and start the application.
 
-6. FUTURE WORK
+# 6. FUTURE WORK
 
 *Given more time what would we add or change?*
 
@@ -335,7 +331,7 @@ In order to increase application functionality, there are many areas we would im
 
 Should we decide to take this application/idea to a serious, business-oriented level, we would include the following: an automated, in-application payment system, and an Escrow system. For further success, we would potentially create room for advertisements within the application.
 
-7. CONCLUSIONS
+# 7. CONCLUSIONS
 
 *Anything else we want to talk about.  Link to github repo containing all sources. *
 
@@ -345,7 +341,7 @@ In conclusion, we hope Handel will allow our Handelers to subsidize their travel
 
 [https://off-the-handel.herokuapp.com](https://off-the-handel.herokuapp.com)
 
-8. REFERENCES
+# 8. REFERENCES
 
 [1] PostgreSQL: About. (2017). Postgresql.org. Retrieved 14 April 2017, from https://www.postgresql.org/about/
 
