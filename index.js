@@ -112,12 +112,12 @@ io.on('connection', function(socket) {
         var receiver = socketUsers.filter(function(user) {
             return user.username === data.usernameReceiver
         });
-        console.log(receiver.length);
+
         if (receiver.length) {
             io.to(receiver[0].socket.id).emit('chat', {
                 usernameSender: data.usernameSender,
                 usernameReceiver: data.usernameReceiver,
-                message: data.message,
+                message: data.message.replace(/</g, "&lt;").replace(/>/g, "&gt;"),
                 conversationID: data.conversationID,
                 timestamp: Date.now()
             });

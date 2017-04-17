@@ -112,7 +112,7 @@ function sendMessage(context) {
         socket.io.emit('chat', {
             usernameSender: $('#currentUser').text(),
             usernameReceiver: $('#l' + conversationID).attr('usernameReceiver'),
-            message: $(context).val(),
+            message: $(context).val().replace(/</g, "&lt;").replace(/>/g, "&gt;"),
             conversationID: conversationID
         });
 
