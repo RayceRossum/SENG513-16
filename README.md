@@ -44,7 +44,7 @@ Given the current implementation, users may register with the website and creati
 
 There are two user types in our application, buyers and Handelers.   Some functionality, such as login/logout, is available to both types.  Other functionality, such as accepting a listing, is limited to one user type exclusively.  The following task descriptions are grouped into the categories: Buyers, Handelers, or All Users.
 
-## **User Type: All Users**
+## User Type: All Users
 
 **Login:**
 
@@ -161,7 +161,7 @@ Once users have created a listing, they can remove that listing by:
 
 *Any associated conversations with the listing will also be removed
 
-## **User Type: Buyer**
+## User Type: Buyer
 
 All of the buyer functionality is also available to Handelers and is therefore detailed above in the section "User Type: All Users".   
 
@@ -193,7 +193,7 @@ Once a Handeler has navigated to a listing, they can accept that listing by:
 
 2. This will start a conversation between the Handeler and buyer. Any further details may be discussed between the two parties.
 
-**Messaging: **
+**Messaging:**
 
 Once a Handeler has accepted a listing, an entry is added to the Handeler and the buyer’s messaging tab. Selecting this tab will open a conversation between the Handeler and the buyer in which they can communicate in real time in order to discuss the details of their delivery. All chat history is shown for the entire conversation. Messages are sent by pressing the enter key when a message is entered into the text input.
 
