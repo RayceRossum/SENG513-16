@@ -50,8 +50,10 @@ $(document).ready(function() {
                         $('#submitListing').hide();
                         $('.handelerSearch').load("/listings");
                         $('.users').load("/userListings");
+                    } else if (data === "noCountry"){
+                        $('#uploadListing').before('<div class="alert alert-danger alert-dismissable">' + '<a href="#"' + 'class="close" data-dismiss="alert" aria-label="close">&times;</a>' + '<strong>Error!</strong> Please specify your location in Profile Settings' + '</div>');
                     } else {
-                        $('#uploadAd').before('<div class="alert alert-danger alert-dismissable">' + '<a href="#"' + 'class="close" data-dismiss="alert" aria-label="close">&times;</a>' + '<strong>Error!</strong> Please ensure the fields are populated correctly' + '</div>');
+                        $('#uploadListing').before('<div class="alert alert-danger alert-dismissable">' + '<a href="#"' + 'class="close" data-dismiss="alert" aria-label="close">&times;</a>' + '<strong>Error!</strong> Please ensure the fields are populated correctly' + '</div>');
                     }
                 }
             });

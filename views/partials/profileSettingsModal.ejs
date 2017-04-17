@@ -11,35 +11,33 @@
             <div class="modal-body row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="col-md-12 col-sm-12 col-xs-12">
-                        <form method="post" id="uploadListing">
+                        <form method="post" id="updateProfileSettingsForm">
                             <div class="form-group">
-                                <label class="control-label " for="username">Change Your Username</label>
-                                <input class="form-control" id="username" name="username" type="text" minlength="2" required/>
-                                <small id="username" class="form-text text-muted">Usernames must be greater than one character.</small>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label" for="profileSettingsCS">Edit Your Location</label>
+                                <label class="control-label" for="profileSettingsCS">Update Your Location</label>
                                 <input class="control-label" id="profileSettingsCS" name="country" type="text"/>
                             </div>
-
+                            
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" id="updateProfile" name="updateProfile" type="submit">Update</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" id="updateProfileSettings" name="updateProfileSettings" type="submit">Update</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-            </form>
         </div>
     </div>
 </div>
-
+<script src="/js/updateProfileSettings.js"></script>
 <script>
-    var loaded = false;
+    var profileSettingsLoaded = false;
     $('#profileSettingsModal').on('shown.bs.modal', function() {
-        if (!loaded) {
+        if (!profileSettingsLoaded) {
             $("#profileSettingsCS").countrySelector();
-            loaded = true;
+            profileSettingsLoaded = true;
         }
     });
 </script>

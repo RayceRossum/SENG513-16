@@ -205,3 +205,17 @@ exports.getHandelerCount = function(query, cb) {
         }
     });
 }
+
+exports.updateBuyerLoc = function(query, username, country, cb){
+    console.log(username);
+    console.log(country);
+    query("UPDATE public.\"Listings\" SET buyerloc = $1::varchar WHERE username = $2::varchar;", [country, username], function(err, result){
+        if (err){
+            console.error(err);
+            cb(err, null);
+        }
+        else{
+            cb(null, result);
+        }
+    });
+}

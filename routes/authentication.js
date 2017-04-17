@@ -27,6 +27,7 @@ module.exports = function(express, query, passport, db) {
     });
 
     router.post('/register', function(request, response) {
+        console.log(request);
       var body = request.body;
       if (body.name === "") {
         body.name = body.email;

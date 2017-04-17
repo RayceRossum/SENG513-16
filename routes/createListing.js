@@ -67,49 +67,61 @@ module.exports = function(express, query, db) {
     router.post('/submitAd', function(request, response) {
         var fileName;
         var itemCountry;
+        var buyerCountry;
 
         var count;
-        console.log(request);
         if (!request.body.item) {
             response.end("false");
         } else {
             db.listings.getCount(query, function(err, rows) {
-                console.log(request);
-                if (request.files.image) {
-                    let imgNumber = parseInt(rows) + 1;
-                    fileName = "img" + imgNumber + "." + request.files.image.name.split('.').pop();
-                    let file = request.files.image;
-
-                    file.mv('./images/ads/' + fileName, function(err) {
-                        if (err)
-                            console.log(err);
-                        else
-                            console.log("Successful upload");
-                    });
-                } else {
-                    fileName = "undefined";
-                }
-
-                if (!request.body.country){
-                    itemCountry = "undefined";
-                }
-                else{
-                    itemCountry = request.body.country;
-                }
-
-                var adData = {
-                    username: request.user.username,
-                    item: request.body.item,
-                    imageName: fileName,
-                    itemLoc: itemCountry,
-                    buyerLoc: "CAN",
-                    details: request.body.details,
-                };
-
-                db.listings.insertAd(query, adData);
-
-                response.end("true");
-
+                db.profiles.getUserCountry(query, request.user.username, function(err, result){
+                    if(err){
+                        console.log(err);
+                        response.end("false");
+                    }
+                    else{
+                        if(!result.country){
+                            response.end("noCountry");
+                            return;
+                        }
+                        buyerCountry = result.country;
+                        if (request.files.image) {
+                            let imgNumber = parseInt(rows) + 1;
+                            fileName = "img" + imgNumber + "." + request.files.image.name.split('.').pop();
+                            let file = request.files.image;
+                            
+                            file.mv('./images/ads/' + fileName, function(err) {
+                                if (err)
+                                    console.log(err);
+                                else
+                                    console.log("Successful upload");
+                            });
+                        } else {
+                            fileName = "undefined";
+                        }
+                        
+                        if (!request.body.country){
+                            itemCountry = "undefined";
+                        }
+                        else{
+                            itemCountry = request.body.country;
+                        }
+                        
+                        var adData = {
+                            username: request.user.username,
+                            item: request.body.item,
+                            imageName: fileName,
+                            itemLoc: itemCountry,
+                            buyerLoc: buyerCountry,
+                            details: request.body.details,
+                        };
+                     
+                        db.listings.insertAd(query, adData);
+                        
+                        response.end("true");
+                    }
+                });
+                
             });
         }
     });
