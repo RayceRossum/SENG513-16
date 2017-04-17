@@ -165,7 +165,7 @@ Once users have created a listing, they can remove that listing by:
 
 All of the buyer functionality is also available to Handelers and is therefore detailed above in the section "User Type: All Users".   
 
-## **User Type: Handeler **
+## User Type: Handeler
 
 **Sorting Listings by Location:**
 
