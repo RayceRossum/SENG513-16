@@ -8,15 +8,15 @@ Group Members:	Dominic Hul, Zoe King, Randy Le, Rayce Rossum, Vincent Wong
 
 Project:		Online Trade Application
 
-1. INTRODUCTION
+## 1. INTRODUCTION
 
-    1. Background
+### 1.1 Background
 
 *General background.  Why useful, who would use, how it would benefit, etc.*
 
 
 
-### **_"We’re like Uber… but for couriers."_**
+#### **_"We’re like Uber… but for couriers."_**
 
 
 
@@ -24,19 +24,19 @@ The emergence of social media platforms such as Facebook, Instagram, and Snapcha
 
 Handel would benefit the buyers who would be able to obtain their desired products and the Handelers who would earn extra money for minimal extra work.  Handel would also benefit economies around the world by adding more customers to their markets. People around the world would be incentivized to shop in markets they were once reluctant to shop in due to hefty shipping and customs fees. By reducing financial overhead and complication, both the buyers and Handelers benefit from and be encouraged to use our application.
 
-    2. Project Goals
+### 1.2 Project Goals
 
-		*Overall goals of project.  *
+*Overall goals of project.  *
 
 The goal of this project was to create a social networking platform that connects buyers and Handelers on a one-to-one basis. In order to differentiate ourselves from other ecommerce businesses and enterprises, our project aims to reduce the overhead that accompanies typical e-commerce transactions. The proposed functionality of this platform was: buyers can post requests for items, Handelers can review and accept requests, and Handelers and buyers can communicate with each other within the app. Additionally, in current businesses and applications, when one buys a product from overseas or from a foreign location, customer support and status updates are almost always absent. Our project aims to reduce automated support and create a more personal experience between client and server.
 
-    3. Project Accomplishments
+### 1.3 Project Accomplishments
 
 Given the current implementation, users may register with the website and creating postings or listings for their desired items. If the user is a Handeler, then they may view and filter listings that they can accept. When a Handeler accepts a listing, a conversation will be started and the two users may communicate further about the transaction. Along with the features discussed above, users may update their profile settings, account settings, and if the user is a buyer, they have the option to upgrade their account type to Handeler.
 
 
 
-2. PROJECT DESCRIPTION
+## 2. PROJECT DESCRIPTION
 
 *User manual.  Task descriptions with screenshots and explanations.  Document all UI elements.  Not too technical.  Include instructions for all user groups.*
 
@@ -48,8 +48,6 @@ There are two user types in our application, buyers and Handelers.   Some functi
 
 **Login:**
 
-![image alt text](image_0.png)
-
 Users who have previously made an account can login by:
 
 1. Entering their username or email.
@@ -60,7 +58,6 @@ Users who have previously made an account can login by:
 
 **Create an Account:**
 
-![image alt text](image_1.png)
 
 Users can create a new account by:
 
@@ -78,7 +75,6 @@ Users can create a new account by:
 
 **Logout:**
 
-![image alt text](image_2.png)
 
 Once users have logged in and are inside the application, they can logout by:
 
@@ -88,7 +84,6 @@ Once users have logged in and are inside the application, they can logout by:
 
 **Profile Settings:**
 
-![image alt text](image_3.png)
 
 Users can edit their profile by:
 
@@ -102,7 +97,6 @@ Users can edit their profile by:
 
 **Account Settings:**
 
-![image alt text](image_4.png)
 
 Users can edit their account by:
 
@@ -116,7 +110,6 @@ Users can edit their account by:
 
 **Viewing User Profiles:**
 
-![image alt text](image_5.png)
 
 Buyers and Handelers can view their own profile details (username, country, rating, etc.) by:
 
@@ -134,7 +127,6 @@ Additionally, Handelers can view the profiles of the buyers who have created a l
 
 **Create a Listing:**
 
-![image alt text](image_6.png)
 
 Users can create a new listing by:
 
@@ -152,10 +144,6 @@ Users can create a new listing by:
 
 **Editing a Listing:**
 
-![image alt text](image_7.png)
-
-![image alt text](image_8.png)
-
 Once users have created a listing, they can edit that listing by:
 
 1. Selecting the "Edit" hyperlink on the listing that they wish to modify.
@@ -163,10 +151,6 @@ Once users have created a listing, they can edit that listing by:
 2. Users can then edit the item, image, item location, and item description.
 
 **Removing/Closing a Listing:**
-
-![image alt text](image_9.png)
-
-![image alt text](image_10.png)
 
 Once users have created a listing, they can remove that listing by:
 
@@ -185,8 +169,6 @@ All of the buyer functionality is also available to Handelers and is therefore d
 
 **Sorting Listings by Location:**
 
-![image alt text](image_11.png)
-
 Handlers can sort listings by buyer location and/or by item location.  This is done by:
 
 1. To sort by buyer location, the handler can select a country from the dropdown menu under the text "Buyer Location".
@@ -198,8 +180,6 @@ Handlers can sort listings by buyer location and/or by item location.  This is d
 4. To reset the filter, Handelers may press the "Reset Filters" button
 
 **Viewing a Listing:**
-
-![image alt text](image_12.png)
 
 A Handeler can view a buyer’s listing by:
 
