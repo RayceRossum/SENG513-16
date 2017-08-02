@@ -299,7 +299,7 @@ Five tables were used for for operation of the site:
 
 ## **Heroku**
 
-  Heroku[5] is a container-based cloud Platform as a Service that is used to deploy, manage, and scale apps. We used Heroku as it provided a free, full service for hosting our web app. Heroku provided our application with both basic web hosting, as well as hosting our PostgreSQL database. Furthermore, Heroku made it easy to deploy our web app whenever updates were made through its GitHub plugin.
+ 	Heroku[5] is a container-based cloud Platform as a Service that is used to deploy, manage, and scale apps. We used Heroku as it provided a free, full service for hosting our web app. Heroku provided our application with both basic web hosting, as well as hosting our PostgreSQL database. Furthermore, Heroku made it easy to deploy our web app whenever updates were made through its GitHub plugin.
 
 ## **BCrypt**
 
